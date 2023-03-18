@@ -17,3 +17,4 @@ rootProject.name = "mesh-net"
 include("api")
 include("core")
 include("android-service")
+include("android-service-native")
