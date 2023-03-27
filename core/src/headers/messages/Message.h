@@ -13,11 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef MESH_NET_MESSAGE_TYPES_H
-#define MESH_NET_MESSAGE_TYPES_H
 
-#endif //MESH_NET_MESSAGE_TYPES_H
-enum MessageType : short{
-    UDP,
-    TCP
+#ifndef MESH_NET_MESSAGE_H
+#define MESH_NET_MESSAGE_H
+
+#include"MessageType.h"
+
+class Message {
+public:
+    short size;
+    MessageType type;
+    char *content;
 };
+
+#endif //MESH_NET_MESSAGE_H

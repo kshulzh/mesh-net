@@ -16,10 +16,16 @@
 
 plugins {
     `cpp-library`
-    `cpp-unit-test`
 }
 
 library {
+    source {
+        from("src/cpp")
+    }
+
+    publicHeaders {
+        from("src/headers")
+    }
     // Set the target operating system and architecture for this library
     //targetMachines.add(machines.windows.x86_64)
 }

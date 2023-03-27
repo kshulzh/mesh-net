@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef MESH_NET_MESSAGE_TYPES_H
+#define MESH_NET_MESSAGE_TYPES_H
 
-#include <cassert>
-#include "messages/Message.h"
-#include <iostream>
-int main() {
-    char a[] = {2,0,1,0};
-    void* b = &a;
-    Message *m = (Message*) (&a);
-   // printf("%d, %d\n", m->size, m->type);
-   // assert(m->type == MessageType.TCP);
+enum MessageType : short{
+    UDP,
+    TCP
+};
 
-    return 0;
-}
+#endif //MESH_NET_MESSAGE_TYPES_H

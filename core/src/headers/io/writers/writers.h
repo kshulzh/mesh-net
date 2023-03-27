@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023 Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include"message_type.h"
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
 
+#ifndef MESH_NET_CORE_WRITERS_H
+#define MESH_NET_CORE_WRITERS_H
 
+#include <ostream>
+#include "messages/Message.h"
 
-class Message {
-public:
-    short size;
-    MessageType type;
-    char *content;
-};
+template<typename T>
+void write(std::ostream *out, T * v) {
+    int a = sizeof(T);
+    out->write((char *) v, sizeof(T));
+}
 
+template<typename T>
+void write_array(std::ostream *out, T *v, uint32_t size) {
+    write(out, &size);
+    out->write((char *) v, size * sizeof(T));
+}
 
-
-#endif //MESH_NET_MESSAGE_H
+#endif //MESH_NET_CORE_WRITERS_H
