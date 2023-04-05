@@ -33,6 +33,9 @@ char *mem_copy(char *dest,const char *src, uint32_t size) {
 
 extern
 char* write_to_buffer(buffer *buf, void *data, uint32_t size) {
+    if(size == 0) {
+        return 0;
+    }
     char * result = mem_copy(buf->temp, data, size);
     buf->temp += size;
     return result;
