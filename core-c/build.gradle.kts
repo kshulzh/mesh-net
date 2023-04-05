@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
+plugins {
+    `cpp-library`
+}
 
-#include"MessageType.h"
+library {
+    source {
+        from("src/c")
+    }
 
-class Message {
-public:
-    short size;
-    MessageType type;
-};
-
-#endif //MESH_NET_MESSAGE_H
+    publicHeaders {
+        from("src/headers")
+    }
+    // Set the target operating system and architecture for this library
+    //targetMachines.add(machines.windows.x86_64)
+}

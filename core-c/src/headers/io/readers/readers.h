@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
+#ifndef MESH_NET_READERS_H
+#define MESH_NET_READERS_H
 
-#include"MessageType.h"
+#include "../buffer.h"
 
-class Message {
-public:
-    short size;
-    MessageType type;
-};
+#define READ_TEMPLATE(TYPE) \
+TYPE *read_##TYPE(buffer *buf); \
 
-#endif //MESH_NET_MESSAGE_H
+#define READ_ARRAY_TEMPLATE(TYPE) \
+array_##TYPE *read_##TYPE##_array(buffer *buf);
+
+#define READ_BOTH_TEMPLATES(TYPE) \
+READ_TEMPLATE(TYPE)              \
+READ_ARRAY_TEMPLATE(TYPE)
+
+READ_BOTH_TEMPLATES(char)
+READ_BOTH_TEMPLATES(short)
+READ_BOTH_TEMPLATES(int)
+READ_BOTH_TEMPLATES(long)
+
+
+#endif //MESH_NET_READERS_H

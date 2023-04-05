@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
+#include "Reader.h"
 
-#include"MessageType.h"
-
-class Message {
-public:
-    short size;
-    MessageType type;
-};
-
-#endif //MESH_NET_MESSAGE_H
+Reader::Reader() {}

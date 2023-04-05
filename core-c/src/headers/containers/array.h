@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
+#ifndef MESH_NET_ARRAY_H
+#define MESH_NET_ARRAY_H
 
-#include"MessageType.h"
-
-class Message {
-public:
-    short size;
-    MessageType type;
-};
-
-#endif //MESH_NET_MESSAGE_H
+#define ARRAY(TYPE)   \
+struct array_##TYPE { \
+   unsigned int size; \
+   TYPE *elements;     \
+};                    \
+typedef struct array_##TYPE array_##TYPE;
+#endif //MESH_NET_ARRAY_H

@@ -16,5 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "mesh-net"
 include("api")
 include("core")
+include("core-c")
 include("android-service")
 include("android-service-native")

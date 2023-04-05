@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
+#ifndef MESH_NET_READER_H
+#define MESH_NET_READER_H
 
-#include"MessageType.h"
-
-class Message {
+template<typename T>
+class Reader {
 public:
-    short size;
-    MessageType type;
+    Reader();
 };
 
-#endif //MESH_NET_MESSAGE_H
+
+#endif //MESH_NET_READER_H

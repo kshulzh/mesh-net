@@ -19,8 +19,7 @@
 
 #include"MessageType.h"
 
-class Message {
-public:
+struct Message {
     short size;
     MessageType type;
 };

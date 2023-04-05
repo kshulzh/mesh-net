@@ -28,7 +28,6 @@ struct array {
     array(T *v, uint32_t size) : v(v), size(size) {
 
     }
-
 };
 
 template<typename T>

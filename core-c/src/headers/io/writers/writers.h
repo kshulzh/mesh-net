@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
+#ifndef MESH_NET_WRITERS_H
+#define MESH_NET_WRITERS_H
 
-#include"MessageType.h"
+#include "../buffer.h"
 
-class Message {
-public:
-    short size;
-    MessageType type;
-};
+#define WRITE_TEMPLATE(TYPE) \
+TYPE *write_##TYPE(buffer *buf, TYPE *data); \
 
-#endif //MESH_NET_MESSAGE_H
+#define WRITE_ARRAY_TEMPLATE(TYPE) \
+array_##TYPE *write_##TYPE##_array(buffer *buf, array_##TYPE *array);
+
+#define WRITE_BOTH_TEMPLATES(TYPE) \
+WRITE_TEMPLATE(TYPE)              \
+WRITE_ARRAY_TEMPLATE(TYPE)
+
+WRITE_BOTH_TEMPLATES(char)
+WRITE_BOTH_TEMPLATES(short)
+WRITE_BOTH_TEMPLATES(int)
+WRITE_BOTH_TEMPLATES(long)
+
+#endif //MESH_NET_WRITERS_H
