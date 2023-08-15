@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ARRAY_H
-#define MESH_NET_ARRAY_H
+#ifndef MESH_NET_MESSAGE_H
+#define MESH_NET_MESSAGE_H
 
-#define ARRAY(TYPE)\
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} array_##TYPE;\
+enum message_type {
+    CONNECTION,
+    SPREAD,
+    ROUTE
+};
 
-#define ARRAY_(TYPE,NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;\
+struct message {
+    short size;
+    enum message_type type;
+};
+typedef struct message message;
 
-#endif //MESH_NET_ARRAY_H
+#endif //MESH_NET_MESSAGE_H

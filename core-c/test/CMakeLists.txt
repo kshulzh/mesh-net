@@ -10,6 +10,7 @@ FetchContent_MakeAvailable(gtest)
 
 add_executable(
     unit_tests
+        containers/list.cpp
         io/readers/reader.cpp
         io/writers/writers.cpp)
 

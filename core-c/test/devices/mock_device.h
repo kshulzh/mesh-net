@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ARRAY_H
-#define MESH_NET_ARRAY_H
+#ifndef MESH_NET_MOCK_DEVICE_H
+#define MESH_NET_MOCK_DEVICE_H
 
-#define ARRAY(TYPE)\
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} array_##TYPE;\
 
-#define ARRAY_(TYPE,NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;\
 
-#endif //MESH_NET_ARRAY_H
+#endif //MESH_NET_MOCK_DEVICE_H

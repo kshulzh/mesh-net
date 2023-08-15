@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ARRAY_H
-#define MESH_NET_ARRAY_H
+#ifndef MESH_NET_CONNECTION_H
+#define MESH_NET_CONNECTION_H
 
-#define ARRAY(TYPE)\
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} array_##TYPE;\
+typedef struct {
+    void (*open)(void *thiz);
 
-#define ARRAY_(TYPE,NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;\
+    void (*close)(void *thiz);
 
-#endif //MESH_NET_ARRAY_H
+    bool (*is_connected)(void *thiz);
+
+    int (*read)(void *thiz);
+
+    int (*read_array)(void *thiz, char[], int, int);
+
+    void (*write)(void *thiz, int);
+
+    void (*write_array)(void *thiz, char[], int, int);
+
+    void *(*get_properties)(void *thiz);
+
+    void (*set_properties)(void *thiz, void *);
+} connection;
+#endif //MESH_NET_CONNECTION_H

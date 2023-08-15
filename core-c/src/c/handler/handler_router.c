@@ -13,12 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef MESH_NET_MESSAGE_TYPES_H
-#define MESH_NET_MESSAGE_TYPES_H
+#include "handler/handler_router.h"
 
-enum MessageType : short{
-    UDP,
-    TCP
-};
+void setup() {
+    message_handlers[CONNECTION] = &handle_connection_message;
+    message_handlers[ROUTE] = (message_handler) &handle_route_message;
+}
 
-#endif //MESH_NET_MESSAGE_TYPES_H
+void handle_message(message *m) {
+
+}
+
+void handle_route_message(route_message *m) {
+
+}
+
+void handle_connection_message(message *m) {
+
+}
+

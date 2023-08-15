@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ARRAY_H
-#define MESH_NET_ARRAY_H
+#ifndef MESH_NET_PAIR_H
+#define MESH_NET_PAIR_H
 
-#define ARRAY(TYPE)\
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} array_##TYPE;\
+#define PAIR(KEY, VALUE)\
+struct pair_##KEY##_##VALUE {\
+    KEY key;\
+    VALUE value;\
+};\
+typedef struct pair_##KEY##_##VALUE pair_##KEY##_##VALUE;
 
-#define ARRAY_(TYPE,NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;\
-
-#endif //MESH_NET_ARRAY_H
+#endif //MESH_NET_PAIR_H

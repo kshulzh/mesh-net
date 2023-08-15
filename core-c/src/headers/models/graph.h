@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
+#ifndef MESH_NET_GRAPH_H
+#define MESH_NET_GRAPH_H
 
-#include"MessageType.h"
+typedef struct {
 
-struct Message {
-    short size;
-    MessageType type;
-};
+} device_graph;
 
-#endif //MESH_NET_MESSAGE_H
+#endif //MESH_NET_GRAPH_H

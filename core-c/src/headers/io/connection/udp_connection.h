@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ARRAY_H
-#define MESH_NET_ARRAY_H
+#include "connection.h"
 
-#define ARRAY(TYPE)\
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} array_##TYPE;\
+#ifndef MESH_NET_UDP_CONNECTION_H
+#define MESH_NET_UDP_CONNECTION_H
 
-#define ARRAY_(TYPE,NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;\
+#endif //MESH_NET_UDP_CONNECTION_H
 
-#endif //MESH_NET_ARRAY_H
+typedef struct {
+
+} udp_connection_data;
+
+connection* new_udp_connection();

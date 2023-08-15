@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ARRAY_H
-#define MESH_NET_ARRAY_H
+#ifndef MESH_NET_RADAR_H
+#define MESH_NET_RADAR_H
 
-#define ARRAY(TYPE)\
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} array_##TYPE;\
+#include "../../devices/device.h"
 
-#define ARRAY_(TYPE,NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;\
+typedef struct {
+    void (*start)(void *thiz);
 
-#endif //MESH_NET_ARRAY_H
+    void (*stop)(void *thiz);
+
+    bool (*is_started)(void *thiz);
+
+    void (*set_properties)(void *thiz, void *);
+
+    void *(*get_properties)(void *thiz);
+
+    void (*on_find_device_handler)(void *thiz, void (*on_find_device_handler)(device *));
+} radar;
+
+#endif //MESH_NET_RADAR_H

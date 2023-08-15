@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ARRAY_H
-#define MESH_NET_ARRAY_H
+#ifndef MESH_NET_CONNECTED_DEVICE_H
+#define MESH_NET_CONNECTED_DEVICE_H
 
-#define ARRAY(TYPE)\
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} array_##TYPE;\
+#include "../containers/array.h"
+#include "device.h"
+#include "../io/connection/connection.h"
+ARRAY(connection)
 
-#define ARRAY_(TYPE,NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;\
+typedef struct {
+    device device;
+    array_connection connections;
+} connected_device;
 
-#endif //MESH_NET_ARRAY_H
+#endif //MESH_NET_CONNECTED_DEVICE_H

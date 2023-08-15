@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ARRAY_H
-#define MESH_NET_ARRAY_H
+#ifndef MESH_NET_HANDLER_ROUTER_H
+#define MESH_NET_HANDLER_ROUTER_H
 
-#define ARRAY(TYPE)\
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} array_##TYPE;\
+#include "../messages/message.h"
+#include "../messages/route_message.h"
+#include "../messages/connection_message.h"
+#include "containers/array.h"
+typedef void (*message_handler) (message *);
+message_handler message_handlers[256];
 
-#define ARRAY_(TYPE,NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;\
+void handle_message(message *m);
 
-#endif //MESH_NET_ARRAY_H
+void handle_route_message(route_message *m);
+
+void handle_connection_message(message *m);
+
+void setup();
+
+#endif //MESH_NET_HANDLER_ROUTER_H
