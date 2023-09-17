@@ -14,32 +14,9 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_BUFFER_H
-#define MESH_NET_BUFFER_H
+#ifndef MESH_NET_NEW_H
+#define MESH_NET_NEW_H
 
-#include "containers/array.h"
-ARRAY(char)
-ARRAY(short)
-ARRAY(int)
-ARRAY(long)
-
-typedef unsigned int uint32_t;
-struct buffer {
-    uint32_t size;
-    char *start;
-    char *temp;
-    char *end;
-    char is_locked;
-};
-
-typedef struct buffer buffer;
-
-void buffer_init(buffer *buf, uint32_t size, char *arr);
-
-char * write_to_buffer(buffer *buf, void *data, uint32_t size);
-
-char * read_from_buffer(buffer *buf, uint32_t size);
-
-char * mem_copy(char *dest,const char * src, uint32_t size);
-
-#endif //MESH_NET_BUFFER_H
+#define New(type) \
+(type*) malloc(sizeof(type))
+#endif //MESH_NET_NEW_H

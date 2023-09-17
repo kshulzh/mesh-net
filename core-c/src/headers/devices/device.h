@@ -18,6 +18,7 @@
 #define MESH_NET_DEVICE_H
 typedef struct {
     unsigned long id;
+    unsigned long user_id;
 } device;
 
 #endif //MESH_NET_DEVICE_H

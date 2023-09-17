@@ -23,10 +23,9 @@ enum message_type {
     ROUTE
 };
 
-struct message {
+typedef struct {
     short size;
     enum message_type type;
-};
-typedef struct message message;
+} message;
 
 #endif //MESH_NET_MESSAGE_H

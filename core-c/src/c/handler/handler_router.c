@@ -17,18 +17,14 @@
 
 void setup() {
     message_handlers[CONNECTION] = &handle_connection_message;
-    message_handlers[ROUTE] = (message_handler) &handle_route_message;
-}
-
-void handle_message(message *m) {
-
-}
-
-void handle_route_message(route_message *m) {
-
 }
 
 void handle_connection_message(message *m) {
 
+    //todo
+}
+
+void handle_message(message*m) {
+    message_handlers[m->type](m);
 }
 

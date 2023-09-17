@@ -24,12 +24,10 @@
 typedef void (*message_handler) (message *);
 message_handler message_handlers[256];
 
-void handle_message(message *m);
-
-void handle_route_message(route_message *m);
-
 void handle_connection_message(message *m);
 
 void setup();
+
+void handle_message(message*m);
 
 #endif //MESH_NET_HANDLER_ROUTER_H

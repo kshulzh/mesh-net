@@ -17,8 +17,60 @@
 #ifndef MESH_NET_GRAPH_H
 #define MESH_NET_GRAPH_H
 
-typedef struct {
+#include "../containers/list.h"
+#include "../utils/predicate.h"
+#include "../devices/device.h"
+#include "../utils/new.h"
 
-} device_graph;
+typedef struct {
+    void *element;
+    list near;
+} graph_node;
+
+typedef struct {
+    //list of graph_nodes
+    list nodes;
+
+    graph_node this_node;
+} graph;
+
+
+//returns list of graph_nodes
+list *find_way_graph_in_depth(graph* l, graph_node *this_node, predicate* p, list *checked) {
+    if(checked == nullptr) {
+        checked = new_list();
+
+    }
+    list_add(checked,this_node);
+
+    if(is(p,this_node->element)) {
+        return checked;
+    }
+
+    for_each(this_node->near, graph_node, {
+        list *list1 = find_way_graph_in_depth(l,temp,p,checked);
+        if(list1!=0) {
+            return checked;
+        }
+    })
+
+    list_remove_last(checked);
+
+    return nullptr;
+}
+graph_node * new_graph_node(void *element) {
+    graph_node *g = New(graph_node);
+    return g;
+
+}
+
+graph* new_graph(void *element) {
+    graph *g = New(graph);
+    g->this_node = new_graph_node(element);
+    list_add(&(g->nodes),g->this_node);
+    return g;
+}
+
+
 
 #endif //MESH_NET_GRAPH_H

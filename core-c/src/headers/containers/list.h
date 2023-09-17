@@ -18,6 +18,7 @@
 #define MESH_NET_LIST_H
 
 #include <cstdlib.h>
+#include "utils/predicate.h"
 
 typedef struct {
     void *next;
@@ -26,9 +27,18 @@ typedef struct {
 typedef struct {
     list_node *first;
     list_node *last;
-
+    uint32_t size;
 } list;
 
+#define for_each(l,type,body) \
+{\
+list_node* temp_node = l->first;       \
+type * temp;\
+while(temp_node) {                     \
+    temp = (type *) temp_node->element;\
+    body                        \
+    temp_node = (list_node*) temp_node->next;                            \
+}}
 void list_print(list*l) {
     list_node * temp = l->first;
     while (temp) {
@@ -53,6 +63,7 @@ void list_add(list* l, void *element) {
         l->last->next = temp;
         l->last = temp;
     }
+    l->size ++;
 }
 
 void* list_remove(list* l, int index) {
@@ -80,17 +91,52 @@ void* list_remove(list* l, int index) {
     }
     void * element = temp->element;
     delete temp;
+    l->size --;
     return element;
 }
 void *list_remove_first(list* l) {
     return list_remove(l,0);
 }
 
+void *list_remove_last(list* l) {
+    return list_remove(l,l->size);
+}
+
 list* new_list() {
     list* temp = (list*) malloc(sizeof(list));
     temp->last = 0;
     temp->first = 0;
+    temp->size = 0;
     return temp;
+}
+
+void *find_first(list* l, predicate* p) {
+    list_node *temp = l->first;
+    while (temp!=0) {
+        if(is(p,temp->element)) {
+            return temp->element;
+        }
+        temp = (list_node*) temp->next;
+    }
+
+    return 0;
+}
+
+void delete_list(list* l, char with_elements) {
+    list_node *temp = l->first;
+    list_node *next;
+
+    if(temp != 0) {
+        next =(list_node*) temp->next;
+        while (next != 0) {
+            delete temp;
+            temp = next;
+
+        }
+    }
+
+
+    delete l;
 }
 
 #endif //MESH_NET_LIST_H
