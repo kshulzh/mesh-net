@@ -12,7 +12,12 @@ add_executable(
     unit_tests
         containers/list.cpp
         io/readers/reader.cpp
-        io/writers/writers.cpp)
+        io/writers/writers.cpp
+        io/connection/mock_radar.cpp
+        io/connection/mock_radar.h
+        io/connection/mock_connection.h
+        devices/mock_device.h
+        io/connection/mock_connection.cpp)
 
 target_link_libraries(unit_tests
   PRIVATE

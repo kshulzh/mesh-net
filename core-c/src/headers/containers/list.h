@@ -17,7 +17,6 @@
 #ifndef MESH_NET_LIST_H
 #define MESH_NET_LIST_H
 
-#include <cstdlib.h>
 #include "utils/predicate.h"
 
 typedef struct {
@@ -110,7 +109,7 @@ list* new_list() {
     return temp;
 }
 
-void *find_first(list* l, predicate* p) {
+void *list_find_first(list* l, predicate* p) {
     list_node *temp = l->first;
     while (temp!=0) {
         if(is(p,temp->element)) {
@@ -122,7 +121,7 @@ void *find_first(list* l, predicate* p) {
     return 0;
 }
 
-void delete_list(list* l, char with_elements) {
+void delete_list(list* l) {
     list_node *temp = l->first;
     list_node *next;
 

@@ -16,9 +16,21 @@
 
 #ifndef MESH_NET_DEVICE_H
 #define MESH_NET_DEVICE_H
+
+#include "../utils/new.h"
+
 typedef struct {
     unsigned long id;
     unsigned long user_id;
 } device;
+
+device* new_device(
+        unsigned long id,
+        unsigned long user_id) {
+    device* d = New(device);
+    d->id = id;
+    d->user_id = user_id;
+    return d;
+}
 
 #endif //MESH_NET_DEVICE_H

@@ -30,7 +30,7 @@ typedef struct {
 
     void (*write)(void *thiz, int);
 
-    void (*write_array)(void *thiz, char[], int, int);
+    void (*write_array)(void *thiz, char[], int);
 
     void *(*get_properties)(void *thiz);
 

@@ -40,10 +40,14 @@ char predicate_equals(void* thiz,void *other) {
     return thiz == other;
 }
 
+char predicate_true(void* thiz,void *params) {
+    return 1;
+}
+
 predicate* equals(void *thiz) {
     return new_predicate(predicate_equals,thiz);
 }
 
-
+predicate * TRUE = new_predicate(predicate_true,0);
 
 #endif //MESH_NET_PREDICATE_H

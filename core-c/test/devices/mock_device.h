@@ -17,6 +17,35 @@
 #ifndef MESH_NET_MOCK_DEVICE_H
 #define MESH_NET_MOCK_DEVICE_H
 
+#include "models/instance.h"
+#include "../io/connection/mock_connection.h"
+#include "../io/connection/mock_radar.h"
 
+typedef struct {
+    device d;
+    instance inst;
+} mock_device;
+
+mock_device* new_mock_device(device *d) {
+    mock_device* md = New(mock_device);
+    md->d = *d;
+    radar *r = new_mock_radar();
+    r->inst = &(md->inst);
+    list_add(&(md->inst.radars),r);
+
+    return md;
+}
+
+void mock_device_link(mock_device* md1,mock_device* md2) {
+    mock_connection* mc1 = new_mock_connection1(256);
+    mock_connection* mc2 = new_mock_connection1(256);
+    mock_connection_link(mc1,mc2);
+    mock_radar_add_to_queue(list_find_first(&md1->inst.radars,TRUE),&(mc1->c));
+    mock_radar_add_to_queue(list_find_first(&md2->inst.radars,TRUE),&(mc2->c));
+}
+
+void mock_device_find(mock_device *md) {
+    mock_radar_find(list_find_first(&md->inst.radars,TRUE));
+}
 
 #endif //MESH_NET_MOCK_DEVICE_H

@@ -17,9 +17,11 @@
 #ifndef MESH_NET_RADAR_H
 #define MESH_NET_RADAR_H
 
-#include "../../devices/device.h"
+#include "connection.h"
+#include "models/instance.h"
 
 typedef struct {
+    instance *inst;
     void (*start)(void *thiz);
 
     void (*stop)(void *thiz);
@@ -30,7 +32,7 @@ typedef struct {
 
     void *(*get_properties)(void *thiz);
 
-    void (*on_find_device_handler)(void *thiz, void (*on_find_device_handler)(device *));
+    void (*on_find_device_handler)(void *thiz, void (*on_find_device_handler)(void *thiz,connection *));
 } radar;
 
 #endif //MESH_NET_RADAR_H

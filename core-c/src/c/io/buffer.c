@@ -46,3 +46,7 @@ char *read_from_buffer(buffer *buf, uint32_t size) {
     buf->temp += size;
     return result;
 }
+
+void buffer_reset(buffer *buf) {
+    buf->temp = buf->start;
+}

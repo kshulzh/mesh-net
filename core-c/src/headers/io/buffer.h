@@ -42,4 +42,6 @@ char * read_from_buffer(buffer *buf, uint32_t size);
 
 char * mem_copy(char *dest,const char * src, uint32_t size);
 
+void buffer_reset(buffer *buf);
+
 #endif //MESH_NET_BUFFER_H

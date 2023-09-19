@@ -36,7 +36,7 @@ typedef struct {
 
 
 //returns list of graph_nodes
-list *find_way_graph_in_depth(graph* l, graph_node *this_node, predicate* p, list *checked) {
+list *graph_find_way_in_depth(graph* l, graph_node *this_node, predicate* p, list *checked) {
     if(checked == nullptr) {
         checked = new_list();
 
@@ -48,7 +48,7 @@ list *find_way_graph_in_depth(graph* l, graph_node *this_node, predicate* p, lis
     }
 
     for_each(this_node->near, graph_node, {
-        list *list1 = find_way_graph_in_depth(l,temp,p,checked);
+        list *list1 = graph_find_way_in_depth(l,temp,p,checked);
         if(list1!=0) {
             return checked;
         }
@@ -69,6 +69,10 @@ graph* new_graph(void *element) {
     g->this_node = new_graph_node(element);
     list_add(&(g->nodes),g->this_node);
     return g;
+}
+
+void graph_add_graph(graph* thiz, graph* other, char (*equals)(void*,void*)) {
+    //todo
 }
 
 

@@ -1,4 +1,9 @@
-add_library(${TARGET_NAME})
+add_library(${TARGET_NAME}
+        headers/devices/device.h
+        headers/models/instance.h
+        headers/models/graph.h
+        headers/devices/connected_device.h
+        headers/utils/math.h)
 
 SET_TARGET_PROPERTIES( ${TARGET_NAME}
         PROPERTIES
