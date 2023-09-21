@@ -18,6 +18,8 @@
 #define MESH_NET_BUFFER_H
 
 #include "containers/array.h"
+#include "utils/predicate.h"
+
 ARRAY(char)
 ARRAY(short)
 ARRAY(int)
@@ -43,5 +45,19 @@ char * read_from_buffer(buffer *buf, uint32_t size);
 char * mem_copy(char *dest,const char * src, uint32_t size);
 
 void buffer_reset(buffer *buf);
+
+char buffer_predicate_is_locked(void* thiz,void *params) {
+    buffer *b = (buffer*) thiz;
+    return b->is_locked;
+}
+
+predicate * BUFFER_IS_LOCKED;
+
+predicate * buffer_is_locked() {
+    if(BUFFER_IS_LOCKED == 0) {
+        return BUFFER_IS_LOCKED = new_predicate(buffer_predicate_is_locked,0);
+    }
+    return BUFFER_IS_LOCKED;
+}
 
 #endif //MESH_NET_BUFFER_H

@@ -17,6 +17,9 @@
 #ifndef MESH_NET_MESSAGE_H
 #define MESH_NET_MESSAGE_H
 
+#include "io/connection/connection.h"
+#include "io/buffer.h"
+
 enum message_type {
     CONNECTION,
     SPREAD,
@@ -26,6 +29,15 @@ enum message_type {
 typedef struct {
     short size;
     enum message_type type;
+    char *bytes;
+    connection *c;
 } message;
+
+message* message_of_buffer(buffer* b) {
+    message *m = New(message);
+    m->bytes = b->start;
+    m->size = b->end - b->start;
+    return m;
+}
 
 #endif //MESH_NET_MESSAGE_H

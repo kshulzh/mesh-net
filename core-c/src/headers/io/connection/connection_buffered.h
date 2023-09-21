@@ -14,17 +14,45 @@
  * limitations under the License.
  */
  
- #ifndef MESH_NET_CONNECTION_BUFFERED_H
+#ifndef MESH_NET_CONNECTION_BUFFERED_H
 #define MESH_NET_CONNECTION_BUFFERED_H
 
 #include "connection.h"
 #include "../../containers/list.h"
 #include "../buffer.h"
+#include "handler/handler_router.h"
 
 typedef struct {
-    connection connection;
+    connection *connection;
     list buffers;
     void (*on_read_handler) (void *thiz, buffer *);
 } connection_buffer;
+
+void connection_buffer_read(connection_buffer*thiz) {
+    buffer * b= list_find_first(&(thiz->buffers),buffer_is_locked());
+    b->is_locked = 1;
+    buffer_reset(b);
+    int count = thiz->connection->read_array(thiz->connection,b->start,b->size,0);
+    if(count>0 ) {
+        thiz->on_read_handler(thiz, b);
+    }
+    b->is_locked = 0;
+}
+
+void default_on_read_handler(void *thiz, buffer *b) {
+    connection_buffer *thizz = (connection_buffer*) thiz;
+    message *m = message_of_buffer(b);
+    thizz->connection = thizz->connection;
+    handle_message(m);
+    b->is_locked = 0;
+}
+
+connection_buffer * new_connection_buffer(connection *c) {
+    connection_buffer * cb = New(connection_buffer);
+    cb->connection = c;
+    cb->on_read_handler = default_on_read_handler;
+    cb->buffers = ((instance*)c->r->inst)->buffers;
+    return cb;
+}
 
 #endif //MESH_NET_CONNECTION_BUFFERED_H

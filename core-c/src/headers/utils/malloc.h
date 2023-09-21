@@ -16,5 +16,9 @@
 
 #ifndef MESH_NET_MALLOC_H
 #define MESH_NET_MALLOC_H
+#ifdef MESH_NET_MALLOC_H
+#include <stdlib.h>
+#define mem_alloc(size) malloc(size)
+#endif
 
 #endif //MESH_NET_MALLOC_H

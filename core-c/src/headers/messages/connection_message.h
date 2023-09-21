@@ -17,6 +17,7 @@
 #ifndef MESH_NET_CONNECTION_MESSAGE_H
 #define MESH_NET_CONNECTION_MESSAGE_H
 #include "message.h"
+#include "io/connection/connection.h"
 
 enum connection_info {
     ID
@@ -24,7 +25,7 @@ enum connection_info {
 
 typedef struct {
     message message;
-    enum connection_info code;
+    connection *c;
 } connection_message;
 
 typedef struct {

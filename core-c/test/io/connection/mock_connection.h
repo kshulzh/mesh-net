@@ -30,7 +30,7 @@ void mock_connection_close(void *thiz) {
 
 }
 
-bool mock_connection_is_connected(void *thiz) {
+char mock_connection_is_connected(void *thiz) {
     mock_connection* mc = (mock_connection *) thiz;
     return mc->is_opened;
 }

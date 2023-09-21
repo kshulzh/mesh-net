@@ -17,7 +17,8 @@ add_executable(
         io/connection/mock_radar.h
         io/connection/mock_connection.h
         devices/mock_device.h
-        io/connection/mock_connection.cpp)
+        io/connection/mock_connection.cpp
+        model/instance.cpp)
 
 target_link_libraries(unit_tests
   PRIVATE

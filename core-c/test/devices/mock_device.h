@@ -40,12 +40,12 @@ void mock_device_link(mock_device* md1,mock_device* md2) {
     mock_connection* mc1 = new_mock_connection1(256);
     mock_connection* mc2 = new_mock_connection1(256);
     mock_connection_link(mc1,mc2);
-    mock_radar_add_to_queue(list_find_first(&md1->inst.radars,TRUE),&(mc1->c));
-    mock_radar_add_to_queue(list_find_first(&md2->inst.radars,TRUE),&(mc2->c));
+    mock_radar_add_to_queue(list_find_first(&md1->inst.radars,_true()),&(mc1->c));
+    mock_radar_add_to_queue(list_find_first(&md2->inst.radars,_true()),&(mc2->c));
 }
 
 void mock_device_find(mock_device *md) {
-    mock_radar_find(list_find_first(&md->inst.radars,TRUE));
+    mock_radar_find(list_find_first(&md->inst.radars,_true()));
 }
 
 #endif //MESH_NET_MOCK_DEVICE_H

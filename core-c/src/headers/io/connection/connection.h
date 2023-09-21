@@ -17,12 +17,15 @@
 #ifndef MESH_NET_CONNECTION_H
 #define MESH_NET_CONNECTION_H
 
+#include "radar.h"
+
 typedef struct {
+    radar* r;
     void (*open)(void *thiz);
 
     void (*close)(void *thiz);
 
-    bool (*is_connected)(void *thiz);
+    char (*is_connected)(void *thiz);
 
     int (*read)(void *thiz);
 

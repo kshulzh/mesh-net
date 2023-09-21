@@ -26,7 +26,7 @@ typedef struct {
 typedef struct {
     list_node *first;
     list_node *last;
-    uint32_t size;
+    unsigned int size;
 } list;
 
 #define for_each(l,type,body) \
@@ -41,7 +41,7 @@ while(temp_node) {                     \
 void list_print(list*l) {
     list_node * temp = l->first;
     while (temp) {
-        printf("%x\n",temp->element);
+        //printf("%x\n",temp->element);
         temp = (list_node*) temp->next;
     }
 }
@@ -89,7 +89,7 @@ void* list_remove(list* l, int index) {
         }
     }
     void * element = temp->element;
-    delete temp;
+    free(temp);
     l->size --;
     return element;
 }
@@ -128,14 +128,13 @@ void delete_list(list* l) {
     if(temp != 0) {
         next =(list_node*) temp->next;
         while (next != 0) {
-            delete temp;
+            free(temp);
             temp = next;
 
         }
     }
 
-
-    delete l;
+    free(l);
 }
 
 #endif //MESH_NET_LIST_H

@@ -17,7 +17,7 @@ static mock_connection* mock_connection2 = new_mock_connection(0);
 static mock_connection* mock_connection3 = new_mock_connection(0);
 static int count = 0;
 
-static void handler(void *thiz,connection *d) {
+static void handler(void *thiz,void *connection) {
     count++;
 }
 

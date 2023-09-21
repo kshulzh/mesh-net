@@ -26,7 +26,7 @@ typedef struct {
     radar r;
     bool is_running;
     list queue;
-    void (*on_find_device_handler)(void *thiz,connection *);
+    void (*on_find_device_handler)(void *thiz,void *);
 
 } mock_radar;
 
@@ -39,7 +39,7 @@ void mock_radar_stop(void *thiz) {
 }
 
 
-bool mock_radar_is_started(void *thiz) {
+char mock_radar_is_started(void *thiz) {
     return ((mock_radar*) thiz)->is_running;
 }
 
@@ -54,7 +54,7 @@ void *mock_radar_get_properties(void *thiz) {
 }
 
 
-void mock_on_find_device_handler(void *thiz, void (*on_find_device_handler)(void *thiz,connection *)) {
+void mock_on_find_device_handler(void *thiz, void (*on_find_device_handler)(void *thiz,void *)) {
     ((mock_radar*) thiz)->on_find_device_handler = on_find_device_handler;
 }
 
@@ -62,7 +62,7 @@ radar* new_mock_radar() {
     mock_radar* r = (mock_radar *)(malloc(sizeof(mock_radar)));
     r->r.start = ::mock_radar_start;
     r->r.stop = ::mock_radar_stop;
-    r->r.is_started = ::mock_radar_is_started;
+    r->r.is_running = ::mock_radar_is_started;
     r->r.get_properties = ::mock_radar_get_properties;
     r->r.set_properties = ::mock_radar_set_properties;
     r->r.on_find_device_handler = ::mock_on_find_device_handler;
@@ -72,11 +72,11 @@ radar* new_mock_radar() {
 void mock_radar_find(void *thiz) {
     mock_radar * thiz_ = (mock_radar*) thiz;
     if(thiz_->is_running && thiz_->queue.size) {
-        thiz_->on_find_device_handler(thiz,(connection *)list_remove_first(&(thiz_->queue)));
+        thiz_->on_find_device_handler(thiz,(void *)list_remove_first(&(thiz_->queue)));
     }
 }
 
-void mock_radar_add_to_queue(void *thiz,connection *d) {
+void mock_radar_add_to_queue(void *thiz,void *d) {
     mock_radar * thiz_ = (mock_radar*) thiz;
     list_add(&(thiz_->queue),d);
 }

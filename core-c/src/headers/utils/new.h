@@ -16,7 +16,7 @@
 
 #ifndef MESH_NET_NEW_H
 #define MESH_NET_NEW_H
-
+#include "malloc.h"
 #define New(type) \
-(type*) malloc(sizeof(type))
+(type*) mem_alloc(sizeof(type))
 #endif //MESH_NET_NEW_H

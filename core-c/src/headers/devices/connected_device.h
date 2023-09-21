@@ -24,7 +24,7 @@ ARRAY(connection)
 
 typedef struct {
     device device;
-    connection connection;
+    list connections;
 } connected_device;
 
 #endif //MESH_NET_CONNECTED_DEVICE_H
