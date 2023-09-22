@@ -14,30 +14,21 @@
  * limitations under the License.
  */
 
-//
-// Created by kirill on 18.09.23.
-//
+#ifndef MESH_NET_MOCK_DEVICE_H
+#define MESH_NET_MOCK_DEVICE_H
 
-#include <gtest/gtest.h>
-extern "C" {
-#include "io/buffer.h"
+#include "model/instance.h"
 #include "io/connection/mock_connection.h"
-}
+#include "io/connection/mock_radar.h"
 
-TEST(mock_connection, test1) {
-    char b1[100];
-    char b2[100];
-    buffer buf1;
-    buffer buf2;
-    buffer_init(&buf1, 100, b1);
-    buffer_init(&buf2, 100, b2);
-    mock_connection* mc1 = new_mock_connection(&buf1);
-    mock_connection* mc2 = new_mock_connection(&buf1);
-    mock_connection_link(mc1,mc2);
-    mc1->c.open(mc1);
-    mc2->c.open(mc2);
-    mc1->c.write_array(mc1,"hello my name is Kirill",24);
-    char b3[100];
-    mc2->c.read_array(mc2,b3,90,0);
-    printf("%s",b3);
-}
+typedef struct {
+    device d;
+    instance inst;
+} mock_device;
+
+mock_device* new_mock_device(device *d);
+void mock_device_link(mock_device* md1,mock_device* md2);
+
+void mock_device_find(mock_device *md);
+
+#endif //MESH_NET_MOCK_DEVICE_H

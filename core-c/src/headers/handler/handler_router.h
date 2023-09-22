@@ -17,9 +17,9 @@
 #ifndef MESH_NET_HANDLER_ROUTER_H
 #define MESH_NET_HANDLER_ROUTER_H
 
-#include "../messages/message.h"
-#include "../messages/route_message.h"
-#include "../messages/connection_message.h"
+#include "messages/message.h"
+#include "messages/route_message.h"
+#include "messages/connection_message.h"
 #include "containers/array.h"
 typedef void (*message_handler) (message *);
 message_handler message_handlers[256];

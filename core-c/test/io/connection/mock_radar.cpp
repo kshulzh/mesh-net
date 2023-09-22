@@ -1,16 +1,30 @@
+/*
+ * Copyright (c) 2023. Kirill Shulzhenko
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 //
 // Created by kirill on 18.09.23.
 //
-
+#include <gtest/gtest.h>
 extern "C" {
 #include "io/readers/readers.h"
 #include "io/buffer.h"
-}
-
-#include <gtest/gtest.h>
 #include "devices/device.h"
-#include "mock_radar.h"
-#include "mock_connection.h"
+#include "io/connection/mock_radar.h"
+#include "io/connection/mock_connection.h"
+}
 
 static mock_connection* mock_connection1 = new_mock_connection(0);
 static mock_connection* mock_connection2 = new_mock_connection(0);

@@ -4,6 +4,8 @@ project(mesh-net LANGUAGES CXX)
 
 set(TARGET_NAME core-lib)
 
+set(TARGET_NAME_TEST core-lib-test)
+
 # set the C++ standard
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -24,6 +26,7 @@ if(NOT GCOV_PATH)
 endif()
 
 add_subdirectory(src)
+add_subdirectory(test-api)
 
 enable_testing()
 

@@ -17,9 +17,9 @@
 #ifndef MESH_NET_CONNECTED_DEVICE_H
 #define MESH_NET_CONNECTED_DEVICE_H
 
-#include "../containers/array.h"
+#include "containers/array.h"
 #include "device.h"
-#include "../io/connection/connection.h"
+#include "io/connection/connection.h"
 ARRAY(connection)
 
 typedef struct {

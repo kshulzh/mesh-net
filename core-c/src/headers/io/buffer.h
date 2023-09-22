@@ -26,15 +26,13 @@ ARRAY(int)
 ARRAY(long)
 
 typedef unsigned int uint32_t;
-struct buffer {
+typedef struct {
     uint32_t size;
     char *start;
     char *temp;
     char *end;
     char is_locked;
-};
-
-typedef struct buffer buffer;
+} buffer;
 
 void buffer_init(buffer *buf, uint32_t size, char *arr);
 
@@ -46,18 +44,8 @@ char * mem_copy(char *dest,const char * src, uint32_t size);
 
 void buffer_reset(buffer *buf);
 
-char buffer_predicate_is_locked(void* thiz,void *params) {
-    buffer *b = (buffer*) thiz;
-    return b->is_locked;
-}
+char buffer_predicate_is_locked(void* thiz,void *params) ;
 
-predicate * BUFFER_IS_LOCKED;
-
-predicate * buffer_is_locked() {
-    if(BUFFER_IS_LOCKED == 0) {
-        return BUFFER_IS_LOCKED = new_predicate(buffer_predicate_is_locked,0);
-    }
-    return BUFFER_IS_LOCKED;
-}
+predicate * buffer_is_locked();
 
 #endif //MESH_NET_BUFFER_H

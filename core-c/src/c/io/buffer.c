@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "io/buffer.h"
+predicate * BUFFER_IS_LOCKED;
 
 extern
 void buffer_init(buffer *buf, uint32_t size, char *arr) {
@@ -49,4 +50,17 @@ char *read_from_buffer(buffer *buf, uint32_t size) {
 
 void buffer_reset(buffer *buf) {
     buf->temp = buf->start;
+}
+
+char buffer_predicate_is_locked(void* thiz,void *params) {
+    buffer *b = (buffer*) thiz;
+    return b->is_locked;
+}
+
+
+predicate * buffer_is_locked() {
+    if(BUFFER_IS_LOCKED == 0) {
+        return BUFFER_IS_LOCKED = new_predicate(buffer_predicate_is_locked,0);
+    }
+    return BUFFER_IS_LOCKED;
 }

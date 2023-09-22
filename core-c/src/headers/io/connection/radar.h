@@ -17,7 +17,7 @@
 #ifndef MESH_NET_RADAR_H
 #define MESH_NET_RADAR_H
 
-#include "models/instance.h"
+#include "model/instance.h"
 
 typedef struct {
     void *inst;

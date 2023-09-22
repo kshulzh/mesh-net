@@ -17,10 +17,10 @@
 #ifndef MESH_NET_GRAPH_H
 #define MESH_NET_GRAPH_H
 
-#include "../containers/list.h"
-#include "../utils/predicate.h"
-#include "../devices/device.h"
-#include "../utils/new.h"
+#include "containers/list.h"
+#include "utils/predicate.h"
+#include "devices/device.h"
+#include "utils/new.h"
 
 typedef struct {
     void *element;
@@ -67,7 +67,7 @@ graph_node * new_graph_node(void *element) {
 graph* new_graph(void *element) {
     graph *g = New(graph);
     g->this_node = new_graph_node(element);
-    list_add(&(g->nodes),g->this_node);
+    list_add((&(g->nodes)),g->this_node);
     return g;
 }
 

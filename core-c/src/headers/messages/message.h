@@ -33,11 +33,6 @@ typedef struct {
     connection *c;
 } message;
 
-message* message_of_buffer(buffer* b) {
-    message *m = New(message);
-    m->bytes = b->start;
-    m->size = b->end - b->start;
-    return m;
-}
+message* message_of_buffer(buffer* b) ;
 
 #endif //MESH_NET_MESSAGE_H

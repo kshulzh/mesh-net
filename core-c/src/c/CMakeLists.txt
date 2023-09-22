@@ -4,4 +4,10 @@ target_sources(${TARGET_NAME}
         io/writers/writers.c
         io/buffer.c
         handler/handler_router.c
+        utils/predicate.c
+        messages/message.c
+        model/instance.c
+        io/connection/connection_buffered.c
+        containers/list.c
+        devices/device.c
         )

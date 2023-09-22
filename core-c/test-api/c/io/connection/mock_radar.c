@@ -14,28 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MOCK_RADAR_H
-#define MESH_NET_MOCK_RADAR_H
+//
+// Created by kirill on 18.09.23.
+//
 
-#include <cstdlib>
 #include "devices/device.h"
-#include "io/connection/radar.h"
-#include "containers/list.h"
-
-typedef struct {
-    radar r;
-    bool is_running;
-    list queue;
-    void (*on_find_device_handler)(void *thiz,void *);
-
-} mock_radar;
+#include "io/connection/mock_radar.h"
 
 void mock_radar_start(void *thiz) {
-    ((mock_radar*) thiz)->is_running = true;
+    ((mock_radar*) thiz)->is_running = 1;
 }
 
 void mock_radar_stop(void *thiz) {
-    ((mock_radar*) thiz)->is_running = false;
+    ((mock_radar*) thiz)->is_running = 0;
 }
 
 
@@ -60,12 +51,15 @@ void mock_on_find_device_handler(void *thiz, void (*on_find_device_handler)(void
 
 radar* new_mock_radar() {
     mock_radar* r = (mock_radar *)(malloc(sizeof(mock_radar)));
-    r->r.start = ::mock_radar_start;
-    r->r.stop = ::mock_radar_stop;
-    r->r.is_running = ::mock_radar_is_started;
-    r->r.get_properties = ::mock_radar_get_properties;
-    r->r.set_properties = ::mock_radar_set_properties;
-    r->r.on_find_device_handler = ::mock_on_find_device_handler;
+    r->r.start = mock_radar_start;
+    r->r.stop = mock_radar_stop;
+    r->r.is_running = mock_radar_is_started;
+    r->r.get_properties = mock_radar_get_properties;
+    r->r.set_properties = mock_radar_set_properties;
+    r->r.on_find_device_handler = mock_on_find_device_handler;
+    r->queue.first = 0;
+    r->queue.size = 0;
+    r->queue.last = 0;
     return &(r->r);
 }
 
@@ -80,4 +74,3 @@ void mock_radar_add_to_queue(void *thiz,void *d) {
     mock_radar * thiz_ = (mock_radar*) thiz;
     list_add(&(thiz_->queue),d);
 }
-#endif //MESH_NET_MOCK_RADAR_H

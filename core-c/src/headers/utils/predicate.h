@@ -17,44 +17,21 @@
 #ifndef MESH_NET_PREDICATE_H
 #define MESH_NET_PREDICATE_H
 
-#include "malloc.h"
-
 typedef struct {
     char (*predicate)(void *thiz,void *params);
     void *params;
 } predicate;
 
-predicate* new_predicate(char (*p)(void *thiz,void *params),
-void *params) {
-    predicate* p1 =(predicate*) mem_alloc(sizeof(predicate));
-    p1->predicate = p;
-    p1->params = params;
-    return p1;
-}
+predicate *new_predicate(char (*p)(void *thiz, void *params), void *params);
 
-char is(predicate* p, void * thiz) {
-    return p->predicate(thiz, p->params);
-}
+char is(predicate *p, void *thiz) ;
 
-char predicate_equals(void* thiz,void *other) {
-    return thiz == other;
-}
+char predicate_equals(void *thiz, void *other);
 
-char predicate_true(void* thiz,void *params) {
-    return 1;
-}
+char predicate_true(void *thiz, void *params);
 
-predicate* equals(void *thiz) {
-    return new_predicate(predicate_equals,thiz);
-}
+predicate *equals(void *thiz);
 
-predicate * TRUE = 0;
-
-predicate * _true() {
-    if(TRUE==0) {
-        return TRUE = new_predicate(predicate_true,0);
-    }
-    return TRUE;
-}
+predicate *_true();
 
 #endif //MESH_NET_PREDICATE_H
