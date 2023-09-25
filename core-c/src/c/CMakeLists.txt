@@ -3,11 +3,12 @@ target_sources(${TARGET_NAME}
         io/readers/readers.c
         io/writers/writers.c
         io/buffer.c
-        handler/handler_router.c
+        services/handler.c
         utils/predicate.c
-        messages/message.c
+        services/message.c
         model/instance.c
         io/connection/connection_buffered.c
         containers/list.c
         devices/device.c
+
         )

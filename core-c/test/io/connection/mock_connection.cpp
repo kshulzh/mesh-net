@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-//
-// Created by kirill on 18.09.23.
-//
-
 #include <gtest/gtest.h>
 extern "C" {
 #include "io/buffer.h"

@@ -14,23 +14,35 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_CONNECTION_MESSAGE_H
-#define MESH_NET_CONNECTION_MESSAGE_H
-#include "message.h"
-#include "io/connection/connection.h"
+#ifndef MESH_NET_MESSAGE_H
+#define MESH_NET_MESSAGE_H
 
-enum connection_info {
-    ID
+#include "io/connection/connection.h"
+#include "io/buffer.h"
+
+enum message_type {
+    CONNECTION,
+    SPREAD,
+    ROUTE
 };
 
+typedef enum {
+    OK,
+    ERROR
+} codes;
+
 typedef struct {
-    message message;
+    short size;
+    unsigned long message_id;
+    enum message_type type;
+} basic_message;
+
+typedef struct {
+    basic_message bm;
+    char *bytes;
     connection *c;
-} connection_message;
+} message;
 
-typedef struct {
-    connection_message message;
-    unsigned long id;
-} connection_message_id;
+message* message_of_buffer(buffer* b) ;
 
-#endif //MESH_NET_CONNECTION_MESSAGE_H
+#endif //MESH_NET_MESSAGE_H

@@ -13,18 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "handler/handler_router.h"
 
-void setup() {
-    message_handlers[CONNECTION] = &handle_connection_message;
+#include "services/utils.h"
+void buffer_message_set_size(buffer *b) {
+    *((short *)b->start) = b->temp-b->start;
 }
-
-void handle_connection_message(message *m) {
-
-    //todo
-}
-
-void handle_message(message*m) {
-    message_handlers[m->type](m);
-}
-

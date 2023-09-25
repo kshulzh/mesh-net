@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_HANDLER_ROUTER_H
-#define MESH_NET_HANDLER_ROUTER_H
+#include "services/handler.h"
 
-#include "messages/message.h"
-#include "messages/route_message.h"
-#include "messages/connection_message.h"
-#include "containers/array.h"
-typedef void (*message_handler) (message *);
-message_handler message_handlers[256];
+message_handler* message_handlers() {
+    static message_handler message_handlers1[256];
+    return message_handlers1;
+}
 
-void handle_connection_message(message *m);
+void handle_message(message*m) {
+    message_handlers()[m->bm.type](m);
+}
 
-void setup();
-
-void handle_message(message*m);
-
-#endif //MESH_NET_HANDLER_ROUTER_H

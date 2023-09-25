@@ -19,8 +19,6 @@
 
 #include "containers/list.h"
 #include "utils/predicate.h"
-#include "devices/device.h"
-#include "utils/new.h"
 
 typedef struct {
     void *element;
@@ -36,45 +34,12 @@ typedef struct {
 
 
 //returns list of graph_nodes
-list *graph_find_way_in_depth(graph* l, graph_node *this_node, predicate* p, list *checked) {
-    if(checked == nullptr) {
-        checked = new_list();
+list *graph_find_way_in_depth(graph* l, graph_node *this_node, predicate* p, list *checked);
 
-    }
-    list_add(checked,this_node);
+graph_node * new_graph_node(void *element);
 
-    if(is(p,this_node->element)) {
-        return checked;
-    }
+graph* new_graph(void *element);
 
-    for_each(this_node->near, graph_node, {
-        list *list1 = graph_find_way_in_depth(l,temp,p,checked);
-        if(list1!=0) {
-            return checked;
-        }
-    })
-
-    list_remove_last(checked);
-
-    return nullptr;
-}
-graph_node * new_graph_node(void *element) {
-    graph_node *g = New(graph_node);
-    return g;
-
-}
-
-graph* new_graph(void *element) {
-    graph *g = New(graph);
-    g->this_node = new_graph_node(element);
-    list_add((&(g->nodes)),g->this_node);
-    return g;
-}
-
-void graph_add_graph(graph* thiz, graph* other, char (*equals)(void*,void*)) {
-    //todo
-}
-
-
+void graph_add_graph(graph* thiz, graph* other, char (*equals)(void*,void*));
 
 #endif //MESH_NET_GRAPH_H

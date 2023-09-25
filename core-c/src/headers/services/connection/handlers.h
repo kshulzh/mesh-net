@@ -13,24 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-#ifndef MESH_NET_CONNECTION_BUFFERED_H
-#define MESH_NET_CONNECTION_BUFFERED_H
 
-#include "connection.h"
-#include "containers/list.h"
-#include "io/buffer.h"
+#include "services/message.h"
+#include "services/handler.h"
 
-typedef struct {
-    connection *c;
-    list buffers;
-    void (*on_read_handler) (void *thiz, buffer *);
-} connection_buffer;
+#ifndef MESH_NET_CONNECTION_HANDLER_H
+#define MESH_NET_CONNECTION_HANDLER_H
+message_handler* connection_message_handlers();
 
-void connection_buffer_read(connection_buffer*thiz) ;
+void connection_handle_ask_req(message*m);
 
-void default_on_read_handler(void *thiz, buffer *b) ;
+void connection_handle_ask_res(message*m);
 
-connection_buffer * new_connection_buffer(connection *c);
+void connection_handle(message*m);
 
-#endif //MESH_NET_CONNECTION_BUFFERED_H
+void connection_setup();
+#endif //MESH_NET_CONNECTION_HANDLER_H

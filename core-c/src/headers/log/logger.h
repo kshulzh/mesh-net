@@ -34,18 +34,7 @@
 #define LOG_LEVEL LOG_LEVEL_INFO
 #endif
 
-void print_meta(char * level) {
-    time_t rawtime;
-    struct tm * timeinfo;
-
-    time ( &rawtime );
-    timeinfo = localtime ( &rawtime );
-    char *c = asctime(timeinfo);
-    int i;
-    for (i=0;c[i]!='\n'; i++);
-    c[i] = '\0';
-    printf("[%s][%s]", c, level);
-}
+void print_meta(char * level);
 #define LOG(level,message,args...) \
 print_meta(level);                 \
 printf("[%s:%d] ", __FILENAME__, __LINE__); \

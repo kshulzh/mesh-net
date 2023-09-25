@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-//
-// Created by kirill on 18.09.23.
-//
 #include <gtest/gtest.h>
 extern "C" {
 #include "io/readers/readers.h"
@@ -41,6 +38,7 @@ TEST(mock_radar, test1) {
     mock_radar_add_to_queue(m,&(mock_connection1->c));
     mock_radar_add_to_queue(m,&(mock_connection2->c));
     mock_radar_add_to_queue(m,&(mock_connection3->c));
+    m->r.start(m);
 
     mock_radar_find(m);
     ASSERT_EQ(1, count);

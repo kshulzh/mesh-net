@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_ROUTE_MESSAGE_H
-#define MESH_NET_ROUTE_MESSAGE_H
+#include "services/message.h"
+#include "utils/new.h"
 
-#include "message.h"
-
-enum route_type {
-    TYPE1
-};
-
-typedef struct {
-    message message;
-    enum route_type type;
-} route_message;
-#endif //MESH_NET_ROUTE_MESSAGE_H
+message* message_of_buffer(buffer* b) {
+    message *m = New(message);
+    m->bytes = b->start;
+    m->bm.size = b->end - b->start;
+    return m;
+}

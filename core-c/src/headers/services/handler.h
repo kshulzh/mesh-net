@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGE_H
-#define MESH_NET_MESSAGE_H
+#ifndef MESH_NET_HANDLER_H
+#define MESH_NET_HANDLER_H
 
-#include "io/connection/connection.h"
-#include "io/buffer.h"
+#include "message.h"
+#include "services/connection/messages.h"
 
-enum message_type {
-    CONNECTION,
-    SPREAD,
-    ROUTE
-};
+typedef void (*message_handler) (message *);
 
-typedef struct {
-    short size;
-    enum message_type type;
-    char *bytes;
-    connection *c;
-} message;
+message_handler* message_handlers();
 
-message* message_of_buffer(buffer* b) ;
+void handle_message(message*m);
 
-#endif //MESH_NET_MESSAGE_H
+#endif //MESH_NET_HANDLER_H

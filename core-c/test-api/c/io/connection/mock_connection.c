@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-//
-// Created by kirill on 18.09.23.
-//
-
-
-#include "containers/list.h"
-#include "io/connection/connection.h"
 #include "io/buffer.h"
 #include "utils/new.h"
 #include "io/readers/readers.h"
@@ -61,6 +54,7 @@ int mock_connection_read_array(void *thiz, char* array, int size, int offset) {
     }
     int s = min(size,mc->b->temp-mc->b->start);
     mem_copy(array, mc->b->start, s);
+    buffer_reset(mc->b);
     return s;
 }
 
@@ -80,6 +74,7 @@ void mock_connection_write_array(void *thiz, char* data, int size) {
         return;
     }
     mock_connection* mc_other = (mock_connection *) mc->paired;
+    buffer_reset(mc_other->b);
     write_to_buffer(mc_other->b,data,size);
     mc_other->is_ready = 1;
 }

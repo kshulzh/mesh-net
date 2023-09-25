@@ -13,24 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-#ifndef MESH_NET_CONNECTION_BUFFERED_H
-#define MESH_NET_CONNECTION_BUFFERED_H
 
-#include "connection.h"
-#include "containers/list.h"
-#include "io/buffer.h"
+#include "log/logger.h"
+void print_meta(char * level) {
+    time_t rawtime;
+    struct tm * timeinfo;
 
-typedef struct {
-    connection *c;
-    list buffers;
-    void (*on_read_handler) (void *thiz, buffer *);
-} connection_buffer;
-
-void connection_buffer_read(connection_buffer*thiz) ;
-
-void default_on_read_handler(void *thiz, buffer *b) ;
-
-connection_buffer * new_connection_buffer(connection *c);
-
-#endif //MESH_NET_CONNECTION_BUFFERED_H
+    time ( &rawtime );
+    timeinfo = localtime ( &rawtime );
+    char *c = asctime(timeinfo);
+    int i;
+    for (i=0;c[i]!='\n'; i++);
+    c[i] = '\0';
+    printf("[%s][%s]", c, level);
+}

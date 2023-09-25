@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-//
-// Created by kirill on 20.09.23.
-//
-
 #include "io/connection/connection_buffered.h"
 #include "model/instance.h"
 instance *new_instance(device*d) {

@@ -34,6 +34,9 @@ char mock_radar_is_started(void *thiz) {
     return ((mock_radar*) thiz)->is_running;
 }
 
+void mock_radar_scan(void *thiz) {
+    mock_radar_find(thiz);
+}
 
 void mock_radar_set_properties(void *thiz, void *) {
 
@@ -54,6 +57,7 @@ radar* new_mock_radar() {
     r->r.start = mock_radar_start;
     r->r.stop = mock_radar_stop;
     r->r.is_running = mock_radar_is_started;
+    r->r.scan = mock_radar_scan;
     r->r.get_properties = mock_radar_get_properties;
     r->r.set_properties = mock_radar_set_properties;
     r->r.on_find_device_handler = mock_on_find_device_handler;

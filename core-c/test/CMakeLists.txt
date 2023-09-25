@@ -15,7 +15,8 @@ add_executable(
         io/writers/writers.cpp
         io/connection/mock_radar.cpp
         io/connection/mock_connection.cpp
-        model/instance.cpp)
+        model/instance.cpp
+        services/connection/tests.cpp)
 
 target_link_libraries(unit_tests
   PRIVATE
