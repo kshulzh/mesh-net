@@ -16,14 +16,16 @@
 
 #include "io/connection/connection_buffered.h"
 #include "model/instance.h"
-instance *new_instance(device*d) {
-    instance* i = New(instance);
+
+instance *new_instance(device *d) {
+    instance *i = New(instance);
     i->this_device = *d;
     return i;
 }
-void instance_run(instance * inst) {
+
+void instance_run(instance *inst) {
     for_each((&(inst->radars)), radar, {
-        if(temp->is_running(temp)) {
+        if (temp->is_running(temp)) {
             temp->scan(temp);
         }
     });
@@ -31,4 +33,9 @@ void instance_run(instance * inst) {
     for_each((&(inst->buffered_connections)), connection_buffer, {
         connection_buffer_read(temp);
     });
+}
+
+void instance_add_radar(instance *inst, void *r) {
+    list_add(&inst->radars, r);
+    ((radar *) r)->inst = inst;
 }

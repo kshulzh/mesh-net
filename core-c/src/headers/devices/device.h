@@ -18,14 +18,26 @@
 #define MESH_NET_DEVICE_H
 
 #include "utils/new.h"
+#include "utils/predicate.h"
+#include "io/buffer.h"
 
 typedef struct {
     unsigned long id;
     unsigned long user_id;
 } device;
 
-device* new_device(
+device *new_device(
         unsigned long id,
         unsigned long user_id);
+
+char predicate_device_equals(void *thiz, void *params);
+
+predicate *device_equals(void *thiz);
+
+void encode_device(buffer *b, void *device);
+
+void *decode_device(buffer *b);
+
+void free_device(void *);
 
 #endif //MESH_NET_DEVICE_H

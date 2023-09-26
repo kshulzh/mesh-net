@@ -15,6 +15,15 @@
  */
 
 #include "services/utils.h"
+
 void buffer_message_set_size(buffer *b) {
-    *((short *)b->start) = b->temp-b->start;
+    *((short *) b->start) = b->temp - b->start;
+}
+
+void free_uint32(void *v) {
+    free((unsigned int *) v);
+}
+
+void *decode_uint32(buffer *b) {
+    return (unsigned int *) read_from_buffer(b, sizeof(unsigned int));
 }

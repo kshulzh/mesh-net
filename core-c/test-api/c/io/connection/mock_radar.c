@@ -20,6 +20,7 @@
 
 #include "devices/device.h"
 #include "io/connection/mock_radar.h"
+#include "io/connection/mock_connection.h"
 
 void mock_radar_start(void *thiz) {
     ((mock_radar*) thiz)->is_running = 1;
@@ -70,7 +71,9 @@ radar* new_mock_radar() {
 void mock_radar_find(void *thiz) {
     mock_radar * thiz_ = (mock_radar*) thiz;
     if(thiz_->is_running && thiz_->queue.size) {
-        thiz_->on_find_device_handler(thiz,(void *)list_remove_first(&(thiz_->queue)));
+        mock_connection* mc = list_remove_first(&(thiz_->queue));
+        mc->c.r = &(thiz_->r);
+        thiz_->on_find_device_handler(thiz,mc);
     }
 }
 

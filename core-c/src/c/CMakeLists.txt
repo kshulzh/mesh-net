@@ -1,14 +1,19 @@
 target_sources(${TARGET_NAME}
         PRIVATE
+        io/buffer.c
+        io/connection/connection_buffered.c
         io/readers/readers.c
         io/writers/writers.c
-        io/buffer.c
-        services/handler.c
         utils/predicate.c
+        services/connection/functions.c
+        services/connection/handlers.c
+        services/connection/messages.c
+        services/utils.c
         services/message.c
+        services/handler.c
         model/instance.c
-        io/connection/connection_buffered.c
+        model/graph.c
         containers/list.c
         devices/device.c
-
+        log/logger.c
         )

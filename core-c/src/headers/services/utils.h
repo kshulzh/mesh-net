@@ -17,8 +17,13 @@
 #ifndef MESH_NET_UTILS_H
 #define MESH_NET_UTILS_H
 
+#include <stdlib.h>
 #include "io/buffer.h"
 
 void buffer_message_set_size(buffer *b);
+
+void free_uint32(void *v);
+
+void *decode_uint32(buffer *b);
 
 #endif //MESH_NET_UTILS_H

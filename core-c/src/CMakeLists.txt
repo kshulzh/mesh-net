@@ -1,10 +1,4 @@
 add_library(${TARGET_NAME}
-        c/services/utils.c
-        c/services/connection/functions.c
-        c/services/connection/handlers.c
-        c/services/connection/messages.c
-        c/log/logger.c
-        c/model/graph.c
 )
 
 SET_TARGET_PROPERTIES( ${TARGET_NAME}

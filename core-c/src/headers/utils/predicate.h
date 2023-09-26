@@ -18,17 +18,14 @@
 #define MESH_NET_PREDICATE_H
 
 typedef struct {
-    char (*predicate)(void *thiz,void *params);
+    char (*predicate)(void *thiz, void *params);
+
     void *params;
 } predicate;
 
 predicate *new_predicate(char (*p)(void *thiz, void *params), void *params);
 
-char is(predicate *p, void *thiz) ;
-
-char predicate_equals(void *thiz, void *other);
-
-char predicate_true(void *thiz, void *params);
+char is(predicate * p, void * thiz);
 
 predicate *equals(void *thiz);
 

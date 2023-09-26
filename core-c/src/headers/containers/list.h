@@ -18,6 +18,7 @@
 #define MESH_NET_LIST_H
 
 #include "utils/predicate.h"
+#include "io/buffer.h"
 
 typedef struct {
     void *next;
@@ -29,7 +30,7 @@ typedef struct {
     unsigned int size;
 } list;
 
-#define for_each(l,type,body) \
+#define for_each(l, type, body) \
                               \
     {               \
 list_node* temp_node = l->first;       \
@@ -39,23 +40,42 @@ while(temp_node) {                     \
     body                        \
     temp_node = (list_node*) temp_node->next; \
 }                             \
-}                            \
-                              \
+}
 
-void list_print(list*l) ;
+#define for_each1(l, type, body) \
+                              \
+    {               \
+list_node* temp_node1 = l->first;       \
+type * temp1;\
+while(temp_node1) {                     \
+    temp1 = (type *) temp_node1->element;\
+    body                        \
+    temp_node1 = (list_node*) temp_node1->next; \
+}                             \
+}
+
+void list_print(list *l);
 
 list_node *new_list_node(void *element);
 
-void list_add(list* l, void *element);
+void list_add(list *l, void *element);
 
-void* list_remove(list* l, int index);
-void *list_remove_first(list* l);
+void *list_remove(list *l, int index);
 
-void *list_remove_last(list* l);
-list* new_list();
+void *list_remove_first(list *l);
 
-void *list_find_first(list* l, predicate* p);
+void *list_remove_last(list *l);
 
-void delete_list(list* l);
+list *new_list();
+
+void *list_find_first(list *l, predicate *p);
+
+void delete_list(list *l, void (*free)(void *), char save_list);
+
+void list_remove_if(list *l, predicate *p, void (*efree)(void *));
+
+void encode_list(buffer *b, list *l, void (*encoder)(buffer *b, void *));
+
+list *decode_list(buffer *b, void *(*decoder)(buffer *b));
 
 #endif //MESH_NET_LIST_H

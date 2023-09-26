@@ -16,7 +16,8 @@
 
 #include "utils/predicate.h"
 #include "utils/malloc.h"
-predicate * TRUE = 0;
+
+predicate *TRUE = 0;
 
 predicate *new_predicate(char (*p)(void *thiz, void *params),
                          void *params) {
@@ -34,12 +35,12 @@ char predicate_equals(void *thiz, void *other) {
     return thiz == other;
 }
 
-char predicate_true(void *thiz, void *params) {
-    return 1;
-}
-
 predicate *equals(void *thiz) {
     return new_predicate(predicate_equals, thiz);
+}
+
+char predicate_true(void *thiz, void *params) {
+    return 1;
 }
 
 predicate *_true() {
