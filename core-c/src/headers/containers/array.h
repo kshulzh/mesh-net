@@ -27,6 +27,7 @@ typedef struct { \
 typedef struct { \
    unsigned int size; \
    TYPE *elements;\
-} NAME;\
+} NAME;                   \
 
+ARRAY(char)
 #endif //MESH_NET_ARRAY_H

@@ -15,6 +15,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "containers/list.h"
 
 void list_print(list *l) {
@@ -83,9 +84,7 @@ void *list_remove_last(list *l) {
 
 list *new_list() {
     list *temp = (list *) malloc(sizeof(list));
-    temp->last = 0;
-    temp->first = 0;
-    temp->size = 0;
+    list_reset(temp);
     return temp;
 }
 
@@ -95,6 +94,20 @@ void *list_find_first(list *l, predicate *p) {
         if (is(p, temp->element)) {
             return temp->element;
         }
+        temp = (list_node *) temp->next;
+    }
+
+    return 0;
+}
+
+void *list_get_by_id(list *l, int index) {
+    list_node *temp = l->first;
+    int i = 0;
+    while (temp != 0) {
+        if (i == index) {
+            return temp->element;
+        }
+        i++;
         temp = (list_node *) temp->next;
     }
 
@@ -154,4 +167,20 @@ void list_remove_if(list* l, predicate *p,void (*efree)(void *)) {
     l->last = l1->last;
     l->size = l1->size;
     free(l1);
+}
+//char predicate_list_id(void *thiz,void* index) {
+//    index--;
+//    printf("ddd:%d\n", index);
+//    return index == 0;
+//
+//}
+//
+//predicate *list_id(unsigned int id) {
+//    return new_predicate(predicate_list_id,(void*)(id+1));
+//}
+
+void list_reset(list*l) {
+    l->first = 0;
+    l->size = 0;
+    l->last =0;
 }

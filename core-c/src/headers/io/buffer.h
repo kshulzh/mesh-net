@@ -19,8 +19,8 @@
 
 #include "containers/array.h"
 #include "utils/predicate.h"
+#include "utils/malloc.h"
 
-ARRAY(char)
 ARRAY(short)
 ARRAY(int)
 ARRAY(long)
@@ -38,6 +38,15 @@ typedef struct {
 char name##_array[size]; \
 buffer *name = new_buffer(name##_array, size); \
 
+#define clone_declaration(type) void * type##_clone(void *src);
+
+#define clone(type) void * type##_clone(void *src) { \
+   void *dest = mem_alloc(sizeof(type));    \
+   mem_copy(dest,src, sizeof(type));                 \
+   return dest;                                                      \
+}                                           \
+
+void *empty_clone(void *);
 void buffer_init(buffer *buf, uint32_t size, char *arr);
 
 char * write_to_buffer(buffer *buf, void *data, uint32_t size);

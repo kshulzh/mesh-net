@@ -27,3 +27,19 @@ void free_uint32(void *v) {
 void *decode_uint32(buffer *b) {
     return (unsigned int *) read_from_buffer(b, sizeof(unsigned int));
 }
+
+void encode_uint32(buffer *b, unsigned int i) {
+    write_to_buffer(b,&i, sizeof(unsigned int));
+}
+
+void encode_link(buffer *b, void *l) {
+    write_to_buffer(b,&l, sizeof(void *));
+}
+
+void* decode_link(buffer *b) {
+    return read_from_buffer(b, sizeof(void *));
+}
+
+void *decode_uint64(buffer *b) {
+    return (unsigned long *) read_from_buffer(b, sizeof(unsigned long ));
+}

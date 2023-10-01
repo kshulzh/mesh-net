@@ -16,12 +16,14 @@
 
 #include "io/connection/connection_buffered.h"
 #include "services/message.h"
-#include "services/handler.h"
+#include "services/handlers.h"
+#include "log/logger.h"
 
 
 void connection_buffer_read(connection_buffer*thiz) {
     buffer * b= list_find_first(&(thiz->buffers),buffer_is_free());
     if(b == 0) {
+        LOG_WARN("No free buffers")
         return;
     }
     b->is_locked = 1;

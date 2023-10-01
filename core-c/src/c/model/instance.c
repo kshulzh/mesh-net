@@ -20,6 +20,19 @@
 instance *new_instance(device *d) {
     instance *i = New(instance);
     i->this_device = *d;
+    i->g = new_graph(d);
+
+    list_reset(&i->radars);
+    list_reset(&i->devices);
+    list_reset(&i->buffers);
+    list_reset(&i->connections);
+    list_reset(&i->buffered_connections);
+    list_add(&i->devices,d);
+    i->g->equals = predicate_device_equals;
+    i->g->encode = encode_device;
+    i->g->e_free = free_device;
+
+
     return i;
 }
 

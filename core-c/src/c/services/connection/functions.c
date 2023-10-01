@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
 #include "services/connection/functions.h"
 #include "services/connection/messages.h"
+#include "services/utils.h"
 
 static void connection_init_message(connection_message *cm,connection_req type) {
     cm->type = type;
@@ -45,7 +47,10 @@ void connection_getid(connection *c) {
 }
 
 void connection_get_struct(connection *c) {
-
+    connection_ask_req_message req;
+    connection_init_message((&(req.cm)), REQ_GET_STRUCT);
+    req.cm.bm.size = sizeof(req);
+    c->write_array(c,(char*) (&req), sizeof(connection_ask_req_message));
 }
 
 void connection_update_struct(connection *c, graph *g) {
@@ -77,7 +82,17 @@ void connection_getid_res(message *m, long id, codes code) {
 }
 
 void connection_get_struct_res(message *m, graph *g, codes code) {
-
+    connection_get_struct_res_message res;
+    connection_init_message((&(res.cm)), RES_GET_STRUCT);
+    res.g = g;
+    res.code = code;
+    buffer* b = list_find_first(&(((instance *) m->c->r->inst)->buffers),buffer_is_free());
+    b->is_locked = 1;
+    encode_connection_get_struct_res_message(b,&res);
+    buffer_message_set_size(b);
+    m->c->write_array(m->c,b->start,(b->temp)-(b->start));
+    buffer_reset(b);
+    b->is_locked = 0;
 }
 
 void connection_update_struct_res(message *m, codes code){

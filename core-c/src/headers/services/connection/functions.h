@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_FUNCTIONS_H
-#define MESH_NET_FUNCTIONS_H
+#ifndef MESH_NET_CONNECTION_FUNCTIONS_H
+#define MESH_NET_CONNECTION_FUNCTIONS_H
 
 #include "io/connection/connection.h"
 #include "model/graph.h"
@@ -50,4 +50,4 @@ void connection_get_struct_res(message *m, graph *g, codes code);
 
 void connection_update_struct_res(message *m, codes code);
 
-#endif //MESH_NET_FUNCTIONS_H
+#endif //MESH_NET_CONNECTION_FUNCTIONS_H

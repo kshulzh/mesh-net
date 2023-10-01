@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
 #include "io/buffer.h"
 #include "utils/new.h"
 #include "io/readers/readers.h"
 #include "utils/math.h"
 #include "../../../headers/io/connection/mock_connection.h"
 #include "../../../../src/headers/io/readers/readers.h"
+#include "log/logger.h"
 
 
 void mock_connection_open(void *thiz) {
@@ -43,7 +45,7 @@ int mock_connection_read(void *thiz) {
     if (mc->is_opened == 0) {
         return -1;
     }
-    return *read_char(mc->b);
+    return *read_char(list_find_first(mc->buffers,buffer_is_locked()));
 
 }
 
@@ -52,9 +54,16 @@ int mock_connection_read_array(void *thiz, char* array, int size, int offset) {
     if (mc->is_opened == 0) {
         return -1;
     }
-    int s = min(size,mc->b->temp-mc->b->start);
-    mem_copy(array, mc->b->start, s);
-    buffer_reset(mc->b);
+    buffer *b = list_find_first(mc->buffers,buffer_is_locked());
+    if(b == 0) {
+        LOG_TRACE("No free buffers for read")
+        return -1;
+    }
+    int s = min(size,(b->temp)-(b->start));
+    printf("%d\n", (b->temp)-(b->start));
+    mem_copy(array, b->start, s);
+    buffer_reset(b);
+    b->is_locked = 0;
     return s;
 }
 
@@ -64,7 +73,7 @@ void mock_connection_write(void *thiz, int b) {
         return;
     }
     mock_connection* mc_other = (mock_connection *) mc->paired;
-    write_to_buffer(mc_other->b,&b,1);
+    write_to_buffer(list_find_first(mc_other->buffers,buffer_is_free()),&b,1);
     mc_other->is_ready = 1;
 }
 
@@ -74,8 +83,12 @@ void mock_connection_write_array(void *thiz, char* data, int size) {
         return;
     }
     mock_connection* mc_other = (mock_connection *) mc->paired;
-    buffer_reset(mc_other->b);
-    write_to_buffer(mc_other->b,data,size);
+    buffer *b = list_find_first(mc_other->buffers,buffer_is_free());
+
+    b->is_locked = 1;
+    buffer_reset(b);
+    write_to_buffer(b,data,size);
+    printf("%d\n", size);
     mc_other->is_ready = 1;
 }
 
@@ -87,9 +100,8 @@ void *mock_connection_get_properties(void *thiz) {
 void mock_connection_set_properties(void *thiz, void *) {
 
 }
-mock_connection* new_mock_connection(buffer *b) {
+mock_connection* new_mock_connection(list *buffers) {
     mock_connection* mc = New(mock_connection);
-    mc->b = b;
 
     mc->c.open = mock_connection_open;
     mc->c.close = mock_connection_close;
@@ -103,6 +115,8 @@ mock_connection* new_mock_connection(buffer *b) {
 
     mc->c.write = mock_connection_write;
     mc->c.write_array = mock_connection_write_array;
+
+    mc->buffers = buffers;
 
     return mc;
 }

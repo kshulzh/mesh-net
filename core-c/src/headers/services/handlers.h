@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_HANDLER_H
-#define MESH_NET_HANDLER_H
+#ifndef MESH_NET_HANDLERS_H
+#define MESH_NET_HANDLERS_H
 
 #include "message.h"
 #include "services/connection/messages.h"
@@ -26,4 +26,4 @@ message_handler* message_handlers();
 
 void handle_message(message*m);
 
-#endif //MESH_NET_HANDLER_H
+#endif //MESH_NET_HANDLERS_H

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#include "services/handler.h"
+#include <stdio.h>
+#include "services/handlers.h"
 
 message_handler* message_handlers() {
     static message_handler message_handlers1[256];

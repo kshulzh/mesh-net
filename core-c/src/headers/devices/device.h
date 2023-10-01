@@ -36,8 +36,12 @@ predicate *device_equals(void *thiz);
 
 void encode_device(buffer *b, void *device);
 
+void encode_device_id(buffer *b, void *device);
+
 void *decode_device(buffer *b);
 
 void free_device(void *);
+
+clone_declaration(device)
 
 #endif //MESH_NET_DEVICE_H

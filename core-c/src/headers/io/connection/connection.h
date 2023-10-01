@@ -20,6 +20,7 @@
 #include "radar.h"
 
 typedef struct {
+    device d;
     radar* r;
     void (*open)(void *thiz);
 
@@ -39,4 +40,6 @@ typedef struct {
 
     void (*set_properties)(void *thiz, void *);
 } connection;
+
+predicate * connection_device_by_id(unsigned long id);
 #endif //MESH_NET_CONNECTION_H

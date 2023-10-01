@@ -20,13 +20,16 @@
 #include "containers/list.h"
 #include "devices/device.h"
 #include "io/connection/radar.h"
+#include "graph.h"
 
 typedef struct {
     list radars;
     list devices;
     list buffers;
+    list connections;
     list buffered_connections;
     device this_device;
+    graph *g;
 } instance;
 
 instance *new_instance(device *d);

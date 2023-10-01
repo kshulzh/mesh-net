@@ -70,11 +70,17 @@ list *new_list();
 
 void *list_find_first(list *l, predicate *p);
 
+void *list_get_by_id(list *l, int index);
+
 void delete_list(list *l, void (*free)(void *), char save_list);
 
 void list_remove_if(list *l, predicate *p, void (*efree)(void *));
 
 void encode_list(buffer *b, list *l, void (*encoder)(buffer *b, void *));
+
+//predicate *list_id(unsigned int id);
+
+void list_reset(list*l);
 
 list *decode_list(buffer *b, void *(*decoder)(buffer *b));
 

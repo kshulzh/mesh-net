@@ -34,5 +34,6 @@ READ_BOTH_TEMPLATES(short)
 READ_BOTH_TEMPLATES(int)
 READ_BOTH_TEMPLATES(long)
 
+void* decode_char_array(buffer *b);
 
 #endif //MESH_NET_READERS_H

@@ -39,6 +39,10 @@ void encode_device(buffer *b, void *d) {
     write_to_buffer(b, d, sizeof(device));
 }
 
+void encode_device_id(buffer *b, void *d) {
+    write_to_buffer(b, d, sizeof(unsigned long));
+}
+
 void *decode_device(buffer *b) {
     return read_from_buffer(b, sizeof(device));
 }
@@ -46,3 +50,5 @@ void *decode_device(buffer *b) {
 void free_device(void *d) {
     free((device*) d);
 }
+
+clone(device)

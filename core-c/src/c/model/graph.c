@@ -69,7 +69,9 @@ graph *new_graph(void *element) {
 }
 
 void graph_add_graph(graph *thiz, graph_node *gn1, graph *other) {
-    graph_link_nodes(thiz, gn1, &(other->this_node));
+    if(gn1 == 0) {
+        gn1 = &(thiz->this_node);
+    }
     for_each((&(other->nodes)), graph_node, {
         graph_node *gn2 = graph_find_node_by_value(thiz, temp->element);
         if (gn2 == 0) {
@@ -79,6 +81,7 @@ void graph_add_graph(graph *thiz, graph_node *gn1, graph *other) {
             //todo
         }
     });
+    graph_link_nodes(thiz, gn1, &(other->this_node));
 }
 
 void graph_link_nodes(graph *thiz, graph_node *gn1, graph_node *gn2) {
@@ -119,13 +122,16 @@ void encode_graph(buffer *b, graph *gr) {
     })
 }
 
-graph *decode_graph(buffer *b, void *(*decode)(buffer *b)) {
+graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void *)) {
     unsigned int size = *((int *) read_from_buffer(b, sizeof(unsigned int)));
     void **decoded = mem_alloc(sizeof(void *) * size);
-    graph *g = new_graph(decode(b));
+    if(clone1 == 0) {
+        clone1 = empty_clone;
+    }
+    graph *g = new_graph(clone1(decode(b)));
     decoded[0] = &g->this_node;
     for (int i = 1; i < size; ++i) {
-        graph_node *t = new_graph_node(decode(b));
+        graph_node *t = new_graph_node(clone1(decode(b)));
         t->g = g;
         decoded[i] = t;
         list_add(&g->nodes, decoded[i]);

@@ -36,7 +36,7 @@ TEST(graph, test1) {
     g1->encode = encode_device;
     encode_graph(t1,g1);
     buffer_reset(t1);
-    graph *g6 = decode_graph(t1,decode_device);
+    graph *g6 = decode_graph(t1,decode_device,0);
 
     ASSERT_EQ(graph_find_way_in_depth(g6,(&(g6->this_node)), device_equals(d5),0)->size,4);
     g6->equals = predicate_device_equals;

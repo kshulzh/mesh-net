@@ -15,9 +15,11 @@
  */
 
 #include <gtest/gtest.h>
+
 extern "C" {
 #include "io/buffer.h"
 #include "io/connection/mock_connection.h"
+#include "io/buffer_utils.h"
 }
 
 TEST(mock_connection, test1) {
@@ -27,8 +29,8 @@ TEST(mock_connection, test1) {
     buffer buf2;
     buffer_init(&buf1, 100, b1);
     buffer_init(&buf2, 100, b2);
-    mock_connection* mc1 = new_mock_connection(&buf1);
-    mock_connection* mc2 = new_mock_connection(&buf1);
+    mock_connection* mc1 = new_mock_connection(create_buffers(2,1000));
+    mock_connection* mc2 = new_mock_connection(create_buffers(2,1000));
     mock_connection_link(mc1,mc2);
     mc1->c.open(mc1);
     mc2->c.open(mc2);

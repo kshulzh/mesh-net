@@ -25,7 +25,7 @@
 #include "io/buffer.h"
 typedef struct {
     connection c;
-    buffer *b;
+    list *buffers;
     void * paired;
     char is_opened;
     char is_ready;
@@ -47,7 +47,7 @@ void mock_connection_write_array(void *thiz, char* data, int size);
 void *mock_connection_get_properties(void *thiz);
 
 void mock_connection_set_properties(void *thiz, void *);
-mock_connection* new_mock_connection(buffer *b) ;
+mock_connection* new_mock_connection(list *buffers) ;
 
 mock_connection* new_mock_connection1(int size) ;
 

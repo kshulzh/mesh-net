@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MESSAGES_H
-#define MESH_NET_MESSAGES_H
+#ifndef MESH_NET_CONNECTION_MESSAGES_H
+#define MESH_NET_CONNECTION_MESSAGES_H
 
 #include "services/message.h"
 #include "model/graph.h"
@@ -175,5 +175,4 @@ connection_update_struct_req_message *decode_connection_update_struct_req_messag
 
 connection_update_struct_res_message *decode_connection_update_struct_res_message(buffer *b);
 
-
-#endif //MESH_NET_MESSAGES_H
+#endif //MESH_NET_CONNECTION_MESSAGES_H

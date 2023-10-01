@@ -1,4 +1,6 @@
-add_library(${TARGET_NAME_TEST})
+add_library(${TARGET_NAME_TEST}
+        headers/io/buffer_utils.h
+        c/io/buffer_utils.c)
 target_link_libraries(${TARGET_NAME_TEST}
         PRIVATE
         ${TARGET_NAME}

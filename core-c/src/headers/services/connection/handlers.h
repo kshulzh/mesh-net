@@ -15,7 +15,7 @@
  */
 
 #include "services/message.h"
-#include "services/handler.h"
+#include "services/handlers.h"
 
 #ifndef MESH_NET_CONNECTION_HANDLER_H
 #define MESH_NET_CONNECTION_HANDLER_H
@@ -24,6 +24,10 @@ message_handler* connection_message_handlers();
 void connection_handle_ask_req(message*m);
 
 void connection_handle_ask_res(message*m);
+
+void connection_handle_get_struct_req(message*m);
+
+void connection_handle_get_struct_res(message*m);
 
 void connection_handle(message*m);
 

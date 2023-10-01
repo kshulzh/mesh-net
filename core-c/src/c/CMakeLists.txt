@@ -2,12 +2,16 @@ target_sources(${TARGET_NAME}
         PRIVATE
         io/buffer.c
         io/connection/connection_buffered.c
+        io/connection/connection.c
         io/readers/readers.c
         io/writers/writers.c
         utils/predicate.c
         services/connection/functions.c
         services/connection/handlers.c
         services/connection/messages.c
+        services/route/handlers.c
+        services/route/functions.c
+        services/route/messages.c
         services/utils.c
         services/message.c
         services/handler.c

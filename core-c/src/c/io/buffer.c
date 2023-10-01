@@ -87,3 +87,7 @@ predicate * buffer_is_free() {
     }
     return BUFFER_IS_FREE;
 }
+
+void *empty_clone(void *obj) {
+    return obj;
+}
