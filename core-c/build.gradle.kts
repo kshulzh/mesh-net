@@ -11,5 +11,5 @@ library {
         from("src/headers")
     }
     // Set the target operating system and architecture for this library
-    //targetMachines.add(machines.windows.x86_64)
+    targetMachines.add(machines.windows.x86_64)
 }
