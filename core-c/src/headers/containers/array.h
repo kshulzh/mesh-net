@@ -23,7 +23,7 @@ typedef struct { \
    TYPE *elements;\
 } array_##TYPE;\
 
-#define ARRAY_(TYPE,NAME) \
+#define ARRAY_(TYPE, NAME) \
 typedef struct { \
    unsigned int size; \
    TYPE *elements;\

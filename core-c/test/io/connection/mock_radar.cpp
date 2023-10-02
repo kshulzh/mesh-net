@@ -15,6 +15,7 @@
  */
 
 #include <gtest/gtest.h>
+
 extern "C" {
 #include "io/readers/readers.h"
 #include "io/buffer.h"
@@ -23,21 +24,21 @@ extern "C" {
 #include "io/connection/mock_connection.h"
 }
 
-static mock_connection* mock_connection1 = new_mock_connection(0);
-static mock_connection* mock_connection2 = new_mock_connection(0);
-static mock_connection* mock_connection3 = new_mock_connection(0);
+static mock_connection *mock_connection1 = new_mock_connection(0);
+static mock_connection *mock_connection2 = new_mock_connection(0);
+static mock_connection *mock_connection3 = new_mock_connection(0);
 static int count = 0;
 
-static void handler(void *thiz,void *connection) {
+static void handler(void *thiz, void *connection) {
     count++;
 }
 
 TEST(mock_radar, test1) {
-    mock_radar* m = (mock_radar*) new_mock_radar();
+    mock_radar *m = (mock_radar *) new_mock_radar();
     m->on_find_device_handler = handler;
-    mock_radar_add_to_queue(m,&(mock_connection1->c));
-    mock_radar_add_to_queue(m,&(mock_connection2->c));
-    mock_radar_add_to_queue(m,&(mock_connection3->c));
+    mock_radar_add_to_queue(m, &(mock_connection1->c));
+    mock_radar_add_to_queue(m, &(mock_connection2->c));
+    mock_radar_add_to_queue(m, &(mock_connection3->c));
     m->r.start(m);
 
     mock_radar_find(m);

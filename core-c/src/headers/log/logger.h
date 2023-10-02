@@ -16,6 +16,7 @@
 
 #ifndef MESH_NET_LOGGER_H
 #define MESH_NET_LOGGER_H
+
 #include<stdio.h>
 #include<time.h>
 #include <string.h>
@@ -34,8 +35,9 @@
 #define LOG_LEVEL LOG_LEVEL_INFO
 #endif
 
-void print_meta(char * level);
-#define LOG(level,message,args...) \
+void print_meta(char *level);
+
+#define LOG(level, message, args...) \
 print_meta(level);                 \
 printf("[%s:%d] ", __FILENAME__, __LINE__); \
 printf( message , args );          \

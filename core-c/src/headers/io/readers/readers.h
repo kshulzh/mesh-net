@@ -30,10 +30,13 @@ READ_TEMPLATE(TYPE)              \
 READ_ARRAY_TEMPLATE(TYPE)
 
 READ_BOTH_TEMPLATES(char)
+
 READ_BOTH_TEMPLATES(short)
+
 READ_BOTH_TEMPLATES(int)
+
 READ_BOTH_TEMPLATES(long)
 
-void* decode_char_array(buffer *b);
+void *decode_char_array(buffer *b);
 
 #endif //MESH_NET_READERS_H

@@ -25,4 +25,4 @@ typedef struct {
 
 } udp_connection_data;
 
-connection* new_udp_connection();
+connection *new_udp_connection();

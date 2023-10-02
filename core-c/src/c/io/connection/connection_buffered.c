@@ -20,33 +20,34 @@
 #include "log/logger.h"
 
 
-void connection_buffer_read(connection_buffer*thiz) {
-    buffer * b= list_find_first(&(thiz->buffers),buffer_is_free());
-    if(b == 0) {
+void connection_buffer_read(connection_buffer *thiz) {
+    buffer *b = list_find_first(&(thiz->buffers), buffer_is_free());
+    if (b == 0) {
         LOG_WARN("No free buffers")
         return;
     }
     b->is_locked = 1;
     buffer_reset(b);
     int count = thiz->c->read_array(thiz->c, b->start, b->size, 0);
-    if(count>0 ) {
+    if (count > 0) {
+        b->temp = b->start + count;
         thiz->on_read_handler(thiz, b);
     }
     b->is_locked = 0;
 }
 
 void default_on_read_handler(void *thiz, buffer *b) {
-    connection_buffer *thizz = (connection_buffer*) thiz;
+    connection_buffer *thizz = (connection_buffer *) thiz;
     message *m = message_of_buffer(b);
     m->c = thizz->c;
     handle_message(m);
     b->is_locked = 0;
 }
 
-connection_buffer * new_connection_buffer(connection *c) {
-    connection_buffer * cb = New(connection_buffer);
+connection_buffer *new_connection_buffer(connection *c) {
+    connection_buffer *cb = New(connection_buffer);
     cb->c = c;
     cb->on_read_handler = default_on_read_handler;
-    cb->buffers = ((instance*)c->r->inst)->buffers;
+    cb->buffers = ((instance *) c->r->inst)->buffers;
     return cb;
 }

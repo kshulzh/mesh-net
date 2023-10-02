@@ -80,7 +80,7 @@ void encode_list(buffer *b, list *l, void (*encoder)(buffer *b, void *));
 
 //predicate *list_id(unsigned int id);
 
-void list_reset(list*l);
+void list_reset(list *l);
 
 list *decode_list(buffer *b, void *(*decoder)(buffer *b));
 

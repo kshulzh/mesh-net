@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-//
-// Created by kirill on 18.09.23.
-//
 
 #include "devices/device.h"
 #include "io/connection/mock_radar.h"
@@ -54,7 +51,7 @@ void mock_on_find_device_handler(void *thiz, void (*on_find_device_handler)(void
 }
 
 radar* new_mock_radar() {
-    mock_radar* r = (mock_radar *)(malloc(sizeof(mock_radar)));
+    mock_radar* r = New(mock_radar);
     r->r.start = mock_radar_start;
     r->r.stop = mock_radar_stop;
     r->r.is_running = mock_radar_is_started;

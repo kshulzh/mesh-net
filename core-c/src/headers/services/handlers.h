@@ -20,10 +20,10 @@
 #include "message.h"
 #include "services/connection/messages.h"
 
-typedef void (*message_handler) (message *);
+typedef void (*message_handler)(message *);
 
-message_handler* message_handlers();
+message_handler *message_handlers();
 
-void handle_message(message*m);
+void handle_message(message *m);
 
 #endif //MESH_NET_HANDLERS_H

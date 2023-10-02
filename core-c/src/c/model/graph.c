@@ -35,7 +35,7 @@ list *graph_find_way_in_depth(graph *l, graph_node *this_node, predicate *p, lis
                 return checked;
             }
         }
-        free(eq);
+        mem_free(eq);
     })
 
     list_remove_last(checked);
@@ -69,7 +69,7 @@ graph *new_graph(void *element) {
 }
 
 void graph_add_graph(graph *thiz, graph_node *gn1, graph *other) {
-    if(gn1 == 0) {
+    if (gn1 == 0) {
         gn1 = &(thiz->this_node);
     }
     for_each((&(other->nodes)), graph_node, {
@@ -125,7 +125,7 @@ void encode_graph(buffer *b, graph *gr) {
 graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void *)) {
     unsigned int size = *((int *) read_from_buffer(b, sizeof(unsigned int)));
     void **decoded = mem_alloc(sizeof(void *) * size);
-    if(clone1 == 0) {
+    if (clone1 == 0) {
         clone1 = empty_clone;
     }
     graph *g = new_graph(clone1(decode(b)));
@@ -144,7 +144,7 @@ graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void 
         })
         delete_list(indexes, 0, 0);
     })
-    free(decoded);
+    mem_free(decoded);
 
     return g;
 }
@@ -163,7 +163,7 @@ void free_graph_node(void *gh) {
     if (((graph *) thiz->g)->e_free) {
         ((graph *) thiz->g)->e_free(thiz->element);
     }
-    free(thiz);
+    mem_free(thiz);
 }
 
 void graph_node_mark(graph_node *gn) {

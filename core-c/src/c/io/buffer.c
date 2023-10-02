@@ -26,7 +26,7 @@ void buffer_init(buffer *buf, uint32_t size, char *arr) {
 }
 
 extern
-char *mem_copy(char *dest,const char *src, uint32_t size) {
+char *mem_copy(char *dest, const char *src, uint32_t size) {
     for (int i = 0; i < size; ++i) {
         dest[i] = src[i];
     }
@@ -34,16 +34,17 @@ char *mem_copy(char *dest,const char *src, uint32_t size) {
 }
 
 extern
-char* write_to_buffer(buffer *buf, void *data, uint32_t size) {
-    if(size == 0) {
+char *write_to_buffer(buffer *buf, void *data, uint32_t size) {
+    if (size == 0) {
         return 0;
     }
     //todo case when buffer has noe enough capacity
 
-    char * result = mem_copy(buf->temp, data, size);
+    char *result = mem_copy(buf->temp, data, size);
     buf->temp += size;
     return result;
 }
+
 extern
 char *read_from_buffer(buffer *buf, uint32_t size) {
     char *result = buf->temp;
@@ -58,32 +59,33 @@ void buffer_reset(buffer *buf) {
 
 buffer *new_buffer(char *data, unsigned int size) {
     buffer *b = New(buffer);
-    buffer_init(b,size,data);
+    buffer_init(b, size, data);
     return b;
 }
 
-char buffer_predicate_is_locked(void* thiz,void *params) {
-    buffer *b = (buffer*) thiz;
+char buffer_predicate_is_locked(void *thiz, void *params) {
+    buffer *b = (buffer *) thiz;
     return b->is_locked;
 }
 
-predicate * BUFFER_IS_LOCKED;
-predicate * BUFFER_IS_FREE;
-predicate * buffer_is_locked() {
-    if(BUFFER_IS_LOCKED == 0) {
-        return BUFFER_IS_LOCKED = new_predicate(buffer_predicate_is_locked,0);
+predicate *BUFFER_IS_LOCKED;
+predicate *BUFFER_IS_FREE;
+
+predicate *buffer_is_locked() {
+    if (BUFFER_IS_LOCKED == 0) {
+        return BUFFER_IS_LOCKED = new_predicate(buffer_predicate_is_locked, 0);
     }
     return BUFFER_IS_LOCKED;
 }
 
-char buffer_predicate_is_free(void* thiz,void *params) {
-    buffer *b = (buffer*) thiz;
-    return 1-(b->is_locked);
+char buffer_predicate_is_free(void *thiz, void *params) {
+    buffer *b = (buffer *) thiz;
+    return 1 - (b->is_locked);
 }
 
-predicate * buffer_is_free() {
-    if(BUFFER_IS_FREE == 0) {
-        return BUFFER_IS_FREE = new_predicate(buffer_predicate_is_free,0);
+predicate *buffer_is_free() {
+    if (BUFFER_IS_FREE == 0) {
+        return BUFFER_IS_FREE = new_predicate(buffer_predicate_is_free, 0);
     }
     return BUFFER_IS_FREE;
 }

@@ -16,14 +16,16 @@
 
 #ifndef MESH_NET_MAP_H
 #define MESH_NET_MAP_H
+
 #include "array.h"
 #include "pair.h"
-#define MAP(KEY,VALUE) \
+
+#define MAP(KEY, VALUE) \
 PAIR(KEY,VALUE)\
 ARRAY(pair_##KEY##_##VALUE) \
 struct map_##KEY##_##VALUE {\
     array_pair_##KEY##_##VALUE elements; \
 };\
 typedef struct map_##KEY##_##VALUE map_##KEY##_##VALUE;
-MAP(int,int)
+MAP(int, int)
 #endif //MESH_NET_MAP_H

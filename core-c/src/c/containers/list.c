@@ -15,8 +15,8 @@
  */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include "containers/list.h"
+#include "utils/new.h"
 
 void list_print(list *l) {
     list_node *temp = l->first;
@@ -27,7 +27,7 @@ void list_print(list *l) {
 }
 
 list_node *new_list_node(void *element) {
-    list_node *temp = (list_node *) malloc(sizeof(list_node));
+    list_node *temp = New(list_node);
     temp->next = 0;
     temp->element = element;
     return temp;
@@ -69,7 +69,7 @@ void *list_remove(list *l, int index) {
         }
     }
     void *element = temp->element;
-    free(temp);
+    mem_free(temp);
     l->size--;
     return element;
 }
@@ -83,7 +83,7 @@ void *list_remove_last(list *l) {
 }
 
 list *new_list() {
-    list *temp = (list *) malloc(sizeof(list));
+    list *temp = New(list);
     list_reset(temp);
     return temp;
 }
@@ -114,24 +114,24 @@ void *list_get_by_id(list *l, int index) {
     return 0;
 }
 
-void delete_list(list *l,void (*efree)(void *),char save_list) {
+void delete_list(list *l, void (*efree)(void *), char save_list) {
     list_node *temp = l->first;
     list_node *next;
 
     if (temp != 0) {
         next = (list_node *) temp->next;
         while (next != 0) {
-            if(efree != 0) {
+            if (efree != 0) {
                 efree(temp->element);
             }
-            free(temp);
+            mem_free(temp);
             temp = next;
             next = (list_node *) temp->next;
         }
     }
 
-    if(save_list == 0) {
-        free(l);
+    if (save_list == 0) {
+        mem_free(l);
     }
 }
 
@@ -152,13 +152,13 @@ list *decode_list(buffer *b, void *(*decode)(buffer *b)) {
     return l;
 }
 
-void list_remove_if(list* l, predicate *p,void (*efree)(void *)) {
-    list* l1 = new_list();
-    for_each(l,void, {
-        if(is(p,temp) == 0) {
-            list_add(l1,temp);
+void list_remove_if(list *l, predicate *p, void (*efree)(void *)) {
+    list *l1 = new_list();
+    for_each(l, void, {
+        if (is(p, temp) == 0) {
+            list_add(l1, temp);
         } else {
-            if(efree) {
+            if (efree) {
                 efree(temp);
             }
         }
@@ -166,7 +166,7 @@ void list_remove_if(list* l, predicate *p,void (*efree)(void *)) {
     l->first = l1->first;
     l->last = l1->last;
     l->size = l1->size;
-    free(l1);
+    mem_free(l1);
 }
 //char predicate_list_id(void *thiz,void* index) {
 //    index--;
@@ -179,8 +179,8 @@ void list_remove_if(list* l, predicate *p,void (*efree)(void *)) {
 //    return new_predicate(predicate_list_id,(void*)(id+1));
 //}
 
-void list_reset(list*l) {
+void list_reset(list *l) {
     l->first = 0;
     l->size = 0;
-    l->last =0;
+    l->last = 0;
 }

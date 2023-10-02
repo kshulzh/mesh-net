@@ -17,11 +17,11 @@
 #include "services/connection/messages.h"
 
 void encode_connection_ask_req_message(buffer *b, connection_ask_req_message *cm) {
-    write_to_buffer(b,cm, sizeof(connection_ask_req_message));
+    write_to_buffer(b, cm, sizeof(connection_ask_req_message));
 }
 
 void encode_connection_ask_res_message(buffer *b, connection_ask_res_message *cm) {
-    write_to_buffer(b,cm, sizeof(connection_ask_res_message));
+    write_to_buffer(b, cm, sizeof(connection_ask_res_message));
 }
 
 
@@ -60,12 +60,12 @@ void encode_connection_getid_res_message(buffer *b, connection_getid_res_message
 
 
 void encode_connection_get_struct_req_message(buffer *b, connection_get_struct_req_message *cm) {
-    write_to_buffer(b,cm, sizeof(connection_get_struct_req_message));
+    write_to_buffer(b, cm, sizeof(connection_get_struct_req_message));
 }
 
 void encode_connection_get_struct_res_message(buffer *b, connection_get_struct_res_message *cm) {
-    write_to_buffer(b,cm, sizeof(connection_get_struct_res_message));
-    encode_graph(b,cm->g);
+    write_to_buffer(b, cm, sizeof(connection_get_struct_res_message));
+    encode_graph(b, cm->g);
 }
 
 void encode_connection_update_struct_req_message(buffer *b, connection_update_struct_req_message *cm) {
@@ -126,7 +126,8 @@ connection_get_struct_req_message *decode_connection_get_struct_req_message(buff
 }
 
 connection_get_struct_res_message *decode_connection_get_struct_res_message(buffer *b) {
-    connection_get_struct_res_message *cm = (connection_get_struct_res_message *) read_from_buffer(b, sizeof(connection_get_struct_res_message));
+    connection_get_struct_res_message *cm = (connection_get_struct_res_message *) read_from_buffer(b,
+                                                                                                   sizeof(connection_get_struct_res_message));
     cm->g = decode_graph(b, decode_device, device_clone);
     return cm;
 }

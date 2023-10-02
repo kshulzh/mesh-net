@@ -29,13 +29,12 @@ TEST(mock_connection, test1) {
     buffer buf2;
     buffer_init(&buf1, 100, b1);
     buffer_init(&buf2, 100, b2);
-    mock_connection* mc1 = new_mock_connection(create_buffers(2,1000));
-    mock_connection* mc2 = new_mock_connection(create_buffers(2,1000));
-    mock_connection_link(mc1,mc2);
+    mock_connection *mc1 = new_mock_connection(create_buffers(2, 1000));
+    mock_connection *mc2 = new_mock_connection(create_buffers(2, 1000));
+    mock_connection_link(mc1, mc2);
     mc1->c.open(mc1);
     mc2->c.open(mc2);
-    mc1->c.write_array(mc1,"hello my name is Kirill",24);
+    mc1->c.write_array(mc1, "hello my name is Kirill", 24);
     char b3[100];
-    mc2->c.read_array(mc2,b3,90,0);
-    printf("%s",b3);
+    mc2->c.read_array(mc2, b3, 90, 0);
 }

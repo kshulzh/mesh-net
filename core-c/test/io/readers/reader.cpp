@@ -27,9 +27,10 @@ TEST(reader, read_char) {
     b[0] = 'c';
 
     char expected_char = 'c';
-    char result_char =*read_char(&buf);
+    char result_char = *read_char(&buf);
     ASSERT_EQ(expected_char, result_char);
 }
+
 TEST(reader, read_int) {
     int b[1];
     buffer buf;
@@ -37,22 +38,22 @@ TEST(reader, read_int) {
     b[0] = 123456789;
 
     int expected_int = 123456789;
-    int result_int =*read_int(&buf);
+    int result_int = *read_int(&buf);
     ASSERT_EQ(expected_int, result_int);
 }
 
 TEST(reader, read_int_array) {
-    char c[sizeof(array_int)+ sizeof(int)*3];
+    char c[sizeof(array_int) + sizeof(int) * 3];
     buffer buf;
-    buffer_init(&buf, sizeof(array_int)+ sizeof(int)*3, c);
-    array_int *array = (array_int*) c;
+    buffer_init(&buf, sizeof(array_int) + sizeof(int) * 3, c);
+    array_int *array = (array_int *) c;
     array->size = 3;
-    int *b = (int*) (c+sizeof(array_int));
+    int *b = (int *) (c + sizeof(array_int));
     b[0] = 123456789;
     b[1] = 234567890;
     b[2] = 345678901;
 
-    array_int* result = read_int_array(&buf);
+    array_int *result = read_int_array(&buf);
     ASSERT_EQ(result->size, 3);
     for (int i = 0; i < result->size; ++i) {
         ASSERT_EQ(b[i], result->elements[i]);

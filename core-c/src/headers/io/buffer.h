@@ -34,7 +34,7 @@ typedef struct {
     char is_locked;
 } buffer;
 
-#define buffer(name,size) \
+#define buffer(name, size) \
 char name##_array[size]; \
 buffer *name = new_buffer(name##_array, size); \
 
@@ -46,23 +46,25 @@ buffer *name = new_buffer(name##_array, size); \
    return dest;                                                      \
 }                                           \
 
+
 void *empty_clone(void *);
+
 void buffer_init(buffer *buf, uint32_t size, char *arr);
 
-char * write_to_buffer(buffer *buf, void *data, uint32_t size);
+char *write_to_buffer(buffer *buf, void *data, uint32_t size);
 
-char * read_from_buffer(buffer *buf, uint32_t size);
+char *read_from_buffer(buffer *buf, uint32_t size);
 
-char * mem_copy(char *dest,const char * src, uint32_t size);
+char *mem_copy(char *dest, const char *src, uint32_t size);
 
 void buffer_reset(buffer *buf);
 
-char buffer_predicate_is_locked(void* thiz,void *params);
+char buffer_predicate_is_locked(void *thiz, void *params);
 
 buffer *new_buffer(char *data, unsigned int size);
 
-predicate * buffer_is_locked();
+predicate *buffer_is_locked();
 
-predicate * buffer_is_free();
+predicate *buffer_is_free();
 
 #endif //MESH_NET_BUFFER_H

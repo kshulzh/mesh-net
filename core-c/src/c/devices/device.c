@@ -48,7 +48,7 @@ void *decode_device(buffer *b) {
 }
 
 void free_device(void *d) {
-    free((device*) d);
+    mem_free((device *) d);
 }
 
 clone(device)

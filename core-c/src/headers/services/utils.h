@@ -30,7 +30,7 @@ void encode_uint32(buffer *b, unsigned int i);
 
 void encode_link(buffer *b, void *l);
 
-void* decode_link(buffer *b);
+void *decode_link(buffer *b);
 
 void *decode_uint64(buffer *b);
 

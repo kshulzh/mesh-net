@@ -17,9 +17,10 @@
 #include "services/message.h"
 #include "utils/new.h"
 
-message* message_of_buffer(buffer* b) {
+message *message_of_buffer(buffer *b) {
     message *m = New(message);
     m->bytes = b->start;
-    m->bm.size = b->end - b->start;
+    m->bm = *((basic_message *) b->start);
+    //m->bm.size = (b->temp) - (b->start);
     return m;
 }

@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
 #include "io/buffer.h"
 #include "utils/new.h"
 #include "io/readers/readers.h"
 #include "utils/math.h"
-#include "../../../headers/io/connection/mock_connection.h"
-#include "../../../../src/headers/io/readers/readers.h"
+#include "io/connection/mock_connection.h"
 #include "log/logger.h"
 
 
@@ -60,9 +58,7 @@ int mock_connection_read_array(void *thiz, char* array, int size, int offset) {
         return -1;
     }
     int s = min(size,(b->temp)-(b->start));
-    printf("%d\n", (b->temp)-(b->start));
     mem_copy(array, b->start, s);
-    buffer_reset(b);
     b->is_locked = 0;
     return s;
 }
@@ -88,7 +84,6 @@ void mock_connection_write_array(void *thiz, char* data, int size) {
     b->is_locked = 1;
     buffer_reset(b);
     write_to_buffer(b,data,size);
-    printf("%d\n", size);
     mc_other->is_ready = 1;
 }
 
@@ -122,7 +117,7 @@ mock_connection* new_mock_connection(list *buffers) {
 }
 
 mock_connection* new_mock_connection1(int size) {
-    char *b1 = (char*) malloc(size* sizeof(char));
+    char *b1 = (char*) mem_alloc(size* sizeof(char));
     buffer *buf1 = New(buffer);
     buffer_init(buf1, size, b1);
     return new_mock_connection(buf1);

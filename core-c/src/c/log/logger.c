@@ -15,15 +15,16 @@
  */
 
 #include "log/logger.h"
-void print_meta(char * level) {
-    time_t rawtime;
-    struct tm * timeinfo;
 
-    time ( &rawtime );
-    timeinfo = localtime ( &rawtime );
+void print_meta(char *level) {
+    time_t rawtime;
+    struct tm *timeinfo;
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
     char *c = asctime(timeinfo);
     int i;
-    for (i=0;c[i]!='\n'; i++);
+    for (i = 0; c[i] != '\n'; i++);
     c[i] = '\0';
     printf("[%s][%s]", c, level);
 }

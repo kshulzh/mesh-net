@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-//
-// Created by kirill on 18.09.23.
-//
 
 #ifndef MESH_NET_MOCK_CONNECTION_H
 #define MESH_NET_MOCK_CONNECTION_H

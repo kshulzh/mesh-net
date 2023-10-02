@@ -26,7 +26,7 @@ TEST(writers, write_char) {
     buffer buf;
     buffer_init(&buf, 30, b);
     char expected_char = 'c';
-    write_char(&buf,&expected_char);
+    write_char(&buf, &expected_char);
     buffer_init(&buf, 30, b);
 
     char result_char = *read_char(&buf);
@@ -38,7 +38,7 @@ TEST(writers, write_int) {
     buffer buf;
     buffer_init(&buf, 30, b);
     int expected_int = 1234567;
-    write_int(&buf,&expected_int);
+    write_int(&buf, &expected_int);
     buffer_init(&buf, 30, b);
 
     int result_int = *read_int(&buf);
@@ -57,7 +57,7 @@ TEST(writers, write_int_array) {
     elements[1] = 234567890;
     elements[2] = 345678901;
 
-    write_int_array(&buf,&array);
+    write_int_array(&buf, &array);
     buffer_init(&buf, 30, b);
     array_int *result = read_int_array(&buf);
 

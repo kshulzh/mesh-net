@@ -34,13 +34,16 @@ WRITE_TEMPLATE_IMPL(TYPE)              \
 WRITE_ARRAY_TEMPLATE_IMPL(TYPE)
 
 WRITE_BOTH_TEMPLATES_IMPL(char)
+
 WRITE_BOTH_TEMPLATES_IMPL(short)
+
 WRITE_BOTH_TEMPLATES_IMPL(int)
+
 WRITE_BOTH_TEMPLATES_IMPL(long)
-#include "services/utils.h"
+
 void encode_char_array(buffer *b, array_char *a) {
-    encode_uint32(b,a->size);
-    encode_link(b,(void*) 1);
-    mem_copy(b->temp,a->elements,a->size);
-    b->temp+=a->size;
+//    encode_uint32(b,a->size);
+//    encode_link(b,(void*) 1);
+    write_to_buffer(b, a, sizeof(array_char));
+    write_to_buffer(b, a->elements, a->size);
 }

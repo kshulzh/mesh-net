@@ -22,6 +22,7 @@
 typedef struct {
     void *inst;
     list connections;
+
     void (*start)(void *thiz);
 
     void (*stop)(void *thiz);
@@ -34,7 +35,7 @@ typedef struct {
 
     void *(*get_properties)(void *thiz);
 
-    void (*on_find_device_handler)(void *thiz, void (*on_find_device_handler)(void *thiz,void *));
+    void (*on_find_device_handler)(void *thiz, void (*on_find_device_handler)(void *thiz, void *));
 } radar;
 
 

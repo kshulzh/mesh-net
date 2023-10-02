@@ -43,6 +43,6 @@ typedef struct {
     connection *c;
 } message;
 
-message* message_of_buffer(buffer* b) ;
+message *message_of_buffer(buffer *b);
 
 #endif //MESH_NET_MESSAGE_H

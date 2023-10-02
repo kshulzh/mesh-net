@@ -20,6 +20,7 @@
 #include "containers/array.h"
 #include "device.h"
 #include "io/connection/connection.h"
+
 ARRAY(connection)
 
 typedef struct {

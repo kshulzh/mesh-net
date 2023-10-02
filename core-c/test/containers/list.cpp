@@ -15,39 +15,40 @@
  */
 
 #include <gtest/gtest.h>
+
 extern "C" {
 #include "../../src/headers/containers/list.h"
 }
 
 TEST(list, add) {
-    list* l = new_list();
+    list *l = new_list();
     int e1 = 1;
     int e2 = 2;
     int e3 = 3;
-    list_add(l,&e1);
-    list_add(l,&e2);
-    list_add(l,&e3);
-    ASSERT_EQ(&e3,((list_node*) l->last)->element);
-    ASSERT_EQ(&e1,((list_node*) l->first)->element);
+    list_add(l, &e1);
+    list_add(l, &e2);
+    list_add(l, &e3);
+    ASSERT_EQ(&e3, ((list_node *) l->last)->element);
+    ASSERT_EQ(&e1, ((list_node *) l->first)->element);
 }
 
 TEST(list, remove) {
-    list* l = new_list();
+    list *l = new_list();
     int e1 = 1;
     int e2 = 2;
     int e3 = 3;
-    list_add(l,&e1);
-    list_add(l,&e2);
-    list_add(l,&e3);
-    list_remove(l,2);
-    ASSERT_EQ(&e2,((list_node*) l->last)->element);
-    ASSERT_EQ(&e1,((list_node*) l->first)->element);
+    list_add(l, &e1);
+    list_add(l, &e2);
+    list_add(l, &e3);
+    list_remove(l, 2);
+    ASSERT_EQ(&e2, ((list_node *) l->last)->element);
+    ASSERT_EQ(&e1, ((list_node *) l->first)->element);
     list_remove_first(l);
-    ASSERT_EQ(&e2,((list_node*) l->last)->element);
-    ASSERT_EQ(&e2,((list_node*) l->first)->element);
-    list_add(l,&e1);
-    list_add(l,&e3);
-    list_remove(l,1);
-    ASSERT_EQ(&e3,((list_node*) l->last)->element);
-    ASSERT_EQ(&e2,((list_node*) l->first)->element);
+    ASSERT_EQ(&e2, ((list_node *) l->last)->element);
+    ASSERT_EQ(&e2, ((list_node *) l->first)->element);
+    list_add(l, &e1);
+    list_add(l, &e3);
+    list_remove(l, 1);
+    ASSERT_EQ(&e3, ((list_node *) l->last)->element);
+    ASSERT_EQ(&e2, ((list_node *) l->first)->element);
 }

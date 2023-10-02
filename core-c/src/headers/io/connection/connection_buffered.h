@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef MESH_NET_CONNECTION_BUFFERED_H
 #define MESH_NET_CONNECTION_BUFFERED_H
 
@@ -24,13 +24,14 @@
 typedef struct {
     connection *c;
     list buffers;
-    void (*on_read_handler) (void *thiz, buffer *);
+
+    void (*on_read_handler)(void *thiz, buffer *);
 } connection_buffer;
 
-void connection_buffer_read(connection_buffer*thiz) ;
+void connection_buffer_read(connection_buffer *thiz);
 
-void default_on_read_handler(void *thiz, buffer *b) ;
+void default_on_read_handler(void *thiz, buffer *b);
 
-connection_buffer * new_connection_buffer(connection *c);
+connection_buffer *new_connection_buffer(connection *c);
 
 #endif //MESH_NET_CONNECTION_BUFFERED_H

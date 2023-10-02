@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
 #include "services/handlers.h"
 
-message_handler* message_handlers() {
+message_handler *message_handlers() {
     static message_handler message_handlers1[256];
     return message_handlers1;
 }
 
-void handle_message(message*m) {
+void handle_message(message *m) {
     message_handlers()[m->bm.type](m);
 }
 

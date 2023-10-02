@@ -30,8 +30,11 @@ WRITE_TEMPLATE(TYPE)              \
 WRITE_ARRAY_TEMPLATE(TYPE)
 
 WRITE_BOTH_TEMPLATES(char)
+
 WRITE_BOTH_TEMPLATES(short)
+
 WRITE_BOTH_TEMPLATES(int)
+
 WRITE_BOTH_TEMPLATES(long)
 
 void encode_char_array(buffer *b, array_char *);

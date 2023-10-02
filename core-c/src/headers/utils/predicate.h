@@ -25,7 +25,7 @@ typedef struct {
 
 predicate *new_predicate(char (*p)(void *thiz, void *params), void *params);
 
-char is(predicate * p, void * thiz);
+char is(predicate *p, void *thiz);
 
 predicate *equals(void *thiz);
 
