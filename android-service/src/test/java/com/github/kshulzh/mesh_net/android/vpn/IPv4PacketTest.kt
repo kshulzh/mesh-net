@@ -49,6 +49,8 @@ class IPv4PacketTest {
         ).map { it.toUByte() }.toUByteArray()
         var packet = IPv4Packet()
         packet.set(array)
+        var cs = packet.checkSum;
         var arrayres = packet.toArray().toUByteArray()
+        assert(cs ==packet.checkSum)
     }
 }

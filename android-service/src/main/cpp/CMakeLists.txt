@@ -26,8 +26,22 @@ project("myapplication")
 # used in the AndroidManifest.xml file.
 add_library(${CMAKE_PROJECT_NAME} SHARED
         # List C/C++ source files with relative paths to this CMakeLists.txt.
-        native-lib.cpp)
+        native-lib.cpp
+        conf/inst.c
+        conf/export.c
+        jvm/jvm.c
+        log/out.c
+        io/connection/bluetooth/bluetooth_radar.c
+        io/connection/bluetooth/bluetooth_connection.c
+        io/connection/bluetooth/setup.c)
 set(TARGET_NAME core-lib)
+set(HEADER_FILES
+        conf/inst.h
+        jvm/jvm.h
+        log/out.h
+        io/connection/bluetooth/bluetooth_connection.h
+        io/connection/bluetooth/bluetooth_radar.h
+        )
 add_subdirectory(../../../../core-c/src build)
 
 # Specifies libraries CMake should link to your target library. You

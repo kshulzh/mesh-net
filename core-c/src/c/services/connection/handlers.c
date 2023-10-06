@@ -49,6 +49,7 @@ void connection_handle_get_struct_res(message *m) {
     buffer b;
     buffer_init(&b, m->bm.size, m->bytes);
     connection_get_struct_res_message *gs = decode_connection_get_struct_res_message(&b);
+    m->c->d = *((device*)gs->g->this_node.element);
     graph_add_graph(((instance *) m->c->r->inst)->g, 0, gs->g);
     //todo
 }

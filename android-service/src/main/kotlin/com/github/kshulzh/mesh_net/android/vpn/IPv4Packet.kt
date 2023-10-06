@@ -23,6 +23,7 @@ class IPv4Packet {
 fun IPv4Packet.toArray(): ByteArray {
     this.ihl = (5 + params.size).toUByte()
     this.lenght = (20 + params.size * 4 + data.size).toUShort()
+    this.checkSum = 0U;
     var bytes = ByteArray(this.lenght.toInt())
     bytes[0] = (version.toUInt().shl(4).toUByte() + (ihl and 0xfu)).toByte()
     bytes[1] = (dscp.toUInt().shl(2).toUByte() + (ecn and 0x3u)).toByte()
@@ -57,6 +58,14 @@ fun IPv4Packet.toArray(): ByteArray {
         bytes[i + 3] = (it and 0xffu).toByte()
         i += 4
     }
+    var sum:UInt = 0U
+
+    for (j in 0 until i/2) {
+        sum+= getShort(bytes,j*2)
+    }
+    checkSum = (sum.and(0xffffu) + sum.shr(16)).toUInt().toUShort().inv()
+    bytes[10] = (checkSum.toUInt().shr(8) and 0xffu).toByte()
+    bytes[11] = (checkSum.toUInt() and 0xffu).toByte()
     data.forEach {
         bytes[i] = it.toByte()
         i++
@@ -93,6 +102,10 @@ fun IPv4Packet.set(bytes: UByteArray) {
     data = UByteArray((lenght - i.toUShort()).toInt()) {
         bytes[it + i.toInt()].toUByte()
     }
+}
+
+fun getShort(array: ByteArray,offset: Int) :UInt{
+    return (array[offset].toUByte().toUInt().shl(8) or (array[offset+1].toUByte().toUInt()))
 }
 
 
