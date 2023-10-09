@@ -26,31 +26,24 @@ void encode_route_message(buffer *b, route_message *rm) {
 }
 
 route_message *decode_route_message(buffer *b) {
-    route_message rm;
+    static route_message rm;
     rm.bm = *decode_basic_message(b);
     rm.type = read_char_from_buffer(b);
     return &rm;
 }
 
 void encode_route_udp_message(buffer *b, route_udp_message *u) {
-//    short * size = b->temp;
-//    char *start = b->temp;
-    //write_to_buffer(b, u, sizeof(route_udp_message));
     encode_route_message(b,&(u->rm));
     write_int_to_buffer(b,u->index);
     encode_list(b, u->way, encode_device_id);
     encode_char_array(b, u->msg);
-    buffer_message_set_size(b);
-//    *size = (short )((b->temp) - start);
-//    u->rm.bm.size = *size;
+    u->rm.bm.size = buffer_message_set_size(b);
 }
 
 route_udp_message *decode_route_udp_message(buffer *b) {
-    //route_udp_message *rum = (route_udp_message *) read_from_buffer(b, sizeof(route_udp_message));
-    route_udp_message rum;
+    static route_udp_message rum;
     rum.rm = *decode_route_message(b);
     rum.index = read_int_from_buffer(b);
-
     rum.way = decode_list(b, decode_uint64);
     rum.msg = decode_char_array(b);
     return &rum;

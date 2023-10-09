@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include "io/buffer.h"
 
-void buffer_message_set_size(buffer *b);
+short buffer_message_set_size(buffer *b);
 
 void free_uint32(void *v);
 

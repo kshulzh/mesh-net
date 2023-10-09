@@ -16,8 +16,8 @@
 
 #include "services/utils.h"
 
-void buffer_message_set_size(buffer *b) {
-    *((short *) b->start) = (short) ((b->temp) - (b->start));
+short buffer_message_set_size(buffer *b) {
+    return *((short *) b->start) = (short) ((b->temp) - (b->start));
 }
 
 void free_uint32(void *v) {
@@ -25,11 +25,11 @@ void free_uint32(void *v) {
 }
 
 void *decode_uint32(buffer *b) {
-    return (unsigned int *) read_from_buffer(b, sizeof(unsigned int));
+    return (void*) read_int_from_buffer(b);
 }
 
 void encode_uint32(buffer *b, unsigned int i) {
-    write_to_buffer(b, &i, sizeof(unsigned int));
+    write_int_to_buffer(b,i);
 }
 
 void encode_link(buffer *b, void *l) {
@@ -41,5 +41,5 @@ void *decode_link(buffer *b) {
 }
 
 void *decode_uint64(buffer *b) {
-    return (unsigned long *) read_from_buffer(b, sizeof(unsigned long));
+    return (unsigned long *) read_from_buffer(b, 8);
 }

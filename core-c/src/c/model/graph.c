@@ -108,7 +108,7 @@ void encode_graph_node_index(buffer *b, void *gn) {
 }
 
 void encode_graph(buffer *b, graph *gr) {
-    write_int_to_buffer(b,gr->nodes.size);
+    write_int_to_buffer(b,(gr->nodes).size);
 
     int i = 0;
     for_each((&(gr->nodes)), graph_node, {
@@ -140,7 +140,7 @@ graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void 
         list *indexes = decode_list(b, decode_uint32);
         for_each1(indexes,
         unsigned int, {
-            list_add(&temp->near, decoded[*temp1]);
+            list_add(&temp->near, decoded[(int)temp1]);
         })
         delete_list(indexes, 0, 0);
     })

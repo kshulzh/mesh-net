@@ -69,14 +69,14 @@ void encode_connection_getid_res_message(buffer *b, connection_getid_res_message
 
 void encode_connection_get_struct_req_message(buffer *b, connection_get_struct_req_message *cm) {
     encode_connection_message(b,&(cm->cm));
-    buffer_message_set_size(b);
+    cm->cm.bm.size = buffer_message_set_size(b);
 }
 
 void encode_connection_get_struct_res_message(buffer *b, connection_get_struct_res_message *cm) {
     encode_connection_message(b,&(cm->cm));
     write_char_to_buffer(b,cm->code);
     encode_graph(b, cm->g);
-    buffer_message_set_size(b);
+    cm->cm.bm.size = buffer_message_set_size(b);
 }
 
 void encode_connection_update_struct_req_message(buffer *b, connection_update_struct_req_message *cm) {
@@ -89,7 +89,7 @@ void encode_connection_update_struct_res_message(buffer *b, connection_update_st
 
 //decode
 connection_message * decode_connection_message(buffer *b) {
-    connection_message cm;
+    static connection_message cm;
     cm.bm = *decode_basic_message(b);
 
     cm.type = read_char_from_buffer(b);
@@ -97,13 +97,13 @@ connection_message * decode_connection_message(buffer *b) {
 }
 
 connection_ask_req_message *decode_connection_ask_req_message(buffer *b) {
-    connection_ask_req_message cm;
+    static connection_ask_req_message cm;
     cm.cm = *decode_connection_message(b);
     return &cm;
 }
 
 connection_ask_res_message *decode_connection_ask_res_message(buffer *b) {
-    connection_ask_res_message cm;
+    static connection_ask_res_message cm;
     cm.cm = *decode_connection_message(b);
     cm.code = read_char_from_buffer(b);
     return &cm;
@@ -145,13 +145,13 @@ connection_getid_res_message *decode_connection_getid_res_message(buffer *b) {
 
 
 connection_get_struct_req_message *decode_connection_get_struct_req_message(buffer *b) {
-    connection_get_struct_req_message cm;
+    static connection_get_struct_req_message cm;
     cm.cm = *decode_connection_message(b);
     return &cm;
 }
 
 connection_get_struct_res_message *decode_connection_get_struct_res_message(buffer *b) {
-    connection_get_struct_res_message cm;
+    static connection_get_struct_res_message cm;
     cm.cm = *decode_connection_message(b);
     cm.code = read_char_from_buffer(b);
     cm.g = decode_graph(b, decode_device, device_clone);

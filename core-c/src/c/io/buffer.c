@@ -48,7 +48,7 @@ char *write_to_buffer(buffer *buf, void *data, uint32_t size) {
 extern
 char *read_from_buffer(buffer *buf, uint32_t size) {
     char *result = buf->temp;
-    buf->temp += size;
+    (buf->temp) += size;
     return result;
 }
 
@@ -94,37 +94,30 @@ void *empty_clone(void *obj) {
     return obj;
 }
 
+char * write_num_to_buffer(buffer *buf,long long d, int size) {
+    char* res = buf->temp;
+    for (int i = size-1; i >-1 ; --i) {
+        buf->temp[i] = d & 0xff;
+        d = d>>8;
+    }
+    buf->temp+=size;
+
+    return res;
+}
+
+
 char *write_char_to_buffer(buffer *buf, char d) {
-    buf->temp[0] = d;
-    buf->temp++;
-    return (buf->temp) -1;
+    return write_num_to_buffer(buf,d,1);
 }
 
 char *write_short_to_buffer(buffer *buf, short d) {
-    buf->temp[0] = d >> 8 & 0xff;
-    buf->temp[1] = d & 0xff;
-    buf->temp+=2;
-    return (buf->temp) -2;
+    return write_num_to_buffer(buf,d,2);
 }
 char *write_int_to_buffer(buffer *buf, int d) {
-    buf->temp[0] = d >> 24 & 0xff;
-    buf->temp[1] = d >> 16 & 0xff;
-    buf->temp[2] = d >> 8 & 0xff;
-    buf->temp[3] = d & 0xff;
-    buf->temp+=4;
-    return (buf->temp) -4;
+    return write_num_to_buffer(buf,d,4);
 }
 char *write_long_to_buffer(buffer *buf, long d) {
-    buf->temp[0] = d >> 56 & 0xff;
-    buf->temp[1] = d >> 48 & 0xff;
-    buf->temp[2] = d >> 40 & 0xff;
-    buf->temp[3] = d >> 32 & 0xff;
-    buf->temp[4] = d >> 24 & 0xff;
-    buf->temp[5] = d >> 16 & 0xff;
-    buf->temp[6] = d >> 8 & 0xff;
-    buf->temp[7] = d & 0xff;
-    buf->temp+=8;
-    return (buf->temp) -8;
+    return write_num_to_buffer(buf,d,8);
 }
 long read_num_from_buffer(buffer *buf, int size) {
     long r = 0;

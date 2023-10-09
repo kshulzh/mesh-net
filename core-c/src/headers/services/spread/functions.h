@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-#include "services/handlers.h"
+#ifndef MESH_NET_SPREAD_FUNCTIONS_H
+#define MESH_NET_SPREAD_FUNCTIONS_H
 
-message_handler *message_handlers() {
-    static message_handler message_handlers1[256];
-    return message_handlers1;
-}
+#include "model/instance.h"
 
-void handle_message(message *m) {
-    buffer  b1;
-    buffer_init(&b1,100,m->bytes);
-    connection_message cm = *decode_connection_message(&b1);
-    message_handlers()[cm.bm.type](m);
-}
+void spread_udp(instance *c, char *msg, unsigned int size);
 
+void spread_udp_res(instance *c, char *msg, unsigned int size);
+
+#endif //MESH_NET_ROUTE_FUNCTIONS_H

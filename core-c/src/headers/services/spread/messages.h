@@ -14,28 +14,36 @@
  * limitations under the License.
  */
 
+
+#ifndef MESH_NET_SPREAD_MESSAGES_H
+#define MESH_NET_SPREAD_MESSAGES_H
+
 #include "services/message.h"
-#include "utils/new.h"
 
-message *message_of_buffer(buffer *b) {
-    message *m = New(message);
-    m->bytes = b->start;
-    buffer_reset(b);
-    m->bm = *decode_basic_message(b);
-    buffer_reset(b);
-    return m;
-}
+typedef enum {
+    UDP
+} route_req;
 
-void encode_basic_message(buffer *b, basic_message *bm) {
-    write_short_to_buffer(b,bm->size);
-    write_char_to_buffer(b,bm->type);
-    write_long_to_buffer(b, bm->message_id);
-}
+typedef struct {
+    basic_message bm;
+    route_req type;
+} route_message;
 
-basic_message* decode_basic_message(buffer *b) {
-    static basic_message bm;
-    bm.size = read_short_from_buffer(b);
-    bm.type = read_char_from_buffer(b);
-    bm.message_id = read_long_from_buffer(b);
-    return &bm;
-}
+typedef struct {
+    basic_message rm;
+    list *way;
+    int index;
+    array_char *msg;
+    void *inst;
+} route_udp_message;
+
+void encode_route_message(buffer *b, route_message *u);
+
+route_message *decode_route_message(buffer *b);
+
+void encode_route_udp_message(buffer *b, route_udp_message *u);
+
+route_udp_message *decode_route_udp_message(buffer *b);
+
+
+#endif //MESH_NET_SPREAD_MESSAGES_H
