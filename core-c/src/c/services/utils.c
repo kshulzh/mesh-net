@@ -25,11 +25,11 @@ void free_uint32(void *v) {
 }
 
 void *decode_uint32(buffer *b) {
-    return (void*) read_int_from_buffer(b);
+    return (void *) read_int_from_buffer(b);
 }
 
 void encode_uint32(buffer *b, unsigned int i) {
-    write_int_to_buffer(b,i);
+    write_int_to_buffer(b, i);
 }
 
 void encode_link(buffer *b, void *l) {
@@ -41,5 +41,5 @@ void *decode_link(buffer *b) {
 }
 
 void *decode_uint64(buffer *b) {
-    return (unsigned long *) read_from_buffer(b, 8);
+    return (void *) read_long_from_buffer(b);
 }

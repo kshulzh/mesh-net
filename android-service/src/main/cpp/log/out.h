@@ -7,4 +7,6 @@
 
 void print(const char *);
 
+void print_long(long l);
+
 #endif //MESH_NET_OUT_H

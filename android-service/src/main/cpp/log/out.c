@@ -8,12 +8,18 @@
 
 void print(const char *str) {
     JNIEnv *env = n_env();
-    jclass syscls = (*env)->FindClass(env,"java/lang/System");
-    jfieldID fid = (*env)->GetStaticFieldID(env,syscls, "out", "Ljava/io/PrintStream;");
-    jobject out = (*env)->GetStaticObjectField(env,syscls, fid);
-    jclass pscls = (*env)->FindClass(env,"java/io/PrintStream");
-    jmethodID mid = (*env)->GetMethodID(env,pscls, "println", "(Ljava/lang/String;)V");
-    jstring str1 = (*env)->NewStringUTF(env,str);
-    (*env)->CallVoidMethod(env,out, mid, str1);
+    jclass syscls = (*env)->FindClass(env, "java/lang/System");
+    jfieldID fid = (*env)->GetStaticFieldID(env, syscls, "out", "Ljava/io/PrintStream;");
+    jobject out = (*env)->GetStaticObjectField(env, syscls, fid);
+    jclass pscls = (*env)->FindClass(env, "java/io/PrintStream");
+    jmethodID mid = (*env)->GetMethodID(env, pscls, "println", "(Ljava/lang/String;)V");
+    jstring str1 = (*env)->NewStringUTF(env, str);
+    (*env)->CallVoidMethod(env, out, mid, str1);
     //(*env)->DeleteGlobalRef(env,str1);
+}
+
+void print_long(long l) {
+    char b[60];
+    sprintf(b, "%06lx\n", (unsigned long) l & 0xFFFFFFUL);
+    print(b);
 }
