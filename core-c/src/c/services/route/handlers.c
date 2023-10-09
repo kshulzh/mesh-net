@@ -43,7 +43,7 @@ void route_handle_udp(message *m) {
         connection *c = list_find_first(&inst->connections, connection_device_by_id(
                 *((unsigned long *) list_get_by_id(rum->way, rum->index))));
         buffer_reset(&b);
-        c->write_array(c, b.start, rum->rm.size);
+        c->write_array(c, b.start, rum->rm.bm.size);
     }
 }
 

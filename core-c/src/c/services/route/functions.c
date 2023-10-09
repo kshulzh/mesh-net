@@ -24,7 +24,7 @@
 #include "services/utils.h"
 
 void route_udp(instance *inst, unsigned long id, char *msg, unsigned int size) {
-    buffer(b1, 1024)
+    buffer(b1, 1524)
     array_char ac;
     ac.size = size;
     ac.elements = msg;
@@ -49,13 +49,15 @@ void route_udp(instance *inst, unsigned long id, char *msg, unsigned int size) {
     } else {
         unsigned long *id1 = ((unsigned long *) list_get_by_id(rum.way, rum.index));
         rum.index++;
+        buffer_reset(b1);
         encode_route_udp_message(b1, &rum);
         buffer_message_set_size(b1);
+        //rum.rm.size = 300;
         connection *c = list_find_first(&inst->connections, connection_device_by_id(
                 *id1));
         buffer_reset(b1);
         if (c != 0) {
-            c->write_array(c, b1->start, rum.rm.size);
+            c->write_array(c, b1->start, rum.rm.bm.size);
         }
     }
 }

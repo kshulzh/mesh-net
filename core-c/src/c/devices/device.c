@@ -36,15 +36,16 @@ predicate *device_equals(void *thiz) {
 }
 
 void encode_device(buffer *b, void *d) {
-    write_to_buffer(b, d, sizeof(device));
+    write_long_to_buffer(b,((device*) d)->id);
+    write_long_to_buffer(b,((device*) d)->user_id);
 }
 
 void encode_device_id(buffer *b, void *d) {
-    write_to_buffer(b, d, sizeof(unsigned long));
+    write_long_to_buffer(b,((device*) d)->id);
 }
 
 void *decode_device(buffer *b) {
-    return read_from_buffer(b, sizeof(device));
+    return new_device(read_long_from_buffer(b), read_long_from_buffer(b));
 }
 
 void free_device(void *d) {

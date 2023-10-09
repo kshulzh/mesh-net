@@ -20,7 +20,22 @@
 message *message_of_buffer(buffer *b) {
     message *m = New(message);
     m->bytes = b->start;
-    m->bm = *((basic_message *) b->start);
+    m->bm = *decode_basic_message(b);
+    buffer_reset(b);
     //m->bm.size = (b->temp) - (b->start);
     return m;
+}
+
+void encode_basic_message(buffer *b, basic_message *bm) {
+    write_short_to_buffer(b,bm->size);
+    write_char_to_buffer(b,bm->type);
+    write_long_to_buffer(b, bm->message_id);
+}
+
+basic_message* decode_basic_message(buffer *b) {
+    basic_message bm;
+    bm.size = read_short_from_buffer(b);
+    bm.type = read_char_from_buffer(b);
+    bm.message_id = read_long_from_buffer(b);
+    return &bm;
 }

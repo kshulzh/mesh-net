@@ -30,9 +30,9 @@ typedef struct {
 } route_message;
 
 typedef struct {
-    basic_message rm;
-    list *way;
+    route_message rm;
     int index;
+    list *way;
     array_char *msg;
     void *inst;
 } route_udp_message;

@@ -93,3 +93,59 @@ predicate *buffer_is_free() {
 void *empty_clone(void *obj) {
     return obj;
 }
+
+char *write_char_to_buffer(buffer *buf, char d) {
+    buf->temp[0] = d;
+    buf->temp++;
+    return (buf->temp) -1;
+}
+
+char *write_short_to_buffer(buffer *buf, short d) {
+    buf->temp[0] = d >> 8 & 0xff;
+    buf->temp[1] = d & 0xff;
+    buf->temp+=2;
+    return (buf->temp) -2;
+}
+char *write_int_to_buffer(buffer *buf, int d) {
+    buf->temp[0] = d >> 24 & 0xff;
+    buf->temp[1] = d >> 16 & 0xff;
+    buf->temp[2] = d >> 8 & 0xff;
+    buf->temp[3] = d & 0xff;
+    buf->temp+=4;
+    return (buf->temp) -4;
+}
+char *write_long_to_buffer(buffer *buf, long d) {
+    buf->temp[0] = d >> 56 & 0xff;
+    buf->temp[1] = d >> 48 & 0xff;
+    buf->temp[2] = d >> 40 & 0xff;
+    buf->temp[3] = d >> 32 & 0xff;
+    buf->temp[4] = d >> 24 & 0xff;
+    buf->temp[5] = d >> 16 & 0xff;
+    buf->temp[6] = d >> 8 & 0xff;
+    buf->temp[7] = d & 0xff;
+    buf->temp+=8;
+    return (buf->temp) -8;
+}
+long read_num_from_buffer(buffer *buf, int size) {
+    long r = 0;
+    for (int i = 0; i < size; ++i) {
+        r = r <<8;
+        r+=buf->temp[0];
+        buf->temp++;
+    }
+
+    return r;
+}
+char read_char_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 1);
+}
+
+short read_short_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 2);
+}
+int read_int_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 4);
+}
+long read_long_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 8);
+}

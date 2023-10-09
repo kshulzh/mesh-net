@@ -21,22 +21,37 @@
 #include "io/readers/readers.h"
 
 void encode_route_message(buffer *b, route_message *rm) {
-    write_to_buffer(b, rm, sizeof(route_message));
+    encode_basic_message(b,&(rm->bm));
+    write_char_to_buffer(b, rm->type);
 }
 
 route_message *decode_route_message(buffer *b) {
-    return (route_message *) read_from_buffer(b, sizeof(route_message));
+    route_message rm;
+    rm.bm = *decode_basic_message(b);
+    rm.type = read_char_from_buffer(b);
+    return &rm;
 }
 
 void encode_route_udp_message(buffer *b, route_udp_message *u) {
-    write_to_buffer(b, u, sizeof(route_udp_message));
+//    short * size = b->temp;
+//    char *start = b->temp;
+    //write_to_buffer(b, u, sizeof(route_udp_message));
+    encode_route_message(b,&(u->rm));
+    write_int_to_buffer(b,u->index);
     encode_list(b, u->way, encode_device_id);
     encode_char_array(b, u->msg);
+    buffer_message_set_size(b);
+//    *size = (short )((b->temp) - start);
+//    u->rm.bm.size = *size;
 }
 
 route_udp_message *decode_route_udp_message(buffer *b) {
-    route_udp_message *rum = (route_udp_message *) read_from_buffer(b, sizeof(route_udp_message));
-    rum->way = decode_list(b, decode_uint64);
-    rum->msg = decode_char_array(b);
-    return rum;
+    //route_udp_message *rum = (route_udp_message *) read_from_buffer(b, sizeof(route_udp_message));
+    route_udp_message rum;
+    rum.rm = *decode_route_message(b);
+    rum.index = read_int_from_buffer(b);
+
+    rum.way = decode_list(b, decode_uint64);
+    rum.msg = decode_char_array(b);
+    return &rum;
 }

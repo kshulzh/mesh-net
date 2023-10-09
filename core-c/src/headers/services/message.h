@@ -33,8 +33,8 @@ typedef enum {
 
 typedef struct {
     short size;
-    unsigned long message_id;
     enum message_type type;
+    unsigned long message_id;
 } basic_message;
 
 typedef struct {
@@ -44,5 +44,9 @@ typedef struct {
 } message;
 
 message *message_of_buffer(buffer *b);
+
+void encode_basic_message(buffer *b, basic_message *bm);
+
+basic_message* decode_basic_message(buffer *b);
 
 #endif //MESH_NET_MESSAGE_H
