@@ -67,4 +67,21 @@ predicate *buffer_is_locked();
 
 predicate *buffer_is_free();
 
+char *write_char_to_buffer(buffer *buf, char d);
+
+char *write_short_to_buffer(buffer *buf, short d);
+
+char *write_int_to_buffer(buffer *buf, int d);
+
+char *write_long_to_buffer(buffer *buf, long d);
+
+
+char read_char_from_buffer(buffer *buf);
+
+short read_short_from_buffer(buffer *buf);
+
+int read_int_from_buffer(buffer *buf);
+
+long read_long_from_buffer(buffer *buf);
+
 #endif //MESH_NET_BUFFER_H

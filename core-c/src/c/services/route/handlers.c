@@ -43,12 +43,15 @@ void route_handle_udp(message *m) {
         connection *c = list_find_first(&inst->connections, connection_device_by_id(
                 *((unsigned long *) list_get_by_id(rum->way, rum->index))));
         buffer_reset(&b);
-        c->write_array(c, b.start, rum->rm.size);
+        c->write_array(c, b.start, rum->rm.bm.size);
     }
 }
 
 void route_handle(message *m) {
-    route_message_handlers()[((route_message *) m->bytes)->type](m);
+    buffer  b1;
+    buffer_init(&b1,100,m->bytes);
+    route_message rm = *decode_route_message(&b1);
+    route_message_handlers()[rm.type](m);
 }
 
 void route_setup() {

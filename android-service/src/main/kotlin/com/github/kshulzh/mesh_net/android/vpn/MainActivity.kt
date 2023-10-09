@@ -1,3 +1,5 @@
+@file:Suppress("Since15")
+
 package com.github.kshulzh.mesh_net.android.vpn
 
 import android.annotation.SuppressLint
@@ -23,6 +25,9 @@ import com.github.kshulzh.mesh_net.android.core.bluetooth.Constants
 import com.github.kshulzh.mesh_net.android.core.bluetooth.setup
 import com.github.kshulzh.mesh_net.android.core.connectionAsk
 import com.github.kshulzh.mesh_net.android.core.connectionGetStruct
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.InetSocketAddress
 
 class MainActivity : Activity() {
     init {
@@ -34,6 +39,17 @@ class MainActivity : Activity() {
     lateinit var bluetoothManager: BluetoothManager
     lateinit var bluetoothAdapter: BluetoothAdapter
     lateinit var bluetoothChatService: BluetoothChatService
+
+    @SuppressLint("NewApi")
+    var datagram = Thread {
+        var datagramPacket = DatagramPacket(ByteArray(3000), 3000)
+        var upds = DatagramSocket(5555)
+        while (!Thread.interrupted()) {
+            upds.receive(datagramPacket)
+            println(datagramPacket.data.decodeToString())
+        }
+
+    }
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +99,20 @@ class MainActivity : Activity() {
 
         struct.setOnClickListener {
             connectionGetStruct(bluetoothChatService.bluetoothConnection?.devPtr!!)
+        }
+        datagram.start()
+
+        udp.setOnClickListener {
+            println("sending")
+            Thread {
+
+                var str = "hello".encodeToByteArray()
+                var datagramPacket =
+                    DatagramPacket(str, str.size, InetSocketAddress("10.0.0.3", 5555))
+
+                var upds = DatagramSocket()
+                upds.send(datagramPacket)
+            }.start()
         }
         startBluetooth()
         startMN()
@@ -147,6 +177,7 @@ class MainActivity : Activity() {
     override fun onDestroy() {
         super.onDestroy()
         bluetoothChatService.stop()
+        unregisterReceiver(receiver)
     }
 
     private val mHandler: Handler = object : Handler() {

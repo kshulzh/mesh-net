@@ -15,8 +15,8 @@
  */
 
 
-#ifndef MESH_NET_ROUTE_MESSAGES_H
-#define MESH_NET_ROUTE_MESSAGES_H
+#ifndef MESH_NET_SPREAD_MESSAGES_H
+#define MESH_NET_SPREAD_MESSAGES_H
 
 #include "services/message.h"
 
@@ -30,9 +30,9 @@ typedef struct {
 } route_message;
 
 typedef struct {
-    route_message rm;
-    int index;
+    basic_message rm;
     list *way;
+    int index;
     array_char *msg;
     void *inst;
 } route_udp_message;
@@ -46,4 +46,4 @@ void encode_route_udp_message(buffer *b, route_udp_message *u);
 route_udp_message *decode_route_udp_message(buffer *b);
 
 
-#endif //MESH_NET_ROUTE_MESSAGES_H
+#endif //MESH_NET_SPREAD_MESSAGES_H

@@ -111,6 +111,9 @@ typedef struct {
     codes code;
 } connection_update_struct_res_message;
 
+void encode_connection_message(buffer *b, connection_message *cm);
+
+
 void encode_connection_ask_req_message(buffer *b, connection_ask_req_message *cm);
 
 void encode_connection_ask_res_message(buffer *b, connection_ask_res_message *cm);
@@ -143,6 +146,9 @@ void encode_connection_update_struct_req_message(buffer *b, connection_update_st
 void encode_connection_update_struct_res_message(buffer *b, connection_update_struct_res_message *cm);
 
 //decode
+
+connection_message * decode_connection_message(buffer *b);
+
 
 connection_ask_req_message *decode_connection_ask_req_message(buffer *b);
 

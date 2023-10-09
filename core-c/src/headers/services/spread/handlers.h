@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
+
+#ifndef MESH_NET_SPREAD_ROUTE_HANDLERS_H
+#define MESH_NET_SPREAD_ROUTE_HANDLERS_H
+
+#include "services/message.h"
 #include "services/handlers.h"
+#include "messages.h"
 
-message_handler *message_handlers() {
-    static message_handler message_handlers1[256];
-    return message_handlers1;
-}
+message_handler *route_message_handlers();
 
-void handle_message(message *m) {
-    buffer  b1;
-    buffer_init(&b1,100,m->bytes);
-    connection_message cm = *decode_connection_message(&b1);
-    message_handlers()[cm.bm.type](m);
-}
+typedef void (*udp_handler)(route_udp_message *);
 
+udp_handler *udp_handler1();
+
+void spread_handle_udp(message *m);
+
+void spread_handle(message *m);
+
+void spread_setup();
+
+#endif //MESH_SPREAD_NET_HANDLERS_H

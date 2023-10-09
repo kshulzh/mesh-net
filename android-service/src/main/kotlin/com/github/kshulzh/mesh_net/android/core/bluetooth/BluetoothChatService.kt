@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalStdlibApi::class)
+
 package com.github.kshulzh.mesh_net.android.core.bluetooth
 //this code was imported from https://github.com/android/connectivity-samples and translated to Kotlin
 import android.annotation.SuppressLint

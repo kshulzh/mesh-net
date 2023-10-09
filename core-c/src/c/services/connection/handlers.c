@@ -55,7 +55,10 @@ void connection_handle_get_struct_res(message *m) {
 }
 
 void connection_handle(message *m) {
-    connection_message_handlers()[((connection_message *) m->bytes)->type](m);
+    buffer  b1;
+    buffer_init(&b1,100,m->bytes);
+    connection_message cm = *decode_connection_message(&b1);
+    connection_message_handlers()[cm.type](m);
 }
 
 void connection_setup() {

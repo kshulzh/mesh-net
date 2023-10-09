@@ -48,7 +48,7 @@ char *write_to_buffer(buffer *buf, void *data, uint32_t size) {
 extern
 char *read_from_buffer(buffer *buf, uint32_t size) {
     char *result = buf->temp;
-    buf->temp += size;
+    (buf->temp) += size;
     return result;
 }
 
@@ -92,4 +92,53 @@ predicate *buffer_is_free() {
 
 void *empty_clone(void *obj) {
     return obj;
+}
+
+char * write_num_to_buffer(buffer *buf,long long d, int size) {
+    char* res = buf->temp;
+    for (int i = size-1; i >-1 ; --i) {
+        buf->temp[i] = d & 0xff;
+        d = d>>8;
+    }
+    buf->temp+=size;
+
+    return res;
+}
+
+
+char *write_char_to_buffer(buffer *buf, char d) {
+    return write_num_to_buffer(buf,d,1);
+}
+
+char *write_short_to_buffer(buffer *buf, short d) {
+    return write_num_to_buffer(buf,d,2);
+}
+char *write_int_to_buffer(buffer *buf, int d) {
+    return write_num_to_buffer(buf,d,4);
+}
+char *write_long_to_buffer(buffer *buf, long d) {
+    return write_num_to_buffer(buf,d,8);
+}
+long read_num_from_buffer(buffer *buf, int size) {
+    long r = 0;
+    for (int i = 0; i < size; ++i) {
+        r = r <<8;
+        r+=buf->temp[0];
+        buf->temp++;
+    }
+
+    return r;
+}
+char read_char_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 1);
+}
+
+short read_short_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 2);
+}
+int read_int_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 4);
+}
+long read_long_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 8);
 }

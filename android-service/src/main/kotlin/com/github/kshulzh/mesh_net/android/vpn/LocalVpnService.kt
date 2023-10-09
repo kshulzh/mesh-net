@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.VpnService
 import android.os.ParcelFileDescriptor
 import com.example.myapplication.R
+import com.github.kshulzh.mesh_net.android.core.Instance
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
@@ -15,6 +16,16 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.system.exitProcess
 
+fun <K, V> Map<K, V>.getKeyByVal(v: V): K? {
+    this.entries.forEach {
+        if (it.value == v) {
+            return it.key
+        }
+    }
+
+    return null
+}
+
 class LocalVpnService : VpnService() {
     private var vpnInterface: ParcelFileDescriptor? = null
 
@@ -24,8 +35,15 @@ class LocalVpnService : VpnService() {
     private val VPN_ROUTE = "10.0.0.0"
 
     private val VPN_DNS = "8.8.8.8"
+    lateinit var vpnOutput: FileChannel
 
-    private val input: BlockingQueue<ByteBuffer> = ArrayBlockingQueue(1000)
+    var routeIp2IdMap: MutableMap<UInt, ULong> = mutableMapOf()
+    var maxIp = 0xa000003u
+    var hostIp = 0xa000001u
+
+    private val input: BlockingQueue<ByteArray> = ArrayBlockingQueue(1000)
+
+    private val output: BlockingQueue<ByteBuffer> = ArrayBlockingQueue(1000)
 
     private var executorService: ExecutorService? = null
 
@@ -45,6 +63,13 @@ class LocalVpnService : VpnService() {
                 vpnInterface!!
             )
         )
+        executorService!!.submit(
+            VpnRunnableWriter(
+                vpnInterface!!
+            )
+        )
+        registerUdpCallBack()
+        updateIpList()
     }
 
     override fun onDestroy() {
@@ -68,6 +93,58 @@ class LocalVpnService : VpnService() {
         }
     }
 
+    external fun registerUdpCallBack()
+
+    fun write(packet: ByteArray, src: Long) {
+        Thread {
+            try {
+                updateIpList()
+                var iPv4Packet = IPv4Packet()
+                iPv4Packet.set(packet.toUByteArray())
+
+                iPv4Packet.src = getIpById(src.toULong())
+                iPv4Packet.dest = 0xa000002u
+                println("write ${mapIpToString(iPv4Packet.src)} -> ${mapIpToString(iPv4Packet.dest)}")
+                var array = iPv4Packet.toArray()
+                if (iPv4Packet.protocol.toUInt() == 17u) {
+                    array[26] = 0
+                    array[27] = 0
+                }
+                var bb = ByteBuffer.wrap(array)
+                output.add(bb)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+
+    }
+
+    fun getIpById(id: ULong): UInt {
+        var ip = routeIp2IdMap.getKeyByVal(id)
+        if (ip == null) {
+            ip = maxIp
+            maxIp++
+            routeIp2IdMap[ip] = id
+        }
+
+        return ip
+    }
+
+    fun updateIpList() {
+        var ids = Instance.devices()
+        routeIp2IdMap[hostIp] = ids[0]
+        routeIp2IdMap[0xa000002u] = ids[0]
+        ids.forEach {
+            getIpById(it)
+        }
+    }
+
+    fun getIdByIp(ip: UInt): ULong {
+        updateIpList()
+        var id = routeIp2IdMap[ip]
+        return id!!
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_STICKY
     }
@@ -75,6 +152,7 @@ class LocalVpnService : VpnService() {
     private fun cleanup() {
         input.clear()
         vpnInterface!!.close()
+        vpnOutput.close()
     }
 
     inner class VpnRunnable(
@@ -86,19 +164,21 @@ class LocalVpnService : VpnService() {
             vpnInput = FileInputStream(vpnInterface.fileDescriptor).channel
             while (isRunning and !Thread.interrupted()) {
                 readPacket(vpnInput) {
-                    println(it.array().size)
                     input.put(it)
                 }
             }
 
         }
 
-        fun readPacket(fc: FileChannel, handler: (ByteBuffer) -> Unit) {
-            var bufferToNetwork = ByteBuffer.allocate(17000)
+        fun readPacket(fc: FileChannel, handler: (ByteArray) -> Unit) {
+            var bufferToNetwork = ByteBuffer.allocate(2000)
             val readBytes: Int = vpnInput.read(bufferToNetwork)
+            bufferToNetwork = bufferToNetwork.position(0) as ByteBuffer
+
             if (readBytes > 0) {
-                bufferToNetwork.flip()
-                handler.invoke(bufferToNetwork)
+                val bytes = ByteArray(readBytes)
+                bufferToNetwork.get(bytes, 0, bytes.size)
+                handler.invoke(bytes)
             }
         }
     }
@@ -110,13 +190,32 @@ class LocalVpnService : VpnService() {
         lateinit var vpnOutput: FileChannel
         override fun run() {
             vpnOutput = FileOutputStream(vpnInterface.fileDescriptor).channel
-            while (isRunning) {
-                var bb = input.take()
-                var p = IPv4Packet()
-                p.set(bb.array().toUByteArray())
-                println("${mapIpToString(p.src)} -> ${mapIpToString(p.dest)}")
-                bb.array()
-                //vpnOutput.write1()
+            while (isRunning and !Thread.interrupted()) {
+                try {
+                    var bb = input.take()
+                    updateIpList()
+                    var p = IPv4Packet()
+                    p.set(bb.toUByteArray())
+                    println("${mapIpToString(p.src)} -> ${mapIpToString(p.dest)}")
+                    var id = getIdByIp(p.dest)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+        }
+    }
+
+    inner class VpnRunnableWriter(
+        var vpnInterface: ParcelFileDescriptor
+    ) : Runnable {
+        var isRunning = true
+        lateinit var vpnOutput: FileChannel
+        override fun run() {
+            vpnOutput = FileOutputStream(vpnInterface.fileDescriptor).channel
+            while (isRunning and !Thread.interrupted()) {
+                var bb = output.take()
+                vpnOutput.write1(bb)
             }
 
         }

@@ -18,4 +18,6 @@ object Instance {
     external fun stop()
 
     external fun destroy()
+
+    external fun devices(): ULongArray
 }

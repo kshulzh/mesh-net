@@ -44,6 +44,6 @@ WRITE_BOTH_TEMPLATES_IMPL(long)
 void encode_char_array(buffer *b, array_char *a) {
 //    encode_uint32(b,a->size);
 //    encode_link(b,(void*) 1);
-    write_to_buffer(b, a, sizeof(array_char));
+    write_int_to_buffer(b,a->size);
     write_to_buffer(b, a->elements, a->size);
 }

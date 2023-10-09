@@ -47,10 +47,14 @@ void connection_getid(connection *c) {
 }
 
 void connection_get_struct(connection *c) {
+    buffer b;
+    char* bytes[100];
+    buffer_init(&b,100,bytes);
     connection_ask_req_message req;
-    connection_init_message((&(req.cm)), REQ_GET_STRUCT);
-    req.cm.bm.size = sizeof(req);
-    c->write_array(c, (char *) (&req), sizeof(connection_ask_req_message));
+    req.cm.bm.type = CONNECTION;
+    req.cm.type = REQ_GET_STRUCT;
+    encode_connection_get_struct_req_message(&b,&req);
+    c->write_array(c, b.start, (b.temp) - (b.start));
 }
 
 void connection_update_struct(connection *c, graph *g) {
@@ -58,12 +62,17 @@ void connection_update_struct(connection *c, graph *g) {
 }
 
 void connection_ask_res(message *m, codes code) {
+    buffer b;
+    char* bytes[100];
+    buffer_init(&b,100,bytes);
     connection_ask_res_message res;
     res.cm.bm = m->bm;
     res.cm.type = RES_ASK;
     res.code = code;
+    encode_connection_ask_req_message(&b,&res);
+    res.cm.bm.size = buffer_message_set_size(&b);
 
-    m->c->write_array(m->c, (char *) &res, sizeof(connection_ask_res_message));
+    m->c->write_array(m->c, b.start, b.temp-b.start);
 }
 
 void connection_setname_res(message *m, codes code) {
@@ -89,6 +98,7 @@ void connection_get_struct_res(message *m, graph *g, codes code) {
     res.code = code;
     buffer *b = list_find_first(&(((instance *) m->c->r->inst)->buffers), buffer_is_free());
     b->is_locked = 1;
+    buffer_reset(b);
     encode_connection_get_struct_res_message(b, &res);
     buffer_message_set_size(b);
     m->c->write_array(m->c, b->start, (b->temp) - (b->start));

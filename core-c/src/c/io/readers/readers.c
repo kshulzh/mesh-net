@@ -43,7 +43,8 @@ READ_BOTH_TEMPLATES_IMPL(int)
 READ_BOTH_TEMPLATES_IMPL(long)
 
 void *decode_char_array(buffer *b) {
-    array_char *ac = (array_char *) read_from_buffer(b, sizeof(array_char));
-    ac->elements = read_from_buffer(b, ac->size);
-    return ac;
+    static array_char ac;
+    ac.size = read_int_from_buffer(b);
+    ac.elements = read_from_buffer(b, ac.size);
+    return &ac;
 }

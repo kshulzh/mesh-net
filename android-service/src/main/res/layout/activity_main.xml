@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,36 +13,40 @@
 
         <Button
             android:id="@+id/turn_on_bt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Turn On BT" />
 
         <Button
             android:id="@+id/turn_on"
-            android:layout_width="105dp"
-            android:layout_height="80dp"
-            android:text="Turn On" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Turn On VPN" />
 
         <Button
             android:id="@+id/turn_on_mn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Run Mesh Net" />
+            android:text="Find Devices" />
+
         <Button
             android:id="@+id/turn_off_mn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Stop Mesh Net" />
+
         <Button
             android:id="@+id/ask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ask" />
+
         <Button
             android:id="@+id/struct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Struct" />
+
         <Button
             android:id="@+id/udp"
             android:layout_width="match_parent"

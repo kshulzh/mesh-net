@@ -104,11 +104,11 @@ graph_node *graph_find_node_by_value(graph *thiz, void *element) {
 }
 
 void encode_graph_node_index(buffer *b, void *gn) {
-    write_to_buffer(b, &(((graph_node *) gn)->index), sizeof(unsigned int));
+    write_int_to_buffer(b,((graph_node *) gn)->index);
 }
 
 void encode_graph(buffer *b, graph *gr) {
-    write_to_buffer(b, &(gr->nodes.size), sizeof(unsigned int));
+    write_int_to_buffer(b,(gr->nodes).size);
 
     int i = 0;
     for_each((&(gr->nodes)), graph_node, {
@@ -123,7 +123,7 @@ void encode_graph(buffer *b, graph *gr) {
 }
 
 graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void *)) {
-    unsigned int size = *((int *) read_from_buffer(b, sizeof(unsigned int)));
+    unsigned int size = read_int_from_buffer(b);
     void **decoded = mem_alloc(sizeof(void *) * size);
     if (clone1 == 0) {
         clone1 = empty_clone;
@@ -140,7 +140,7 @@ graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void 
         list *indexes = decode_list(b, decode_uint32);
         for_each1(indexes,
         unsigned int, {
-            list_add(&temp->near, decoded[*temp1]);
+            list_add(&temp->near, decoded[(int)temp1]);
         })
         delete_list(indexes, 0, 0);
     })
