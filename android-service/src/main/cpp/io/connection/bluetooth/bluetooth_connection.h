@@ -13,6 +13,7 @@ typedef struct {
     connection c;
     jobject bluetooth;
 } bluetooth_connection;
+
 void bluetooth_connection_open(void *thiz);
 
 void bluetooth_connection_close(void *thiz);
@@ -21,15 +22,16 @@ char bluetooth_connection_is_connected(void *thiz);
 
 int bluetooth_connection_read(void *thiz);
 
-int bluetooth_connection_read_array(void *thiz, char* array, int size, int offset) ;
+int bluetooth_connection_read_array(void *thiz, char *array, int size, int offset);
 
 void bluetooth_connection_write(void *thiz, int b);
 
-void bluetooth_connection_write_array(void *thiz, char* data, int size);
+void bluetooth_connection_write_array(void *thiz, char *data, int size);
 
 void *bluetooth_connection_get_properties(void *thiz);
 
 void bluetooth_connection_set_properties(void *thiz, void *);
-bluetooth_connection* new_bluetooth_connection() ;
+
+bluetooth_connection *new_bluetooth_connection();
 
 #endif //MESH_NET_BLUETOOTH_CONNECTION_H

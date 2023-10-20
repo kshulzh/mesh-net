@@ -3,9 +3,11 @@ package com.github.kshulzh.mesh_net.android.vpn
 import android.app.PendingIntent
 import android.content.Intent
 import android.net.VpnService
+import android.os.Message
 import android.os.ParcelFileDescriptor
-import com.example.myapplication.R
+import com.github.kshulzh.mesh_net.R
 import com.github.kshulzh.mesh_net.android.core.Instance
+import com.github.kshulzh.mesh_net.android.core.routeUdp
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
@@ -137,6 +139,13 @@ class LocalVpnService : VpnService() {
         ids.forEach {
             getIpById(it)
         }
+        if (updateDevicesHandler != null) {
+            mainExecutor1?.execute {
+                updateDevicesHandler?.handleMessage(Message().apply {
+                    obj = routeIp2IdMap
+                })
+            }
+        }
     }
 
     fun getIdByIp(ip: UInt): ULong {
@@ -198,6 +207,7 @@ class LocalVpnService : VpnService() {
                     p.set(bb.toUByteArray())
                     println("${mapIpToString(p.src)} -> ${mapIpToString(p.dest)}")
                     var id = getIdByIp(p.dest)
+                    routeUdp(id.toLong(), p.toArray(), bb.size)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -223,6 +233,7 @@ class LocalVpnService : VpnService() {
 }
 
 fun FileChannel.write1(bb: ByteBuffer) {
+    val w: Int = write(bb)
     while (bb.hasRemaining()) {
         val w: Int = write(bb)
     }

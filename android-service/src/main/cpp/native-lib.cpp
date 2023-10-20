@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <string>
 #include "sys/socket.h"
+
 extern "C" {
 #include "io/connection/bluetooth/bluetooth_radar.h"
 }

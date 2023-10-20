@@ -51,6 +51,6 @@ class IPv4PacketTest {
         packet.set(array)
         var cs = packet.checkSum;
         var arrayres = packet.toArray().toUByteArray()
-        assert(cs ==packet.checkSum)
+        assert(cs == packet.checkSum)
     }
 }

@@ -36,7 +36,7 @@ Java_com_github_kshulzh_mesh_1net_android_core_Instance_start(JNIEnv *env, jclas
     print("start");
     is_running = 1;
     while (is_running) {
-        sleep(1);
+        //sleep(1);
         //print("running");
         instance_run(inst);
     }

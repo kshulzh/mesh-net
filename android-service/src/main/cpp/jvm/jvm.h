@@ -4,9 +4,11 @@
 
 #ifndef MESH_NET_JVM_H
 #define MESH_NET_JVM_H
+
 #include <jni.h>
 
 JavaVM *t_jvm();
 
 JNIEnv *n_env();
+
 #endif //MESH_NET_JVM_H

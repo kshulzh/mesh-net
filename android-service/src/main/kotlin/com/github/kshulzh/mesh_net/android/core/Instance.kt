@@ -3,12 +3,10 @@ package com.github.kshulzh.mesh_net.android.core
 import java.util.Random
 
 object Instance {
-    init {
-        init(Random().nextLong())
-    }
+    val id: ULong = Random().nextLong().toULong()
 
-    fun nothing() {
-
+    fun init() {
+        init(id.toLong())
     }
 
     external fun init(id: Long)

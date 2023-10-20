@@ -7,5 +7,6 @@
 
 #include "model/instance.h"
 
-instance* get_inst();
+instance *get_inst();
+
 #endif //MESH_NET_INST_H

@@ -16,8 +16,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.widget.Button
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 import android.widget.Toast
-import com.example.myapplication.R
+import androidx.core.content.ContextCompat
+import com.github.kshulzh.mesh_net.R
 import com.github.kshulzh.mesh_net.android.core.Instance
 import com.github.kshulzh.mesh_net.android.core.bluetooth.BluetoothChatService
 import com.github.kshulzh.mesh_net.android.core.bluetooth.BluetoothRadar
@@ -25,9 +29,11 @@ import com.github.kshulzh.mesh_net.android.core.bluetooth.Constants
 import com.github.kshulzh.mesh_net.android.core.bluetooth.setup
 import com.github.kshulzh.mesh_net.android.core.connectionAsk
 import com.github.kshulzh.mesh_net.android.core.connectionGetStruct
-import java.net.DatagramPacket
-import java.net.DatagramSocket
-import java.net.InetSocketAddress
+import java.util.concurrent.Executor
+
+
+var updateDevicesHandler: Handler.Callback? = null
+var mainExecutor1: Executor? = null
 
 class MainActivity : Activity() {
     init {
@@ -40,17 +46,6 @@ class MainActivity : Activity() {
     lateinit var bluetoothAdapter: BluetoothAdapter
     lateinit var bluetoothChatService: BluetoothChatService
 
-    @SuppressLint("NewApi")
-    var datagram = Thread {
-        var datagramPacket = DatagramPacket(ByteArray(3000), 3000)
-        var upds = DatagramSocket(5555)
-        while (!Thread.interrupted()) {
-            upds.receive(datagramPacket)
-            println(datagramPacket.data.decodeToString())
-        }
-
-    }
-
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,20 +56,45 @@ class MainActivity : Activity() {
         val turnOffMn = findViewById<Button>(R.id.turn_off_mn)
         val ask = findViewById<Button>(R.id.ask)
         val struct = findViewById<Button>(R.id.struct)
-        val udp = findViewById<Button>(R.id.udp)
 
-        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        registerReceiver(receiver, filter)
-        val filter1 = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
-        registerReceiver(receiver, filter1)
+        val id_label = findViewById<TextView>(R.id.my_id)
+        val device_table = findViewById<TableLayout>(R.id.device_table)
+
+        updateDevicesHandler = Handler.Callback {
+            if (it.obj is MutableMap<*, *>) {
+                device_table.removeAllViews()
+                (it.obj as MutableMap<UInt, ULong>).forEach {
+                    val tableRow = TableRow(this)
+                    tableRow.layoutParams = TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT
+                    )
+                    var id = TextView(this).apply {
+                        text = it.value.toString()
+                    }
+                    var ip = TextView(this).apply {
+                        text = mapIpToString(it.key)+"   "
+                    }
+                    tableRow.addView(ip)
+                    tableRow.addView(id)
+                    device_table.addView(tableRow)
+                }
+            }
+            true
+
+        }
+        mainExecutor1 = ContextCompat.getMainExecutor(this)
+
         bluetoothManager = getSystemService(BluetoothManager::class.java)
         bluetoothAdapter = bluetoothManager.adapter!!
         val bluetoothRadar = BluetoothRadar(bluetoothAdapter)
         bluetoothChatService =
             BluetoothChatService(this.applicationContext, mHandler, bluetoothRadar)
         bluetoothChatService.start()
-        Instance.nothing()
+        Instance.init()
+        id_label.text = Instance.id.toString()
         setup(bluetoothRadar)
+        registerReceiverBluetooth()
 
         turnOn.setOnClickListener {
             startVpn()
@@ -100,22 +120,17 @@ class MainActivity : Activity() {
         struct.setOnClickListener {
             connectionGetStruct(bluetoothChatService.bluetoothConnection?.devPtr!!)
         }
-        datagram.start()
 
-        udp.setOnClickListener {
-            println("sending")
-            Thread {
-
-                var str = "hello".encodeToByteArray()
-                var datagramPacket =
-                    DatagramPacket(str, str.size, InetSocketAddress("10.0.0.3", 5555))
-
-                var upds = DatagramSocket()
-                upds.send(datagramPacket)
-            }.start()
-        }
         startBluetooth()
         startMN()
+    }
+
+    fun registerReceiverBluetooth() {
+
+        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        registerReceiver(receiver, filter)
+        val filter1 = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
+        registerReceiver(receiver, filter1)
     }
 
     @SuppressLint("MissingPermission")
@@ -206,18 +221,18 @@ class MainActivity : Activity() {
                     // construct a string from the buffer
                     val writeMessage = writeBuf.decodeToString()
                     //mConversationArrayAdapter.add("Me:  $writeMessage")
-                    Toast.makeText(
-                        activity, writeMessage, Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        activity, writeMessage, Toast.LENGTH_SHORT
+//                    ).show()
                 }
 
                 Constants.MESSAGE_READ -> {
                     val readBuf = msg.obj as ByteArray
                     // construct a string from the valid bytes in the buffer
                     val readMessage = readBuf.decodeToString()
-                    Toast.makeText(
-                        activity, readMessage, Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        activity, readMessage, Toast.LENGTH_SHORT
+//                    ).show()
                     //mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage)
                 }
 
