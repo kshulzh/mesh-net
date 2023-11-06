@@ -18,9 +18,10 @@
 #define MESH_NET_SPREAD_FUNCTIONS_H
 
 #include "model/instance.h"
+#include "services/message.h"
 
-void spread_udp(instance *c, char *msg, unsigned int size);
+void spread_udp(instance *c, uint8_t *msg, uint32_t size);
 
-void spread_udp_res(instance *c, char *msg, unsigned int size);
+void spread_udp_res(message *m);
 
 #endif //MESH_NET_ROUTE_FUNCTIONS_H

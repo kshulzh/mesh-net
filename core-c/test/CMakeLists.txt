@@ -17,6 +17,7 @@ add_executable(
         io/connection/mock_connection.cpp
         services/connection/tests.cpp
         services/route/tests.cpp
+        services/spread/tests.cpp
         model/instance.cpp
         model/graph.cpp
 )

@@ -17,7 +17,11 @@
 #include "services/utils.h"
 
 short buffer_message_set_size(buffer *b) {
-    return *((short *) b->start) = (short) ((b->temp) - (b->start));
+    buffer b1;
+    b1.temp = b->start;
+    short size = ((b->temp) - (b->start));
+    write_short_to_buffer(&b1,size);
+    return size;
 }
 
 void free_uint32(void *v) {

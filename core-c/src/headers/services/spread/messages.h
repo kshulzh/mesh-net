@@ -22,28 +22,27 @@
 
 typedef enum {
     UDP
-} route_req;
+} spread_req;
 
 typedef struct {
     basic_message bm;
-    route_req type;
-} route_message;
+    spread_req type : 8;
+} spread_message;
 
 typedef struct {
-    basic_message rm;
-    list *way;
-    int index;
+    spread_message sm;
+    uint64_t src_id : 64;
     array_char *msg;
     void *inst;
-} route_udp_message;
+} spread_udp_message;
 
-void encode_route_message(buffer *b, route_message *u);
+void encode_spread_message(buffer *b, spread_message *u);
 
-route_message *decode_route_message(buffer *b);
+spread_message *decode_spread_message(buffer *b);
 
-void encode_route_udp_message(buffer *b, route_udp_message *u);
+void encode_spread_udp_message(buffer *b, spread_udp_message *u);
 
-route_udp_message *decode_route_udp_message(buffer *b);
+spread_udp_message *decode_spread_udp_message(buffer *b);
 
 
 #endif //MESH_NET_SPREAD_MESSAGES_H

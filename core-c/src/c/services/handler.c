@@ -24,7 +24,8 @@ message_handler *message_handlers() {
 void handle_message(message *m) {
     buffer  b1;
     buffer_init(&b1,100,m->bytes);
-    connection_message cm = *decode_connection_message(&b1);
-    message_handlers()[cm.bm.type](m);
+    basic_message bm = *decode_basic_message(&b1);
+    m->bm= bm;
+    message_handlers()[bm.type](m);
 }
 

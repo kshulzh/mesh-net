@@ -17,6 +17,7 @@
 #ifndef MESH_NET_BUFFER_H
 #define MESH_NET_BUFFER_H
 
+#include <stdint.h>
 #include "containers/array.h"
 #include "utils/predicate.h"
 #include "utils/malloc.h"

@@ -12,6 +12,9 @@ target_sources(${TARGET_NAME}
         services/route/handlers.c
         services/route/functions.c
         services/route/messages.c
+        services/spread/handlers.c
+        services/spread/functions.c
+        services/spread/messages.c
         services/utils.c
         services/message.c
         services/handler.c

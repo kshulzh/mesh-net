@@ -22,11 +22,11 @@
 #include "services/handlers.h"
 #include "messages.h"
 
-message_handler *route_message_handlers();
+message_handler *spread_message_handlers();
 
-typedef void (*udp_handler)(route_udp_message *);
+typedef void (*spread_udp_handler)(spread_udp_message *);
 
-udp_handler *udp_handler1();
+spread_udp_handler *spread_udp_handler1();
 
 void spread_handle_udp(message *m);
 
