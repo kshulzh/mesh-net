@@ -26,9 +26,9 @@ message_handler *connection_message_handlers() {
 
 
 void connection_handle_ask_req(message *m) {
-    buffer b;
-    buffer_init(&b, m->bm.size, m->bytes);
-    connection_ask_req_message *c = decode_connection_ask_req_message(&b);
+//    buffer b;
+//    buffer_init(&b, m->bm.size, m->bytes);
+   // connection_ask_req_message *c = decode_connection_ask_req_message(&b);
     LOG_INFO("req")
     connection_ask_res(m, OK);
 }
@@ -39,9 +39,6 @@ void connection_handle_ask_res(message *m) {
 }
 
 void connection_handle_get_struct_req(message *m) {
-    buffer b;
-    buffer_init(&b, m->bm.size, m->bytes);
-    connection_get_struct_req_message *gs = decode_connection_get_struct_req_message(&b);
     connection_get_struct_res(m, ((instance *) m->c->r->inst)->g, OK);
 }
 
@@ -56,14 +53,13 @@ void connection_handle_get_struct_res(message *m) {
 }
 
 void connection_handle(message *m) {
-    buffer  b1;
-    buffer_init(&b1,100,m->bytes);
-    connection_message cm = *decode_connection_message(&b1);
-    connection_message_handlers()[cm.type](m);
+    connection_message *cm = ((connection_message*) m->bytes);
+    connection_message_handlers()[cm->type](m);
 }
 
 void connection_setup() {
     message_handlers()[CONNECTION] = connection_handle;
+
     connection_message_handlers()[REQ_ASK] = connection_handle_ask_req;
     connection_message_handlers()[RES_ASK] = connection_handle_ask_res;
 

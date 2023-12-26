@@ -22,13 +22,13 @@
 #include "io/buffer.h"
 
 typedef struct {
-    unsigned long id;
-    unsigned long user_id;
+    uint64_t id;
+    uint64_t user_id;
 } device;
 
-device *new_device(
-        unsigned long id,
-        unsigned long user_id);
+device * new_device(
+        uint64_t id,
+        uint64_t user_id);
 
 char predicate_device_equals(void *thiz, void *params);
 

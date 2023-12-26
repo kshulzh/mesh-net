@@ -27,7 +27,7 @@ typedef struct {
 typedef struct {
     list_node *first;
     list_node *last;
-    unsigned int size;
+    uint32_t size;
 } list;
 
 #define for_each(l, type, body) \

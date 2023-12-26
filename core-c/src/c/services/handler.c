@@ -22,10 +22,7 @@ message_handler *message_handlers() {
 }
 
 void handle_message(message *m) {
-    buffer  b1;
-    buffer_init(&b1,100,m->bytes);
-    basic_message bm = *decode_basic_message(&b1);
-    m->bm= bm;
-    message_handlers()[bm.type](m);
+    m->bm= *((basic_message*) m->bytes);
+    message_handlers()[m->bm.type](m);
 }
 

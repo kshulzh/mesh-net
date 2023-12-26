@@ -17,7 +17,7 @@
 #include "utils/new.h"
 
 extern
-void buffer_init(buffer *buf, uint32_t size, char *arr) {
+void buffer_init(buffer *buf, uint32_t size, uint8_t *arr) {
     buf->size = size;
     buf->start = arr;
     buf->end = arr + size;
@@ -26,7 +26,7 @@ void buffer_init(buffer *buf, uint32_t size, char *arr) {
 }
 
 extern
-char *mem_copy(char *dest, const char *src, uint32_t size) {
+char *mem_copy(uint8_t *dest, const uint8_t *src, uint32_t size) {
     for (int i = 0; i < size; ++i) {
         dest[i] = src[i];
     }
@@ -57,7 +57,7 @@ void buffer_reset(buffer *buf) {
 
 }
 
-buffer *new_buffer(char *data, unsigned int size) {
+buffer *new_buffer(uint8_t *data, uint32_t size) {
     buffer *b = New(buffer);
     buffer_init(b, size, data);
     return b;
@@ -94,51 +94,71 @@ void *empty_clone(void *obj) {
     return obj;
 }
 
-char * write_num_to_buffer(buffer *buf,long long d, int size) {
-    char* res = buf->temp;
-    for (int i = size-1; i >-1 ; --i) {
-        buf->temp[i] = d & 0xff;
-        d = d>>8;
-    }
+uint8_t * write_num_to_buffer(buffer *buf,uint64_t d, uint32_t size) {
+    uint8_t * res = buf->temp;
+    write_number(buf->temp, d, size);
     buf->temp+=size;
 
     return res;
 }
 
 
-char *write_char_to_buffer(buffer *buf, char d) {
+char *write_char_to_buffer(buffer *buf, uint8_t d) {
     return write_num_to_buffer(buf,d,1);
 }
 
-char *write_short_to_buffer(buffer *buf, short d) {
+char *write_short_to_buffer(buffer *buf, uint16_t d) {
     return write_num_to_buffer(buf,d,2);
 }
-char *write_int_to_buffer(buffer *buf, int d) {
+char *write_int_to_buffer(buffer *buf, uint32_t d) {
     return write_num_to_buffer(buf,d,4);
 }
-char *write_long_to_buffer(buffer *buf, long d) {
+char *write_long_to_buffer(buffer *buf, uint64_t d) {
     return write_num_to_buffer(buf,d,8);
 }
-long read_num_from_buffer(buffer *buf, int size) {
-    long r = 0;
-    for (int i = 0; i < size; ++i) {
+uint64_t read_num_from_buffer(buffer *buf, uint32_t size) {
+    uint64_t r = read_number(buf->temp,size);
+    buf->temp+=size;
+
+    return r;
+}
+uint8_t read_char_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 1);
+}
+
+uint16_t read_short_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 2);
+}
+uint32_t read_int_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 4);
+}
+uint64_t read_long_from_buffer(buffer *buf) {
+    return read_num_from_buffer(buf, 8);
+}
+
+uint64_t read_number(uint8_t* ptr,uint8_t size) {
+    uint64_t r = 0;
+    for (int i = 0; i < size; i++) {
         r = r <<8;
-        r+=buf->temp[0];
-        buf->temp++;
+        r+=ptr[i];
     }
 
     return r;
 }
-char read_char_from_buffer(buffer *buf) {
-    return read_num_from_buffer(buf, 1);
+
+void write_number(uint8_t* ptr, uint64_t num, uint8_t size) {
+    for (int i = size-1; i >-1 ; i--) {
+        ptr[i] = num & 0xff;
+        num = num>>8;
+    }
 }
 
-short read_short_from_buffer(buffer *buf) {
-    return read_num_from_buffer(buf, 2);
+void * read_dump_and_get(buffer *buf, uint32_t size) {
+    void* res = buf->temp;
+    buf->temp+=size;
+    return res;
 }
-int read_int_from_buffer(buffer *buf) {
-    return read_num_from_buffer(buf, 4);
-}
-long read_long_from_buffer(buffer *buf) {
-    return read_num_from_buffer(buf, 8);
+void write_dump(buffer *buf,void* o, uint32_t size) {
+    mem_copy(buf->temp,(uint8_t*) o, size);
+    buf->temp+=size;
 }

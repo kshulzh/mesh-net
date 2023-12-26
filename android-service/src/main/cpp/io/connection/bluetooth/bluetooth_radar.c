@@ -37,7 +37,7 @@ void bluetooth_radar_scan(void *thiz) {
     bluetooth_radar *br = (bluetooth_radar *) thiz;
     if (br->connections.size > 0) {
         connection *c = list_remove_first(&br->connections);
-        br->on_find_device_handler(br, c);
+        br->r.on_find_device_handler(br, c);
     }
 }
 
@@ -49,12 +49,6 @@ void *bluetooth_radar_get_properties(void *thiz) {
     bluetooth_radar *br = (bluetooth_radar *) thiz;
 }
 
-void
-bluetooth_on_find_device_handler(void *thiz, void (*on_find_device_handler)(void *thiz, void *)) {
-    bluetooth_radar *br = (bluetooth_radar *) thiz;
-    br->on_find_device_handler = on_find_device_handler;
-}
-
 bluetooth_radar *new_bluetooth_radar() {
     bluetooth_radar *br = New(bluetooth_radar);
     br->r.start = bluetooth_radar_start;
@@ -63,7 +57,6 @@ bluetooth_radar *new_bluetooth_radar() {
     br->r.scan = bluetooth_radar_scan;
     br->r.set_properties = bluetooth_radar_set_properties;
     br->r.get_properties = bluetooth_radar_get_properties;
-    br->r.on_find_device_handler = bluetooth_on_find_device_handler;
     list_reset(&(br->connections));
 
     return br;

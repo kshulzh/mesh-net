@@ -70,7 +70,7 @@ TEST(route, ask) {
     instance *inst1 = new_instance(new_device(1, 1));
     mock_radar *mr1 = (mock_radar *) new_mock_radar();
     instance_add_radar(inst1, mr1);
-    mr1->on_find_device_handler = handler2;
+    mr1->r.on_find_device_handler = handler2;
     mock_connection *mc1 = new_mock_connection(create_buffers(4, 1000));
     list_add(&inst1->buffers, ri1b1);
     list_add(&inst1->buffers, ri1b2);
@@ -78,7 +78,7 @@ TEST(route, ask) {
 
     instance *inst2 = new_instance(new_device(2, 2));
     mock_radar *mr2 = (mock_radar *) new_mock_radar();
-    mr2->on_find_device_handler = handler1;
+    mr2->r.on_find_device_handler = handler1;
     instance_add_radar(inst2, mr2);
     mock_connection *mc2 = new_mock_connection(create_buffers(4, 1000));
     list_add(&inst2->buffers, ri1b1);
@@ -108,7 +108,7 @@ TEST(route, ask) {
         instance_run(inst2);
     }
 
-    route_udp(inst1, 2, "123", 3);
+    route_udp(inst1, 2, (uint8_t*)"123", 3);
     for (int i = 0; i < 8; i++) {
         instance_run(inst1);
         instance_run(inst2);

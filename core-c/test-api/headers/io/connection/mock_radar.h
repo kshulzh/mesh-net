@@ -25,7 +25,6 @@ typedef struct {
     radar r;
     char is_running;
     list queue;
-    void (*on_find_device_handler)(void *thiz,void *);
 
 } mock_radar;
 
@@ -45,7 +44,6 @@ void mock_radar_set_properties(void *thiz, void *);
 void *mock_radar_get_properties(void *thiz);
 
 
-void mock_on_find_device_handler(void *thiz, void (*on_find_device_handler)(void *thiz,void *));
 radar* new_mock_radar();
 
 void mock_radar_find(void *thiz);

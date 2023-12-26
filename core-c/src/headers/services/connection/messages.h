@@ -35,21 +35,21 @@ typedef enum {
     RES_GET_STRUCT,
     REQ_UPDATE_STRUCT,
     RES_UPDATE_STRUCT
-} connection_req;
+} __attribute__((packed)) connection_req;
 
 typedef struct {
     basic_message bm;
     connection_req type;
-} connection_message;
+} __attribute__((packed)) connection_message;
 
 typedef struct {
     connection_message cm;
-} connection_ask_req_message;
+} __attribute__((packed)) connection_ask_req_message;
 
 typedef struct {
     connection_message cm;
     codes code;
-} connection_ask_res_message;
+} __attribute__((packed)) connection_ask_res_message;
 
 typedef struct {
     connection_message cm;
@@ -93,13 +93,13 @@ typedef struct {
 
 typedef struct {
     connection_message cm;
-} connection_get_struct_req_message;
+} __attribute__((packed)) connection_get_struct_req_message;
 
 typedef struct {
     connection_message cm;
     codes code;
     graph *g;
-} connection_get_struct_res_message;
+} __attribute__((packed)) connection_get_struct_res_message;
 
 typedef struct {
     connection_message cm;

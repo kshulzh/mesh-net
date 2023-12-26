@@ -1,6 +1,7 @@
 #include "services/spread/messages.h"
 #include "io/writers/writers.h"
 #include "io/readers/readers.h"
+#include "services/utils.h"
 
 /*
  * Copyright (c) 2023. Kirill Shulzhenko
@@ -19,31 +20,23 @@
  */
 
 void encode_spread_message(buffer *b, spread_message *u) {
-    encode_basic_message(b,&u->bm);
-    write_char_to_buffer(b,u->type);
+    write_dump(b, u, sizeof(spread_message));
 }
 
 
 spread_message *decode_spread_message(buffer *b) {
-    static spread_message sm;
-    sm.bm = *decode_basic_message(b);
-    sm.type = read_char_from_buffer(b);
-
-    return &sm;
+    return read_dump_and_get(b, sizeof(spread_message));
 }
 
 void encode_spread_udp_message(buffer *b, spread_udp_message *u) {
-    encode_spread_message(b,&u->sm);
-    write_long_to_buffer(b,u->src_id);
+    write_dump(b, u, sizeof(spread_udp_message));
     encode_char_array(b, u->msg);
+    u->sm.bm.size = buffer_message_set_size(b);
 }
 
 spread_udp_message *decode_spread_udp_message(buffer *b) {
-    static spread_udp_message sm;
+    spread_udp_message *sm = read_dump_and_get(b, sizeof(spread_udp_message));
+    sm->msg = decode_char_array(b);
 
-    sm.sm = *decode_spread_message(b);
-    sm.src_id = read_long_from_buffer(b);
-    sm.msg = decode_char_array(b);
-
-    return &sm;
+    return sm;
 }

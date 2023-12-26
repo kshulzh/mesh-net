@@ -47,14 +47,12 @@ void connection_getid(connection *c) {
 }
 
 void connection_get_struct(connection *c) {
-    buffer b;
-    char* bytes[100];
-    buffer_init(&b,100,bytes);
     connection_ask_req_message req;
     req.cm.bm.type = CONNECTION;
     req.cm.type = REQ_GET_STRUCT;
-    encode_connection_get_struct_req_message(&b,&req);
-    c->write_array(c, b.start, (b.temp) - (b.start));
+    req.cm.bm.size = sizeof(connection_ask_req_message);
+
+    c->write_array(c, (char *)  &req, sizeof(connection_ask_req_message));
 }
 
 void connection_update_struct(connection *c, graph *g) {
@@ -62,17 +60,13 @@ void connection_update_struct(connection *c, graph *g) {
 }
 
 void connection_ask_res(message *m, codes code) {
-    buffer b;
-    char* bytes[100];
-    buffer_init(&b,100,bytes);
     connection_ask_res_message res;
     res.cm.bm = m->bm;
     res.cm.type = RES_ASK;
     res.code = code;
-    encode_connection_ask_req_message(&b,&res);
-    res.cm.bm.size = buffer_message_set_size(&b);
+    res.cm.bm.size = sizeof(connection_ask_res_message);
 
-    m->c->write_array(m->c, b.start, b.temp-b.start);
+    m->c->write_array(m->c, (char *)  &res, sizeof(connection_ask_res_message));
 }
 
 void connection_setname_res(message *m, codes code) {
@@ -97,13 +91,19 @@ void connection_get_struct_res(message *m, graph *g, codes code) {
     res.g = g;
     res.code = code;
     buffer *b = list_find_first(&(((instance *) m->c->r->inst)->buffers), buffer_is_free());
-    b->is_locked = 1;
-    buffer_reset(b);
-    encode_connection_get_struct_res_message(b, &res);
-    buffer_message_set_size(b);
-    m->c->write_array(m->c, b->start, (b->temp) - (b->start));
-    buffer_reset(b);
-    b->is_locked = 0;
+    if(b) {
+        b->is_locked = 1;
+        buffer_reset(b);
+        connection_get_struct_res_message *ptr = New(connection_get_struct_res_message);
+        *ptr = res;
+        encode_connection_get_struct_res_message(b, ptr);
+        buffer_message_set_size(b);
+        m->c->write_array(m->c, b->start, (b->temp) - (b->start));
+        buffer_reset(b);
+        b->is_locked = 0;
+    } else {
+        //todo
+    }
 }
 
 void connection_update_struct_res(message *m, codes code) {

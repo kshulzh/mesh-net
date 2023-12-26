@@ -15,8 +15,6 @@ jobject *bluetooth_adapter();
 typedef struct {
     radar r;
 
-    void (*on_find_device_handler)(void *thiz, void *);
-
     jobject btr;
     list connections;
 } bluetooth_radar;
@@ -35,9 +33,6 @@ void bluetooth_radar_set_properties(void *thiz, void *);
 
 void *bluetooth_radar_get_properties(void *thiz);
 
-
-void
-bluetooth_on_find_device_handler(void *thiz, void (*on_find_device_handler)(void *thiz, void *));
 
 bluetooth_radar *new_bluetooth_radar();
 

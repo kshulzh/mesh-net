@@ -23,8 +23,8 @@ extern "C" {
 }
 
 TEST(mock_connection, test1) {
-    char b1[100];
-    char b2[100];
+    uint8_t b1[100];
+    uint8_t b2[100];
     buffer buf1;
     buffer buf2;
     buffer_init(&buf1, 100, b1);

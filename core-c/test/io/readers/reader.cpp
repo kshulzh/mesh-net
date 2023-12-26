@@ -21,7 +21,7 @@ extern "C" {
 }
 
 TEST(reader, read_char) {
-    char b[1];
+    uint8_t b[1];
     buffer buf;
     buffer_init(&buf, 1, b);
     b[0] = 'c';
@@ -34,7 +34,7 @@ TEST(reader, read_char) {
 TEST(reader, read_int) {
     int b[1];
     buffer buf;
-    buffer_init(&buf, 1, reinterpret_cast<char *>(b));
+    buffer_init(&buf, 1, (uint8_t*) b);
     b[0] = 123456789;
 
     int expected_int = 123456789;
@@ -43,7 +43,7 @@ TEST(reader, read_int) {
 }
 
 TEST(reader, read_int_array) {
-    char c[sizeof(array_int) + sizeof(int) * 3];
+    uint8_t c[sizeof(array_int) + sizeof(int) * 3];
     buffer buf;
     buffer_init(&buf, sizeof(array_int) + sizeof(int) * 3, c);
     array_int *array = (array_int *) c;

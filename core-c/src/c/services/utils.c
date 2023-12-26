@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2023. Kirill Shulzhenko
  *
@@ -17,10 +18,9 @@
 #include "services/utils.h"
 
 short buffer_message_set_size(buffer *b) {
-    buffer b1;
-    b1.temp = b->start;
     short size = ((b->temp) - (b->start));
-    write_short_to_buffer(&b1,size);
+    mem_copy(b->start, &size ,2);
+
     return size;
 }
 

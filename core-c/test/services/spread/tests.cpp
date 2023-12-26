@@ -39,12 +39,14 @@ static void handler1(void *thiz, void *c) {
     connection *con = (connection *) c;
     con->open(con);
     connection_get_struct(con);
-    instance *inst = (instance *) con->r->inst;
-    list_add(&inst->connections, con);
+    instance *inst = (instance *) (con->r->inst);
+    list_add(&(inst->connections), con);
     list_add(&(inst->buffered_connections), new_connection_buffer(con));
 }
 
 TEST(spread, ask) {
+    printf("%d\n", sizeof(basic_message));
+    printf("%d\n", sizeof(connection_ask_req_message));
     connection_setup();
     spread_setup();
     spread_udp_handler1()[0] = handle_udp;
@@ -52,13 +54,13 @@ TEST(spread, ask) {
     instance *inst1 = new_instance(new_device(1, 1));
     mock_radar *mr1 = (mock_radar *) new_mock_radar();
     instance_add_radar(inst1, mr1);
-    mr1->on_find_device_handler = handler1;
+    mr1->r.on_find_device_handler = handler1;
     mock_connection *mc1 = new_mock_connection(create_buffers(4, 1000));
     inst1->buffers = *create_buffers(5,1500);
 
     instance *inst2 = new_instance(new_device(2, 2));
     mock_radar *mr2 = (mock_radar *) new_mock_radar();
-    mr2->on_find_device_handler = handler1;
+    mr2->r.on_find_device_handler = handler1;
     instance_add_radar(inst2, mr2);
     mock_connection *mc2 = new_mock_connection(create_buffers(4, 1000));
     mock_connection *mc2_3 = new_mock_connection(create_buffers(4, 1000));
@@ -66,7 +68,7 @@ TEST(spread, ask) {
 
     instance *inst3 = new_instance(new_device(3, 3));
     mock_radar *mr3 = (mock_radar *) new_mock_radar();
-    mr3->on_find_device_handler = handler1;
+    mr3->r.on_find_device_handler = handler1;
     instance_add_radar(inst3, mr3);
     mock_connection *mc3 = new_mock_connection(create_buffers(4, 1000));
     inst3->buffers = *create_buffers(5,1500);

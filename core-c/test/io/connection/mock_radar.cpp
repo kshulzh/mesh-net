@@ -35,7 +35,7 @@ static void handler(void *thiz, void *connection) {
 
 TEST(mock_radar, test1) {
     mock_radar *m = (mock_radar *) new_mock_radar();
-    m->on_find_device_handler = handler;
+    m->r.on_find_device_handler = handler;
     mock_radar_add_to_queue(m, &(mock_connection1->c));
     mock_radar_add_to_queue(m, &(mock_connection2->c));
     mock_radar_add_to_queue(m, &(mock_connection3->c));

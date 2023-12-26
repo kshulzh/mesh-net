@@ -23,7 +23,7 @@
 #include "services/route/handlers.h"
 #include "services/utils.h"
 
-void route_udp(instance *inst, unsigned long id, char *msg, unsigned int size) {
+void route_udp(instance *inst, uint64_t id, uint8_t *msg, uint32_t size) {
     char b[1500];
     buffer b1;
     buffer_init(&b1,1500,b);
@@ -31,11 +31,11 @@ void route_udp(instance *inst, unsigned long id, char *msg, unsigned int size) {
     ac.size = size;
     ac.elements = msg;
 
-    route_udp_message rum;
-    rum.msg = &ac;
-    rum.index = 1;
-    rum.rm.type = UDP;
-    rum.rm.bm.type = ROUTE;
+    route_udp_message* rum = mem_alloc(sizeof(route_udp_message));
+    rum->msg = &ac;
+    rum->index = 1;
+    rum->rm.type = UDP;
+    rum->rm.bm.type = ROUTE;
     list *l = graph_find_way_in_depth(inst->g, graph_find_node_by_value(inst->g, &(inst->this_device)),
                                       connection_device_by_id(id), 0);
     list *ml = new_list();
@@ -43,23 +43,23 @@ void route_udp(instance *inst, unsigned long id, char *msg, unsigned int size) {
         list_add(ml, temp->element);
     })
     delete_list(l, 0, 0);
-    rum.way = ml;
-    if (rum.index == rum.way->size) {
-        rum.inst = inst;
+    rum->way = ml;
+    if (rum->index == rum->way->size) {
+        rum->inst = inst;
         if (udp_handler1()[0] != 0) {
             udp_handler1()[0](&rum);
         }
     } else {
-        unsigned long *id1 = ((unsigned long *) list_get_by_id(rum.way, rum.index));
-        rum.index++;
+        uint64_t *id1 = ((uint64_t *) list_get_by_id(rum->way, rum->index));
+        rum->index++;
         buffer_reset(&b1);
-        encode_route_udp_message(&b1, &rum);
-        rum.rm.bm.size = buffer_message_set_size(&b1);
+        encode_route_udp_message(&b1, rum);
+        rum->rm.bm.size = buffer_message_set_size(&b1);
         connection *c = list_find_first(&inst->connections, connection_device_by_id(
                 *id1));
         buffer_reset(&b1);
         if (c != 0) {
-            c->write_array(c, b1.start, rum.rm.bm.size);
+            c->write_array(c, b1.start, rum->rm.bm.size);
         }
     }
 }

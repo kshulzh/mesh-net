@@ -19,8 +19,8 @@
 
 #include "model/instance.h"
 
-void route_udp(instance *c, unsigned long id, char *msg, unsigned int size);
+void route_udp(instance *c, uint64_t id, uint8_t *msg, uint32_t size);
 
-void route_udp_res(instance *c, char *msg, unsigned int size);
+void route_udp_res(instance *c, uint8_t *msg, uint32_t size);
 
 #endif //MESH_NET_ROUTE_FUNCTIONS_H

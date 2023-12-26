@@ -24,7 +24,7 @@
 typedef struct {
     void *element;
     list near;
-    unsigned int index;
+    uint32_t index;
     void *g;
 } graph_node;
 

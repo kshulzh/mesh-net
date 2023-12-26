@@ -18,17 +18,15 @@
 #include "services/utils.h"
 
 void encode_connection_message(buffer *b, connection_message *cm) {
-    encode_basic_message(b,&(cm->bm));
-    write_char_to_buffer(b,cm->type);
+    write_dump(b,cm, sizeof(connection_message));
 }
 void encode_connection_ask_req_message(buffer *b, connection_ask_req_message *cm) {
-    encode_connection_message(b,&(cm->cm));
+    write_dump(b,cm, sizeof(connection_ask_req_message));
     buffer_message_set_size(b);
 }
 
 void encode_connection_ask_res_message(buffer *b, connection_ask_res_message *cm) {
-    encode_connection_message(b,&(cm->cm));
-    write_char_to_buffer(b,cm->code);
+    write_dump(b,cm, sizeof(connection_ask_res_message));
     buffer_message_set_size(b);
 }
 
@@ -68,13 +66,12 @@ void encode_connection_getid_res_message(buffer *b, connection_getid_res_message
 
 
 void encode_connection_get_struct_req_message(buffer *b, connection_get_struct_req_message *cm) {
-    encode_connection_message(b,&(cm->cm));
+    write_dump(b,cm, sizeof(connection_get_struct_req_message));
     cm->cm.bm.size = buffer_message_set_size(b);
 }
 
 void encode_connection_get_struct_res_message(buffer *b, connection_get_struct_res_message *cm) {
-    encode_connection_message(b,&(cm->cm));
-    write_char_to_buffer(b,cm->code);
+    write_dump(b,cm, sizeof(connection_get_struct_res_message));
     encode_graph(b, cm->g);
     cm->cm.bm.size = buffer_message_set_size(b);
 }
@@ -89,24 +86,15 @@ void encode_connection_update_struct_res_message(buffer *b, connection_update_st
 
 //decode
 connection_message * decode_connection_message(buffer *b) {
-    static connection_message cm;
-    cm.bm = *decode_basic_message(b);
-
-    cm.type = read_char_from_buffer(b);
-    return &cm;
+    return read_dump_and_get(b, sizeof(connection_message));
 }
 
 connection_ask_req_message *decode_connection_ask_req_message(buffer *b) {
-    static connection_ask_req_message cm;
-    cm.cm = *decode_connection_message(b);
-    return &cm;
+    return read_dump_and_get(b, sizeof(connection_ask_req_message));
 }
 
 connection_ask_res_message *decode_connection_ask_res_message(buffer *b) {
-    static connection_ask_res_message cm;
-    cm.cm = *decode_connection_message(b);
-    cm.code = read_char_from_buffer(b);
-    return &cm;
+    return read_dump_and_get(b, sizeof(connection_ask_res_message));
 }
 
 
@@ -145,17 +133,13 @@ connection_getid_res_message *decode_connection_getid_res_message(buffer *b) {
 
 
 connection_get_struct_req_message *decode_connection_get_struct_req_message(buffer *b) {
-    static connection_get_struct_req_message cm;
-    cm.cm = *decode_connection_message(b);
-    return &cm;
+    return read_dump_and_get(b, sizeof(connection_get_struct_req_message));
 }
 
 connection_get_struct_res_message *decode_connection_get_struct_res_message(buffer *b) {
-    static connection_get_struct_res_message cm;
-    cm.cm = *decode_connection_message(b);
-    cm.code = read_char_from_buffer(b);
-    cm.g = decode_graph(b, decode_device, device_clone);
-    return &cm;
+    connection_get_struct_res_message * cm = read_dump_and_get(b, sizeof(connection_get_struct_res_message));
+    cm->g = decode_graph(b, decode_device, device_clone);
+    return cm;
 }
 
 connection_update_struct_req_message *decode_connection_update_struct_req_message(buffer *b) {

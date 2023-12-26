@@ -26,7 +26,6 @@ ARRAY(short)
 ARRAY(int)
 ARRAY(long)
 
-typedef unsigned int uint32_t;
 typedef struct {
     uint32_t size;
     char *start;
@@ -37,7 +36,7 @@ typedef struct {
 
 #define buffer(name, size) \
 char name##_array[size]; \
-buffer *name = new_buffer(name##_array, size); \
+buffer *name = new_buffer((uint8_t*)name##_array, size); \
 
 #define clone_declaration(type) void * type##_clone(void *src);
 
@@ -50,39 +49,49 @@ buffer *name = new_buffer(name##_array, size); \
 
 void *empty_clone(void *);
 
-void buffer_init(buffer *buf, uint32_t size, char *arr);
+void buffer_init(buffer *buf, uint32_t size, uint8_t  *arr);
 
 char *write_to_buffer(buffer *buf, void *data, uint32_t size);
 
 char *read_from_buffer(buffer *buf, uint32_t size);
 
-char *mem_copy(char *dest, const char *src, uint32_t size);
+char *mem_copy(uint8_t *dest, const uint8_t *src, uint32_t size);
 
 void buffer_reset(buffer *buf);
 
 char buffer_predicate_is_locked(void *thiz, void *params);
 
-buffer *new_buffer(char *data, unsigned int size);
+buffer *new_buffer(uint8_t *data, uint32_t size);
 
 predicate *buffer_is_locked();
 
 predicate *buffer_is_free();
 
-char *write_char_to_buffer(buffer *buf, char d);
+char *write_char_to_buffer(buffer *buf, uint8_t d);
 
-char *write_short_to_buffer(buffer *buf, short d);
+char *write_short_to_buffer(buffer *buf, uint16_t d);
 
-char *write_int_to_buffer(buffer *buf, int d);
+char *write_int_to_buffer(buffer *buf, uint32_t d);
 
-char *write_long_to_buffer(buffer *buf, long d);
+char *write_long_to_buffer(buffer *buf, uint64_t d);
 
 
-char read_char_from_buffer(buffer *buf);
+uint8_t read_char_from_buffer(buffer *buf);
 
-short read_short_from_buffer(buffer *buf);
+uint16_t read_short_from_buffer(buffer *buf);
 
-int read_int_from_buffer(buffer *buf);
+uint32_t read_int_from_buffer(buffer *buf);
 
-long read_long_from_buffer(buffer *buf);
+uint64_t read_long_from_buffer(buffer *buf);
+
+uint64_t read_number(uint8_t* ptr,uint8_t size);
+
+void write_number(uint8_t* ptr, uint64_t num, uint8_t size);
+
+void * read_dump_and_get(buffer *buf, uint32_t size);
+
+void write_dump(buffer *buf,void* o, uint32_t size);
+
+
 
 #endif //MESH_NET_BUFFER_H

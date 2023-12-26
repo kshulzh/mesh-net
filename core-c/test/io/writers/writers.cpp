@@ -22,7 +22,7 @@ extern "C" {
 #include "io/buffer.h"
 }
 TEST(writers, write_char) {
-    char b[30];
+    uint8_t b[30];
     buffer buf;
     buffer_init(&buf, 30, b);
     char expected_char = 'c';
@@ -34,7 +34,7 @@ TEST(writers, write_char) {
 }
 
 TEST(writers, write_int) {
-    char b[30];
+    uint8_t b[30];
     buffer buf;
     buffer_init(&buf, 30, b);
     int expected_int = 1234567;
@@ -46,7 +46,7 @@ TEST(writers, write_int) {
 }
 
 TEST(writers, write_int_array) {
-    char b[30];
+    uint8_t b[30];
     int elements[3];
     buffer buf;
     array_int array;

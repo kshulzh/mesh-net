@@ -17,8 +17,8 @@
 #include "devices/device.h"
 
 device *new_device(
-        unsigned long id,
-        unsigned long user_id) {
+        uint64_t id,
+        uint64_t user_id) {
     device *d = New(device);
     d->id = id;
     d->user_id = user_id;

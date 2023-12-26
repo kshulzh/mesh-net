@@ -58,7 +58,7 @@ TEST(connection1, ask) {
     instance *inst1 = new_instance(new_device(1, 1));
     mock_radar *mr1 = (mock_radar *) new_mock_radar();
     instance_add_radar(inst1, mr1);
-    mr1->on_find_device_handler = handler2;
+    mr1->r.on_find_device_handler = handler2;
     mock_connection *mc1 = new_mock_connection(create_buffers(4, 1000));
     list_add(&inst1->buffers, ci1b1);
     list_add(&inst1->buffers, ci1b2);
@@ -66,7 +66,7 @@ TEST(connection1, ask) {
 
     instance *inst2 = new_instance(new_device(2, 2));
     mock_radar *mr2 = (mock_radar *) new_mock_radar();
-    mr2->on_find_device_handler = handler1;
+    mr2->r.on_find_device_handler = handler1;
     instance_add_radar(inst2, mr2);
     mock_connection *mc2 = new_mock_connection(create_buffers(4, 1000));
     list_add(&inst2->buffers, ci1b1);

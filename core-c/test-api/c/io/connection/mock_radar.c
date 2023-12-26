@@ -46,10 +46,6 @@ void *mock_radar_get_properties(void *thiz) {
 }
 
 
-void mock_on_find_device_handler(void *thiz, void (*on_find_device_handler)(void *thiz,void *)) {
-    ((mock_radar*) thiz)->on_find_device_handler = on_find_device_handler;
-}
-
 radar* new_mock_radar() {
     mock_radar* r = New(mock_radar);
     r->r.start = mock_radar_start;
@@ -58,7 +54,6 @@ radar* new_mock_radar() {
     r->r.scan = mock_radar_scan;
     r->r.get_properties = mock_radar_get_properties;
     r->r.set_properties = mock_radar_set_properties;
-    r->r.on_find_device_handler = mock_on_find_device_handler;
     r->queue.first = 0;
     r->queue.size = 0;
     r->queue.last = 0;
@@ -69,8 +64,8 @@ void mock_radar_find(void *thiz) {
     mock_radar * thiz_ = (mock_radar*) thiz;
     if(thiz_->is_running && thiz_->queue.size) {
         mock_connection* mc = list_remove_first(&(thiz_->queue));
-        mc->c.r = &(thiz_->r);
-        thiz_->on_find_device_handler(thiz,mc);
+        mc->c.r = thiz_;
+        thiz_->r.on_find_device_handler(thiz,mc);
     }
 }
 

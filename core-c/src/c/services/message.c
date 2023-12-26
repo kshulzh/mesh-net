@@ -27,15 +27,9 @@ message *message_of_buffer(buffer *b) {
 }
 
 void encode_basic_message(buffer *b, basic_message *bm) {
-    write_short_to_buffer(b,bm->size);
-    write_char_to_buffer(b,bm->type);
-    write_long_to_buffer(b, bm->message_id);
+    write_dump(b,bm, sizeof(basic_message));
 }
 
 basic_message* decode_basic_message(buffer *b) {
-    static basic_message bm;
-    bm.size = read_short_from_buffer(b);
-    bm.type = read_char_from_buffer(b);
-    bm.message_id = read_long_from_buffer(b);
-    return &bm;
+    return read_dump_and_get(b, sizeof(basic_message));
 }

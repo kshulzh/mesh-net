@@ -48,7 +48,7 @@ Java_com_github_kshulzh_mesh_1net_android_core_bluetooth_BlueToothCKt_setup1(JNI
     bluetooth_radar *br = new_bluetooth_radar();
     br->btr = (*env)->NewGlobalRef(env, btr);
     print("new radar");
-    br->on_find_device_handler = on_find_handler;
+    br->r.on_find_device_handler = on_find_handler;
     if (inst == 0) {
         print("inst is null\n");
     }

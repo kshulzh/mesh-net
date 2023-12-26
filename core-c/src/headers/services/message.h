@@ -20,26 +20,30 @@
 #include "io/connection/connection.h"
 #include "io/buffer.h"
 
-enum message_type {
+typedef
+enum {
     CONNECTION,
     SPREAD,
     ROUTE
-};
+} __attribute__((packed)) message_type;
 
 typedef enum {
     OK,
     ERROR
-} codes;
+} __attribute__((packed)) codes;
 
-typedef struct {
-    short size;
-    enum message_type type;
-    unsigned long message_id;
-} basic_message;
+//#pragma pack(1)
+typedef
+struct {
+    uint16_t size : 16;
+    uint64_t message_id : 64;
+    message_type type : 8;
+} __attribute__((packed)) basic_message;
+//const uint32_t basic_message_size = sizeof(basic_message);
 
 typedef struct {
     basic_message bm;
-    char *bytes;
+    uint8_t *bytes;
     connection *c;
 } message;
 
