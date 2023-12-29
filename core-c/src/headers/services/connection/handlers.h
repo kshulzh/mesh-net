@@ -30,6 +30,10 @@ void connection_handle_get_struct_req(message *m);
 
 void connection_handle_get_struct_res(message *m);
 
+void connection_handle_get_property_req(message *m);
+
+void connection_handle_get_property_res(message *m);
+
 void connection_handle(message *m);
 
 void connection_setup();

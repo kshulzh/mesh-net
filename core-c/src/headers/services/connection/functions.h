@@ -20,16 +20,9 @@
 #include "io/connection/connection.h"
 #include "model/graph.h"
 #include "services/message.h"
+#include "utils/dynamic.h"
 
 void connection_ask(connection *c);
-
-void connection_setname(connection *c, char *name, unsigned int size);
-
-void connection_getname(connection *c);
-
-void connection_setid(connection *c, long id);
-
-void connection_getid(connection *c);
 
 void connection_get_struct(connection *c);
 
@@ -38,16 +31,12 @@ void connection_update_struct(connection *c, graph *g);
 
 void connection_ask_res(message *m, codes code);
 
-void connection_setname_res(message *m, codes code);
-
-void connection_getname_res(message *m, char *name, unsigned int size, codes code);
-
-void connection_setid_res(message *m, codes code);
-
-void connection_getid_res(message *m, long id, codes code);
-
 void connection_get_struct_res(message *m, graph *g, codes code);
 
 void connection_update_struct_res(message *m, codes code);
+
+void connection_get_property(connection* c, uint8_t property);
+
+void connection_get_property_res(connection* c, uint8_t property, dynamic value, codes code);
 
 #endif //MESH_NET_CONNECTION_FUNCTIONS_H

@@ -29,19 +29,19 @@ typedef struct {
 
     char (*is_connected)(void *thiz);
 
-    int (*read)(void *thiz);
+    uint32_t (*read)(void *thiz);
 
-    int (*read_array)(void *thiz, char[], int, int);
+    uint32_t (*read_array)(void *thiz, uint8_t [], uint32_t , uint32_t);
 
-    void (*write)(void *thiz, int);
+    void (*write)(void *thiz, uint32_t);
 
-    void (*write_array)(void *thiz, char[], int);
+    void (*write_array)(void *thiz, uint8_t [], uint32_t);
 
     void *(*get_properties)(void *thiz);
 
     void (*set_properties)(void *thiz, void *);
 } connection;
 
-predicate *connection_device_by_id(unsigned long id);
+predicate *connection_device_by_id(uint64_t id);
 
 #endif //MESH_NET_CONNECTION_H

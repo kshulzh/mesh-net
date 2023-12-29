@@ -22,9 +22,9 @@
 #include "utils/predicate.h"
 #include "utils/malloc.h"
 
-ARRAY(short)
-ARRAY(int)
-ARRAY(long)
+ARRAY_DECLARATION(short)
+ARRAY_DECLARATION(int)
+ARRAY_DECLARATION(long)
 
 typedef struct {
     uint32_t size;

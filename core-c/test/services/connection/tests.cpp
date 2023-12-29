@@ -52,6 +52,16 @@ static void handler1(void *thiz, void *c) {
     con->open(con);
 }
 
+static void handler_property(void *thiz, void *c) {
+    count++;
+    connection *con = (connection *) c;
+    instance *inst = (instance *) con->r->inst;
+    list_add(&inst->connections, con);
+    list_add(&(inst->buffered_connections), new_connection_buffer(con));
+    con->open(con);
+    connection_get_property(con, PROPERTY_ID);
+}
+
 TEST(connection1, ask) {
     connection_setup();
 
@@ -98,4 +108,40 @@ TEST(connection1, ask) {
 
     ASSERT_EQ(2, count);
     ASSERT_EQ(2, inst1->g->nodes.size);
+}
+
+TEST(connection,property) {
+    connection_setup();
+
+    instance *inst1 = new_instance(new_device(1, 1));
+    mock_radar *mr1 = (mock_radar *) new_mock_radar();
+    instance_add_radar(inst1, mr1);
+    mr1->r.on_find_device_handler = handler_property;
+    mock_connection *mc1 = new_mock_connection(create_buffers(4, 1000));
+    list_add(&inst1->buffers, ci1b1);
+    list_add(&inst1->buffers, ci1b2);
+    list_add(&inst1->buffers, ci1b3);
+
+    instance *inst2 = new_instance(new_device(2, 2));
+    mock_radar *mr2 = (mock_radar *) new_mock_radar();
+    mr2->r.on_find_device_handler = handler_property;
+    instance_add_radar(inst2, mr2);
+    mock_connection *mc2 = new_mock_connection(create_buffers(4, 1000));
+    list_add(&inst2->buffers, ci1b1);
+    list_add(&inst2->buffers, ci1b2);
+    list_add(&inst2->buffers, ci1b3);
+
+    mock_connection_link(mc1, mc2);
+
+    mock_radar_add_to_queue(mr1, &(mc1->c));
+    mock_radar_add_to_queue(mr2, &(mc2->c));
+
+    mr1->r.start(mr1);
+    mr2->r.start(mr2);
+    for (int i = 0; i < 8; i++) {
+        instance_run(inst1);
+        instance_run(inst2);
+    }
+    ASSERT_EQ(2, mc1->c.d.id);
+    ASSERT_EQ(1, mc2->c.d.id);
 }

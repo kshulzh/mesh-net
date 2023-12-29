@@ -19,20 +19,18 @@
 
 #include "services/message.h"
 #include "model/graph.h"
+#include "utils/dynamic.h"
 
+#define PROPERTY_ID 1
 typedef enum {
     REQ_ASK,
     RES_ASK,
-    REQ_SET_NAME,
-    RES_SET_NAME,
-    REQ_GET_NAME,
-    RES_GET_NAME,
-    REQ_SET_ID,
-    RES_SET_ID,
-    REQ_GET_ID,
-    RES_GET_ID,
     REQ_GET_STRUCT,
     RES_GET_STRUCT,
+    REQ_GET_PROPERTY,
+    RES_GET_PROPERTY,
+    REQ_SET_PROPERTY,
+    RES_SET_PROPERTY,
     REQ_UPDATE_STRUCT,
     RES_UPDATE_STRUCT
 } __attribute__((packed)) connection_req;
@@ -53,46 +51,6 @@ typedef struct {
 
 typedef struct {
     connection_message cm;
-    char *name;
-} connection_setname_req_message;
-
-typedef struct {
-    connection_message cm;
-    codes code;
-} connection_setname_res_message;
-
-typedef struct {
-    connection_message cm;
-} connection_getname_req_message;
-
-typedef struct {
-    connection_message cm;
-    codes code;
-    char *name;
-} connection_getname_res_message;
-
-typedef struct {
-    connection_message cm;
-    unsigned long id;
-} connection_setid_req_message;
-
-typedef struct {
-    connection_message cm;
-    codes code;
-} connection_setid_res_message;
-
-typedef struct {
-    connection_message cm;
-} connection_getid_req_message;
-
-typedef struct {
-    connection_message cm;
-    codes code;
-    unsigned long id;
-} connection_getid_res_message;
-
-typedef struct {
-    connection_message cm;
 } __attribute__((packed)) connection_get_struct_req_message;
 
 typedef struct {
@@ -100,6 +58,18 @@ typedef struct {
     codes code;
     graph *g;
 } __attribute__((packed)) connection_get_struct_res_message;
+
+typedef struct {
+    connection_message cm;
+    uint8_t property;
+} __attribute__((packed)) connection_get_property_req_message;
+
+typedef struct {
+    connection_message cm;
+    uint8_t property;
+    dynamic value;
+    codes code;
+} __attribute__((packed)) connection_get_property_res_message;
 
 typedef struct {
     connection_message cm;
@@ -119,24 +89,6 @@ void encode_connection_ask_req_message(buffer *b, connection_ask_req_message *cm
 void encode_connection_ask_res_message(buffer *b, connection_ask_res_message *cm);
 
 
-void encode_connection_setname_req_message(buffer *b, connection_setname_req_message *cm);
-
-void encode_connection_setname_res_message(buffer *b, connection_setname_res_message *cm);
-
-void encode_connection_getname_req_message(buffer *b, connection_getname_req_message *cm);
-
-void encode_connection_getname_res_message(buffer *b, connection_getname_res_message *cm);
-
-
-void encode_connection_setid_req_message(buffer *b, connection_setid_req_message *cm);
-
-void encode_connection_setid_res_message(buffer *b, connection_setid_res_message *cm);
-
-void encode_connection_getid_req_message(buffer *b, connection_getid_req_message *cm);
-
-void encode_connection_getid_res_message(buffer *b, connection_getid_res_message *cm);
-
-
 void encode_connection_get_struct_req_message(buffer *b, connection_get_struct_req_message *cm);
 
 void encode_connection_get_struct_res_message(buffer *b, connection_get_struct_res_message *cm);
@@ -145,6 +97,9 @@ void encode_connection_update_struct_req_message(buffer *b, connection_update_st
 
 void encode_connection_update_struct_res_message(buffer *b, connection_update_struct_res_message *cm);
 
+void encode_connection_get_property_req_message(buffer *b, connection_get_property_req_message *cm);
+
+void encode_connection_get_property_res_message(buffer *b, connection_get_property_res_message *cm);
 //decode
 
 connection_message * decode_connection_message(buffer *b);
@@ -155,24 +110,6 @@ connection_ask_req_message *decode_connection_ask_req_message(buffer *b);
 connection_ask_res_message *decode_connection_ask_res_message(buffer *b);
 
 
-connection_setname_req_message *decode_connection_setname_req_message(buffer *b);
-
-connection_setname_res_message *decode_connection_setname_res_message(buffer *b);
-
-connection_getname_req_message *decode_connection_getname_req_message(buffer *b);
-
-connection_getname_res_message *decode_connection_getname_res_message(buffer *b);
-
-
-connection_setid_req_message *decode_connection_setid_req_message(buffer *b);
-
-connection_setid_res_message *decode_connection_setid_res_message(buffer *b);
-
-connection_getid_req_message *decode_connection_getid_req_message(buffer *b);
-
-connection_getid_res_message *decode_connection_getid_res_message(buffer *b);
-
-
 connection_get_struct_req_message *decode_connection_get_struct_req_message(buffer *b);
 
 connection_get_struct_res_message *decode_connection_get_struct_res_message(buffer *b);
@@ -180,5 +117,9 @@ connection_get_struct_res_message *decode_connection_get_struct_res_message(buff
 connection_update_struct_req_message *decode_connection_update_struct_req_message(buffer *b);
 
 connection_update_struct_res_message *decode_connection_update_struct_res_message(buffer *b);
+
+connection_get_property_req_message *decode_connection_get_property_req_message(buffer *b);
+
+connection_get_property_res_message *decode_connection_get_property_res_message(buffer *b);
 
 #endif //MESH_NET_CONNECTION_MESSAGES_H

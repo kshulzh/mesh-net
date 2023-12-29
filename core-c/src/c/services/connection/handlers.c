@@ -52,6 +52,29 @@ void connection_handle_get_struct_res(message *m) {
     //todo
 }
 
+void connection_handle_get_property_req(message *m) {
+    buffer b;
+    buffer_init(&b, m->bm.size, m->bytes);
+    connection_get_property_req_message *cm = decode_connection_get_property_req_message(&b);
+    instance * inst = ((instance *) m->c->r->inst);
+    if(cm->property == PROPERTY_ID) {
+        dynamic value;
+        value.type = INT64;
+        value.value.uint64 = inst->this_device.id;
+        connection_get_property_res(m->c, cm->property, value, OK);
+    } else {
+        dynamic value;
+        connection_get_property_res(m->c, cm->property, value, ERROR);
+    }
+}
+
+void connection_handle_get_property_res(message *m) {
+    buffer b;
+    buffer_init(&b, m->bm.size, m->bytes);
+    connection_get_property_res_message *cm = decode_connection_get_property_res_message(&b);
+    m->c->d.id = cm->value.value.uint64;
+}
+
 void connection_handle(message *m) {
     connection_message *cm = ((connection_message*) m->bytes);
     connection_message_handlers()[cm->type](m);
@@ -65,4 +88,7 @@ void connection_setup() {
 
     connection_message_handlers()[REQ_GET_STRUCT] = connection_handle_get_struct_req;
     connection_message_handlers()[RES_GET_STRUCT] = connection_handle_get_struct_res;
+
+    connection_message_handlers()[REQ_GET_PROPERTY] = connection_handle_get_property_req;
+    connection_message_handlers()[RES_GET_PROPERTY] = connection_handle_get_property_res;
 }

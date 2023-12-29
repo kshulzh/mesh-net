@@ -30,41 +30,6 @@ void encode_connection_ask_res_message(buffer *b, connection_ask_res_message *cm
     buffer_message_set_size(b);
 }
 
-
-void encode_connection_setname_req_message(buffer *b, connection_setname_req_message *cm) {
-
-}
-
-void encode_connection_setname_res_message(buffer *b, connection_setname_res_message *cm) {
-
-}
-
-void encode_connection_getname_req_message(buffer *b, connection_getname_req_message *cm) {
-
-}
-
-void encode_connection_getname_res_message(buffer *b, connection_getname_res_message *cm) {
-
-}
-
-
-void encode_connection_setid_req_message(buffer *b, connection_setid_req_message *cm) {
-
-}
-
-void encode_connection_setid_res_message(buffer *b, connection_setid_res_message *cm) {
-
-}
-
-void encode_connection_getid_req_message(buffer *b, connection_getid_req_message *cm) {
-
-}
-
-void encode_connection_getid_res_message(buffer *b, connection_getid_res_message *cm) {
-
-}
-
-
 void encode_connection_get_struct_req_message(buffer *b, connection_get_struct_req_message *cm) {
     write_dump(b,cm, sizeof(connection_get_struct_req_message));
     cm->cm.bm.size = buffer_message_set_size(b);
@@ -84,6 +49,16 @@ void encode_connection_update_struct_res_message(buffer *b, connection_update_st
 
 }
 
+void encode_connection_get_property_req_message(buffer *b, connection_get_property_req_message *cm) {
+    write_dump(b,cm, sizeof(encode_connection_get_property_req_message));
+    cm->cm.bm.size = buffer_message_set_size(b);
+}
+
+void encode_connection_get_property_res_message(buffer *b, connection_get_property_res_message *cm) {
+    write_dump(b,cm, sizeof(encode_connection_get_property_req_message));
+    cm->cm.bm.size = buffer_message_set_size(b);
+}
+
 //decode
 connection_message * decode_connection_message(buffer *b) {
     return read_dump_and_get(b, sizeof(connection_message));
@@ -96,41 +71,6 @@ connection_ask_req_message *decode_connection_ask_req_message(buffer *b) {
 connection_ask_res_message *decode_connection_ask_res_message(buffer *b) {
     return read_dump_and_get(b, sizeof(connection_ask_res_message));
 }
-
-
-connection_setname_req_message *decode_connection_setname_req_message(buffer *b) {
-
-}
-
-connection_setname_res_message *decode_connection_setname_res_message(buffer *b) {
-
-}
-
-connection_getname_req_message *decode_connection_getname_req_message(buffer *b) {
-
-}
-
-connection_getname_res_message *decode_connection_getname_res_message(buffer *b) {
-
-}
-
-
-connection_setid_req_message *decode_connection_setid_req_message(buffer *b) {
-
-}
-
-connection_setid_res_message *decode_connection_setid_res_message(buffer *b) {
-
-}
-
-connection_getid_req_message *decode_connection_getid_req_message(buffer *b) {
-
-}
-
-connection_getid_res_message *decode_connection_getid_res_message(buffer *b) {
-
-}
-
 
 connection_get_struct_req_message *decode_connection_get_struct_req_message(buffer *b) {
     return read_dump_and_get(b, sizeof(connection_get_struct_req_message));
@@ -148,4 +88,14 @@ connection_update_struct_req_message *decode_connection_update_struct_req_messag
 
 connection_update_struct_res_message *decode_connection_update_struct_res_message(buffer *b) {
 
+}
+
+connection_get_property_req_message *decode_connection_get_property_req_message(buffer *b) {
+    //todo
+    return read_dump_and_get(b, sizeof(connection_get_property_req_message));
+}
+
+connection_get_property_res_message *decode_connection_get_property_res_message(buffer *b) {
+    //todo
+    return read_dump_and_get(b, sizeof(connection_get_property_res_message));
 }

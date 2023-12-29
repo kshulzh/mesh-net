@@ -22,7 +22,7 @@
 
 #define MAP(KEY, VALUE) \
 PAIR(KEY,VALUE)\
-ARRAY(pair_##KEY##_##VALUE) \
+ARRAY_DECLARATION(pair_##KEY##_##VALUE) \
 struct map_##KEY##_##VALUE {\
     array_pair_##KEY##_##VALUE elements; \
 };\

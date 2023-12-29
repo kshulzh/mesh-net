@@ -16,18 +16,25 @@
 
 #ifndef MESH_NET_ARRAY_H
 #define MESH_NET_ARRAY_H
-
-#define ARRAY(TYPE)\
+#include <stdint.h>
+#define ARRAY_DECLARATION(TYPE)\
 typedef struct { \
    unsigned int size; \
    TYPE *elements;\
 } array_##TYPE;\
 
-#define ARRAY_(TYPE, NAME) \
-typedef struct { \
-   unsigned int size; \
-   TYPE *elements;\
-} NAME;                   \
+#define ARRAY(TYPE) array_##TYPE
+ARRAY_DECLARATION(char)
+ARRAY_DECLARATION(uint8_t)
+ARRAY_DECLARATION(uint16_t)
+ARRAY_DECLARATION(uint32_t)
+ARRAY_DECLARATION(uint64_t)
+ARRAY_DECLARATION(int8_t)
+ARRAY_DECLARATION(int16_t)
+ARRAY_DECLARATION(int32_t)
+ARRAY_DECLARATION(int64_t)
+ARRAY_DECLARATION(float)
+ARRAY_DECLARATION(double)
+ARRAY_DECLARATION(void)
 
-ARRAY(char)
 #endif //MESH_NET_ARRAY_H

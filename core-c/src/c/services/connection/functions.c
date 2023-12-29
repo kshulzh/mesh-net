@@ -27,23 +27,7 @@ void connection_ask(connection *c) {
     connection_ask_req_message req;
     connection_init_message((&(req.cm)), REQ_ASK);
     req.cm.bm.size = sizeof(req);
-    c->write_array(c, (char *) (&req), sizeof(connection_ask_req_message));
-}
-
-void connection_setname(connection *c, char *name, unsigned int size) {
-
-}
-
-void connection_getname(connection *c) {
-
-}
-
-void connection_setid(connection *c, long id) {
-
-}
-
-void connection_getid(connection *c) {
-
+    c->write_array(c, (uint8_t *) (&req), sizeof(connection_ask_req_message));
 }
 
 void connection_get_struct(connection *c) {
@@ -52,7 +36,7 @@ void connection_get_struct(connection *c) {
     req.cm.type = REQ_GET_STRUCT;
     req.cm.bm.size = sizeof(connection_ask_req_message);
 
-    c->write_array(c, (char *)  &req, sizeof(connection_ask_req_message));
+    c->write_array(c, (uint8_t *)  &req, sizeof(connection_ask_req_message));
 }
 
 void connection_update_struct(connection *c, graph *g) {
@@ -66,23 +50,29 @@ void connection_ask_res(message *m, codes code) {
     res.code = code;
     res.cm.bm.size = sizeof(connection_ask_res_message);
 
-    m->c->write_array(m->c, (char *)  &res, sizeof(connection_ask_res_message));
+    m->c->write_array(m->c, (uint8_t *)  &res, sizeof(connection_ask_res_message));
 }
 
-void connection_setname_res(message *m, codes code) {
+void connection_get_property(connection* c, uint8_t property) {
+    connection_get_property_req_message req;
+    req.cm.bm.size = sizeof(connection_get_property_req_message);
+    req.cm.bm.type = CONNECTION;
+    req.cm.type = REQ_GET_PROPERTY;
+    req.property = property;
 
+    c->write_array(c, (uint8_t *)  &req, sizeof(connection_get_property_req_message));
 }
 
-void connection_getname_res(message *m, char *name, unsigned int size, codes code) {
+void connection_get_property_res(connection* c, uint8_t property, dynamic value, codes code) {
+    connection_get_property_res_message res;
+    res.cm.bm.size = sizeof(connection_get_property_res_message);
+    res.cm.bm.type = CONNECTION;
+    res.cm.type = RES_GET_PROPERTY;
+    res.property = property;
+    res.value = value;
+    res.code = code;
 
-}
-
-void connection_setid_res(message *m, codes code) {
-
-}
-
-void connection_getid_res(message *m, long id, codes code) {
-
+    c->write_array(c, (uint8_t *)  &res, sizeof(connection_get_property_res_message));
 }
 
 void connection_get_struct_res(message *m, graph *g, codes code) {
