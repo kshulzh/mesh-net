@@ -18,6 +18,7 @@
 #include "services/connection/functions.h"
 #include "log/logger.h"
 #include "services/utils.h"
+#include "services/spread/functions.h"
 
 message_handler *connection_message_handlers() {
     static message_handler connection_message_handlers[14];
@@ -28,7 +29,7 @@ message_handler *connection_message_handlers() {
 void connection_handle_ask_req(message *m) {
 //    buffer b;
 //    buffer_init(&b, m->bm.size, m->bytes);
-   // connection_ask_req_message *c = decode_connection_ask_req_message(&b);
+    // connection_ask_req_message *c = decode_connection_ask_req_message(&b);
     LOG_INFO("req")
     connection_ask_res(m, OK);
 }
@@ -46,18 +47,20 @@ void connection_handle_get_struct_res(message *m) {
     buffer b;
     buffer_init(&b, m->bm.size, m->bytes);
     connection_get_struct_res_message *gs = decode_connection_get_struct_res_message(&b);
-    m->c->d = *((device*)gs->g->this_node.element);
-    instance * inst = ((instance *) m->c->r->inst);
+    m->c->d = *((device *) gs->g->this_node.element);
+    instance *inst = ((instance *) m->c->r->inst);
     graph_add_graph(inst->g, 0, gs->g);
     //todo
+    gs->g->encode = inst->g->encode;
+    spread_link_graph(inst, gs->g);
 }
 
 void connection_handle_get_property_req(message *m) {
     buffer b;
     buffer_init(&b, m->bm.size, m->bytes);
     connection_get_property_req_message *cm = decode_connection_get_property_req_message(&b);
-    instance * inst = ((instance *) m->c->r->inst);
-    if(cm->property == PROPERTY_ID) {
+    instance *inst = ((instance *) m->c->r->inst);
+    if (cm->property == PROPERTY_ID) {
         dynamic value;
         value.type = INT64;
         value.value.uint64 = inst->this_device.id;
@@ -72,11 +75,15 @@ void connection_handle_get_property_res(message *m) {
     buffer b;
     buffer_init(&b, m->bm.size, m->bytes);
     connection_get_property_res_message *cm = decode_connection_get_property_res_message(&b);
-    m->c->d.id = cm->value.value.uint64;
+    if (cm->property == PROPERTY_ID) {
+        m->c->d.id = cm->value.value.uint64;
+
+    }
+
 }
 
 void connection_handle(message *m) {
-    connection_message *cm = ((connection_message*) m->bytes);
+    connection_message *cm = ((connection_message *) m->bytes);
     connection_message_handlers()[cm->type](m);
 }
 

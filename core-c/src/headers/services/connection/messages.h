@@ -28,11 +28,7 @@ typedef enum {
     REQ_GET_STRUCT,
     RES_GET_STRUCT,
     REQ_GET_PROPERTY,
-    RES_GET_PROPERTY,
-    REQ_SET_PROPERTY,
-    RES_SET_PROPERTY,
-    REQ_UPDATE_STRUCT,
-    RES_UPDATE_STRUCT
+    RES_GET_PROPERTY
 } __attribute__((packed)) connection_req;
 
 typedef struct {
@@ -93,16 +89,12 @@ void encode_connection_get_struct_req_message(buffer *b, connection_get_struct_r
 
 void encode_connection_get_struct_res_message(buffer *b, connection_get_struct_res_message *cm);
 
-void encode_connection_update_struct_req_message(buffer *b, connection_update_struct_req_message *cm);
-
-void encode_connection_update_struct_res_message(buffer *b, connection_update_struct_res_message *cm);
-
 void encode_connection_get_property_req_message(buffer *b, connection_get_property_req_message *cm);
 
 void encode_connection_get_property_res_message(buffer *b, connection_get_property_res_message *cm);
 //decode
 
-connection_message * decode_connection_message(buffer *b);
+connection_message *decode_connection_message(buffer *b);
 
 
 connection_ask_req_message *decode_connection_ask_req_message(buffer *b);
@@ -113,10 +105,6 @@ connection_ask_res_message *decode_connection_ask_res_message(buffer *b);
 connection_get_struct_req_message *decode_connection_get_struct_req_message(buffer *b);
 
 connection_get_struct_res_message *decode_connection_get_struct_res_message(buffer *b);
-
-connection_update_struct_req_message *decode_connection_update_struct_req_message(buffer *b);
-
-connection_update_struct_res_message *decode_connection_update_struct_res_message(buffer *b);
 
 connection_get_property_req_message *decode_connection_get_property_req_message(buffer *b);
 

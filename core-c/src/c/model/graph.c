@@ -104,12 +104,13 @@ graph_node *graph_find_node_by_value(graph *thiz, void *element) {
 }
 
 void encode_graph_node_index(buffer *b, void *gn) {
-    write_int_to_buffer(b,((graph_node *) gn)->index);
+    //write_int_to_buffer(b,((graph_node *) gn)->index);
+    write_dump(b, &(((graph_node *) gn)->index), sizeof(uint32_t));
 }
 
 void encode_graph(buffer *b, graph *gr) {
-    write_int_to_buffer(b,(gr->nodes).size);
-
+    //write_int_to_buffer(b,(gr->nodes).size);
+    write_dump(b, &((gr->nodes).size), sizeof(uint32_t));
     int i = 0;
     for_each((&(gr->nodes)), graph_node, {
         temp->index = i;
@@ -123,7 +124,7 @@ void encode_graph(buffer *b, graph *gr) {
 }
 
 graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void *)) {
-    unsigned int size = read_int_from_buffer(b);
+    uint32_t size = *((uint32_t *) read_dump_and_get(b, sizeof(uint32_t)));
     void **decoded = mem_alloc(sizeof(void *) * size);
     if (clone1 == 0) {
         clone1 = empty_clone;
@@ -138,11 +139,10 @@ graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void 
     }
     for_each((&(g->nodes)), graph_node, {
         list *indexes = decode_list(b, decode_uint32);
-        for_each1(indexes,
-        unsigned int, {
-            list_add(&temp->near, decoded[(int)temp1]);
-        })
-        delete_list(indexes, 0, 0);
+        for_each1(indexes, uint32_t, {
+                          list_add(&temp->near, decoded[*((uint32_t *) temp1)]);
+                  })
+        //delete_list(indexes, 0, 0);
     })
     mem_free(decoded);
 

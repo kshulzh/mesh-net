@@ -29,13 +29,9 @@ typedef struct {
 
     char (*is_connected)(void *thiz);
 
-    uint32_t (*read)(void *thiz);
+    int32_t (*read_array)(void *thiz, uint8_t [], uint32_t, uint32_t);
 
-    uint32_t (*read_array)(void *thiz, uint8_t [], uint32_t , uint32_t);
-
-    void (*write)(void *thiz, uint32_t);
-
-    void (*write_array)(void *thiz, uint8_t [], uint32_t);
+    int32_t (*write_array)(void *thiz, uint8_t [], uint32_t);
 
     void *(*get_properties)(void *thiz);
 

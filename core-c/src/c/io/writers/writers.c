@@ -16,34 +16,10 @@
 
 #include "io/writers/writers.h"
 
-#define WRITE_TEMPLATE_IMPL(TYPE) \
-TYPE* write_##TYPE(buffer *buf, TYPE *data) { \
-return (TYPE*) write_to_buffer(buf,data, sizeof(TYPE));\
-} \
-
-#define WRITE_ARRAY_TEMPLATE_IMPL(TYPE) \
-WRITE_TEMPLATE_IMPL(array_##TYPE)\
-array_##TYPE * write_##TYPE##_array(buffer *buf, array_##TYPE *data) {\
-    array_##TYPE *array = write_array_##TYPE(buf, data);\
-    array->elements = (TYPE*) write_to_buffer(buf,data->elements, sizeof(TYPE)*data->size);\
-    return array;\
-}
-
-#define WRITE_BOTH_TEMPLATES_IMPL(TYPE) \
-WRITE_TEMPLATE_IMPL(TYPE)              \
-WRITE_ARRAY_TEMPLATE_IMPL(TYPE)
-
-WRITE_BOTH_TEMPLATES_IMPL(char)
-
-WRITE_BOTH_TEMPLATES_IMPL(short)
-
-WRITE_BOTH_TEMPLATES_IMPL(int)
-
-WRITE_BOTH_TEMPLATES_IMPL(long)
-
 void encode_char_array(buffer *b, array_char *a) {
 //    encode_uint32(b,a->size);
 //    encode_link(b,(void*) 1);
-    write_int_to_buffer(b,a->size);
-    write_to_buffer(b, a->elements, a->size);
+    //write_int_to_buffer(b,a->size);
+    write_dump(b, &(a->size), sizeof(uint32_t));
+    write_dump(b, a->elements, a->size);
 }

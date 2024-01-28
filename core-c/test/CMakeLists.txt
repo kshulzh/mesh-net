@@ -11,8 +11,6 @@ FetchContent_MakeAvailable(gtest)
 add_executable(
         unit_tests
         containers/list.cpp
-        io/readers/reader.cpp
-        io/writers/writers.cpp
         io/connection/mock_radar.cpp
         io/connection/mock_connection.cpp
         services/connection/tests.cpp

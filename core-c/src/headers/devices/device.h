@@ -26,7 +26,7 @@ typedef struct {
     uint64_t user_id;
 } device;
 
-device * new_device(
+device *new_device(
         uint64_t id,
         uint64_t user_id);
 
@@ -37,6 +37,8 @@ predicate *device_equals(void *thiz);
 void encode_device(buffer *b, void *device);
 
 void encode_device_id(buffer *b, void *device);
+
+void *decode_device_id(buffer *b);
 
 void *decode_device(buffer *b);
 

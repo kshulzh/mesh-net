@@ -22,6 +22,14 @@
 
 void spread_udp(instance *c, uint8_t *msg, uint32_t size);
 
-void spread_udp_res(message *m);
+void spread_res(message *m);
+
+void spread_all(list *connections, uint8_t *data, uint32_t size_data, uint64_t *exclude, uint32_t size_exclude);
+
+void spread_link(instance *c, uint64_t id2);
+
+void spread_link_graph(instance *c, graph *g);
+
+void spread_unlink(instance *c, uint64_t id1, uint64_t id2);
 
 #endif //MESH_NET_ROUTE_FUNCTIONS_H

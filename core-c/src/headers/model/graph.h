@@ -57,6 +57,8 @@ graph_node *graph_find_node_by_value(graph *thiz, void *element);
 
 void encode_graph(buffer *b, graph *gr);
 
+void encode_graph_node_index(buffer *b, void *gn);
+
 graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone)(void *));
 
 void graph_check_links(graph *g);

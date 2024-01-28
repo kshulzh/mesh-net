@@ -22,12 +22,12 @@
 
 typedef enum {
     UDP
-}__attribute__((packed))  route_req;
+}__attribute__((packed)) route_req;
 
 typedef struct {
     basic_message bm;
     route_req type;
-}__attribute__((packed))  route_message;
+}__attribute__((packed)) route_message;
 
 typedef struct {
     route_message rm;
@@ -35,7 +35,7 @@ typedef struct {
     list *way;
     array_char *msg;
     void *inst;
-}__attribute__((packed))  route_udp_message;
+}__attribute__((packed)) route_udp_message;
 
 void encode_route_message(buffer *b, route_message *u);
 

@@ -21,20 +21,34 @@
 #include "services/message.h"
 
 typedef enum {
-    UDP
-} spread_req;
+    UDP,
+    LINK,
+    LINK_GRAPH
+}__attribute__((packed)) spread_req;
 
 typedef struct {
     basic_message bm;
-    spread_req type : 8;
-} spread_message;
+    spread_req type: 8;
+}__attribute__((packed)) spread_message;
 
 typedef struct {
     spread_message sm;
-    uint64_t src_id : 64;
+    uint64_t src_id: 64;
     array_char *msg;
     void *inst;
-} spread_udp_message;
+}__attribute__((packed)) spread_udp_message;
+
+typedef struct {
+    spread_message sm;
+    uint64_t id1;
+    uint64_t id2;
+}__attribute__((packed)) spread_link_message;
+
+typedef struct {
+    spread_message sm;
+    uint64_t id1;
+    graph *g;
+}__attribute__((packed)) spread_link_graph_message;
 
 void encode_spread_message(buffer *b, spread_message *u);
 
@@ -44,5 +58,12 @@ void encode_spread_udp_message(buffer *b, spread_udp_message *u);
 
 spread_udp_message *decode_spread_udp_message(buffer *b);
 
+void encode_spread_link_message(buffer *b, spread_link_message *u);
+
+spread_link_message *decode_spread_link_message(buffer *b);
+
+void encode_spread_link_graph_message(buffer *b, spread_link_graph_message *u);
+
+spread_link_graph_message *decode_spread_link_graph_message(buffer *b);
 
 #endif //MESH_NET_SPREAD_MESSAGES_H

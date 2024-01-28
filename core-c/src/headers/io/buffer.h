@@ -28,10 +28,10 @@ ARRAY_DECLARATION(long)
 
 typedef struct {
     uint32_t size;
-    char *start;
-    char *temp;
-    char *end;
-    char is_locked;
+    uint8_t *start;
+    uint8_t *temp;
+    uint8_t *end;
+    uint8_t is_locked;
 } buffer;
 
 #define buffer(name, size) \
@@ -49,7 +49,7 @@ buffer *name = new_buffer((uint8_t*)name##_array, size); \
 
 void *empty_clone(void *);
 
-void buffer_init(buffer *buf, uint32_t size, uint8_t  *arr);
+void buffer_init(buffer *buf, uint32_t size, uint8_t *arr);
 
 char *write_to_buffer(buffer *buf, void *data, uint32_t size);
 
@@ -67,31 +67,9 @@ predicate *buffer_is_locked();
 
 predicate *buffer_is_free();
 
-char *write_char_to_buffer(buffer *buf, uint8_t d);
+void *read_dump_and_get(buffer *buf, uint32_t size);
 
-char *write_short_to_buffer(buffer *buf, uint16_t d);
-
-char *write_int_to_buffer(buffer *buf, uint32_t d);
-
-char *write_long_to_buffer(buffer *buf, uint64_t d);
-
-
-uint8_t read_char_from_buffer(buffer *buf);
-
-uint16_t read_short_from_buffer(buffer *buf);
-
-uint32_t read_int_from_buffer(buffer *buf);
-
-uint64_t read_long_from_buffer(buffer *buf);
-
-uint64_t read_number(uint8_t* ptr,uint8_t size);
-
-void write_number(uint8_t* ptr, uint64_t num, uint8_t size);
-
-void * read_dump_and_get(buffer *buf, uint32_t size);
-
-void write_dump(buffer *buf,void* o, uint32_t size);
-
+void write_dump(buffer *buf, void *o, uint32_t size);
 
 
 #endif //MESH_NET_BUFFER_H

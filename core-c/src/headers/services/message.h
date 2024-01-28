@@ -35,9 +35,9 @@ typedef enum {
 //#pragma pack(1)
 typedef
 struct {
-    uint16_t size : 16;
-    uint64_t message_id : 64;
-    message_type type : 8;
+    uint16_t size: 16;
+    uint64_t message_id: 64;
+    message_type type: 8;
 } __attribute__((packed)) basic_message;
 //const uint32_t basic_message_size = sizeof(basic_message);
 
@@ -51,6 +51,6 @@ message *message_of_buffer(buffer *b);
 
 void encode_basic_message(buffer *b, basic_message *bm);
 
-basic_message* decode_basic_message(buffer *b);
+basic_message *decode_basic_message(buffer *b);
 
 #endif //MESH_NET_MESSAGE_H

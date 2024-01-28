@@ -40,3 +40,23 @@ spread_udp_message *decode_spread_udp_message(buffer *b) {
 
     return sm;
 }
+
+void encode_spread_link_message(buffer *b, spread_link_message *u) {
+    write_dump(b, u, sizeof(spread_link_message));
+}
+
+spread_link_message *decode_spread_link_message(buffer *b) {
+    return read_dump_and_get(b, sizeof(spread_link_message));
+}
+
+void encode_spread_link_graph_message(buffer *b, spread_link_graph_message *u) {
+    write_dump(b, u, sizeof(spread_link_graph_message));
+    encode_graph(b, u->g);
+}
+
+spread_link_graph_message *decode_spread_link_graph_message(buffer *b) {
+    spread_link_graph_message *slgm = read_dump_and_get(b, sizeof(spread_link_message));
+    slgm->g = decode_graph(b, decode_device, device_clone);
+
+    return slgm;
+}

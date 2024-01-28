@@ -30,6 +30,8 @@ spread_udp_handler *spread_udp_handler1();
 
 void spread_handle_udp(message *m);
 
+void spread_handle_link(message *m);
+
 void spread_handle(message *m);
 
 void spread_setup();

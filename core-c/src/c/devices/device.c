@@ -28,7 +28,7 @@ device *new_device(
 char predicate_device_equals(void *thiz, void *params) {
     device *d1 = (device *) thiz;
     device *d2 = (device *) params;
-    return d1 == d2 || (d1->id == d2->id && d1->user_id == d2->user_id);
+    return d1 == d2 || (d1->id == d2->id);
 }
 
 predicate *device_equals(void *thiz) {
@@ -36,16 +36,20 @@ predicate *device_equals(void *thiz) {
 }
 
 void encode_device(buffer *b, void *d) {
-    write_long_to_buffer(b,((device*) d)->id);
-    write_long_to_buffer(b,((device*) d)->user_id);
+    write_dump(b, d, sizeof(device));
 }
 
 void encode_device_id(buffer *b, void *d) {
-    write_long_to_buffer(b,((device*) d)->id);
+    write_dump(b, d, sizeof(uint64_t));
+    //write_long_to_buffer(b,((device*) d)->id);
+}
+
+void *decode_device_id(buffer *b) {
+    return read_dump_and_get(b, sizeof(uint64_t));
 }
 
 void *decode_device(buffer *b) {
-    return new_device(read_long_from_buffer(b), read_long_from_buffer(b));
+    return read_dump_and_get(b, sizeof(device));
 }
 
 void free_device(void *d) {

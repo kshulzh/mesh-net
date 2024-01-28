@@ -19,7 +19,7 @@
 
 short buffer_message_set_size(buffer *b) {
     short size = ((b->temp) - (b->start));
-    mem_copy(b->start, &size ,2);
+    mem_copy(b->start, &size, 2);
 
     return size;
 }
@@ -29,15 +29,7 @@ void free_uint32(void *v) {
 }
 
 void *decode_uint32(buffer *b) {
-    return (void *) read_int_from_buffer(b);
-}
-
-void encode_uint32(buffer *b, unsigned int i) {
-    write_int_to_buffer(b, i);
-}
-
-void encode_link(buffer *b, void *l) {
-    write_to_buffer(b, &l, sizeof(void *));
+    return read_dump_and_get(b, sizeof(uint32_t));
 }
 
 void *decode_link(buffer *b) {
@@ -45,5 +37,5 @@ void *decode_link(buffer *b) {
 }
 
 void *decode_uint64(buffer *b) {
-    return (void *) read_long_from_buffer(b);
+    return read_dump_and_get(b, sizeof(uint64_t));
 }

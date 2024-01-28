@@ -21,7 +21,7 @@
 #include "io/readers/readers.h"
 
 void encode_route_message(buffer *b, route_message *rm) {
-    write_dump(b,rm, sizeof(route_message));
+    write_dump(b, rm, sizeof(route_message));
 }
 
 route_message *decode_route_message(buffer *b) {
@@ -29,14 +29,14 @@ route_message *decode_route_message(buffer *b) {
 }
 
 void encode_route_udp_message(buffer *b, route_udp_message *u) {
-    write_dump(b,u, sizeof(route_udp_message));
+    write_dump(b, u, sizeof(route_udp_message));
     encode_list(b, u->way, encode_device_id);
     encode_char_array(b, u->msg);
     u->rm.bm.size = buffer_message_set_size(b);
 }
 
 route_udp_message *decode_route_udp_message(buffer *b) {
-    route_udp_message* rum = read_dump_and_get(b, sizeof(route_udp_message));
+    route_udp_message *rum = read_dump_and_get(b, sizeof(route_udp_message));
     rum->way = decode_list(b, decode_uint64);
     rum->msg = decode_char_array(b);
     return rum;

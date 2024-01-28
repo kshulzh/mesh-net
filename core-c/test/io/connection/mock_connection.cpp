@@ -34,7 +34,7 @@ TEST(mock_connection, test1) {
     mock_connection_link(mc1, mc2);
     mc1->c.open(mc1);
     mc2->c.open(mc2);
-    mc1->c.write_array(mc1, (uint8_t*)"hello my name is Kirill", 24);
+    mc1->c.write_array(mc1, (uint8_t *) "hello my name is Kirill", 24);
     uint8_t b3[100];
     mc2->c.read_array(mc2, b3, 90, 0);
 }

@@ -71,7 +71,7 @@ TEST(route, ask) {
     mock_radar *mr1 = (mock_radar *) new_mock_radar();
     instance_add_radar(inst1, mr1);
     mr1->r.on_find_device_handler = handler2;
-    mock_connection *mc1 = new_mock_connection(create_buffers(4, 1000));
+    mock_connection *mc1 = new_mock_connection(create_buffers(8, 1000));
     list_add(&inst1->buffers, ri1b1);
     list_add(&inst1->buffers, ri1b2);
     list_add(&inst1->buffers, ri1b3);
@@ -80,7 +80,7 @@ TEST(route, ask) {
     mock_radar *mr2 = (mock_radar *) new_mock_radar();
     mr2->r.on_find_device_handler = handler1;
     instance_add_radar(inst2, mr2);
-    mock_connection *mc2 = new_mock_connection(create_buffers(4, 1000));
+    mock_connection *mc2 = new_mock_connection(create_buffers(8, 1000));
     list_add(&inst2->buffers, ri1b1);
     list_add(&inst2->buffers, ri1b2);
     list_add(&inst2->buffers, ri1b3);
@@ -89,7 +89,6 @@ TEST(route, ask) {
 
     mock_radar_add_to_queue(mr1, &(mc1->c));
     mock_radar_add_to_queue(mr2, &(mc2->c));
-
     mr1->r.start(mr1);
     mr2->r.start(mr2);
 
@@ -103,12 +102,13 @@ TEST(route, ask) {
         instance_run(inst2);
     }
     connection_get_struct(&(mc1->c));
+    connection_get_struct(&(mc2->c));
     for (int i = 0; i < 8; i++) {
         instance_run(inst1);
         instance_run(inst2);
     }
 
-    route_udp(inst1, 2, (uint8_t*)"123", 3);
+    route_udp(inst1, 2, (uint8_t *) "123", 3);
     for (int i = 0; i < 8; i++) {
         instance_run(inst1);
         instance_run(inst2);

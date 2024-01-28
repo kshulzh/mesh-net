@@ -38,16 +38,7 @@ char mock_connection_is_connected(void *thiz) {
     return mc->is_opened;
 }
 
-int mock_connection_read(void *thiz) {
-    mock_connection* mc = (mock_connection *) thiz;
-    if (mc->is_opened == 0) {
-        return -1;
-    }
-    return *read_char(list_find_first(mc->buffers,buffer_is_locked()));
-
-}
-
-int mock_connection_read_array(void *thiz, char* array, int size, int offset) {
+int32_t mock_connection_read_array(void *thiz, uint8_t * array, uint32_t size, uint32_t offset) {
     mock_connection* mc = (mock_connection *) thiz;
     if (mc->is_opened == 0) {
         return -1;
@@ -63,20 +54,11 @@ int mock_connection_read_array(void *thiz, char* array, int size, int offset) {
     return s;
 }
 
-void mock_connection_write(void *thiz, int b) {
-    mock_connection* mc = (mock_connection *) thiz;
-    if (mc->is_opened == 0) {
-        return;
-    }
-    mock_connection* mc_other = (mock_connection *) mc->paired;
-    write_to_buffer(list_find_first(mc_other->buffers,buffer_is_free()),&b,1);
-    mc_other->is_ready = 1;
-}
 
-void mock_connection_write_array(void *thiz, char* data, int size) {
+int32_t mock_connection_write_array(void *thiz, uint8_t * data, uint32_t size) {
     mock_connection* mc = (mock_connection *) thiz;
     if (mc->is_opened == 0) {
-        return;
+        return -1;
     }
     mock_connection* mc_other = (mock_connection *) mc->paired;
     buffer *b = list_find_first(mc_other->buffers,buffer_is_free());
@@ -85,6 +67,7 @@ void mock_connection_write_array(void *thiz, char* data, int size) {
     buffer_reset(b);
     write_to_buffer(b,data,size);
     mc_other->is_ready = 1;
+    return 0;
 }
 
 void *mock_connection_get_properties(void *thiz) {
@@ -105,10 +88,8 @@ mock_connection* new_mock_connection(list *buffers) {
     mc->c.set_properties = mock_connection_set_properties;
     mc->c.get_properties = mock_connection_get_properties;
 
-    mc->c.read = mock_connection_read;
     mc->c.read_array = mock_connection_read_array;
 
-    mc->c.write = mock_connection_write;
     mc->c.write_array = mock_connection_write_array;
 
     mc->buffers = buffers;

@@ -33,13 +33,9 @@ void mock_connection_close(void *thiz);
 
 char mock_connection_is_connected(void *thiz);
 
-int mock_connection_read(void *thiz);
+int32_t  mock_connection_read_array(void *thiz, uint8_t * array, uint32_t size, uint32_t offset);
 
-int mock_connection_read_array(void *thiz, char* array, int size, int offset) ;
-
-void mock_connection_write(void *thiz, int b);
-
-void mock_connection_write_array(void *thiz, char* data, int size);
+int32_t mock_connection_write_array(void *thiz, uint8_t * data, uint32_t size);
 
 void *mock_connection_get_properties(void *thiz);
 

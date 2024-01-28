@@ -24,14 +24,15 @@
 #include "services/utils.h"
 
 void route_udp(instance *inst, uint64_t id, uint8_t *msg, uint32_t size) {
+    //todo optimize this
     char b[1500];
     buffer b1;
-    buffer_init(&b1,1500,b);
+    buffer_init(&b1, 1500, b);
     array_char ac;
     ac.size = size;
     ac.elements = msg;
 
-    route_udp_message* rum = mem_alloc(sizeof(route_udp_message));
+    route_udp_message *rum = mem_alloc(sizeof(route_udp_message));
     rum->msg = &ac;
     rum->index = 1;
     rum->rm.type = UDP;

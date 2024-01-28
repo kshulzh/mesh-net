@@ -136,7 +136,8 @@ void delete_list(list *l, void (*efree)(void *), char save_list) {
 }
 
 void encode_list(buffer *b, list *l, void (*encoder)(buffer *b, void *)) {
-    write_int_to_buffer(b, l->size);
+    //write_int_to_buffer(b, l->size);
+    write_dump(b, &(l->size), sizeof(uint32_t));
     for_each(l, void, {
         encoder(b, temp);
     })
@@ -144,7 +145,7 @@ void encode_list(buffer *b, list *l, void (*encoder)(buffer *b, void *)) {
 
 list *decode_list(buffer *b, void *(*decode)(buffer *b)) {
     list *l = new_list();
-    unsigned int size = read_int_from_buffer(b);
+    uint32_t size = *((uint32_t *) read_dump_and_get(b, sizeof(uint32_t)));
     for (int i = 0; i < size; ++i) {
         list_add(l, decode(b));
     }

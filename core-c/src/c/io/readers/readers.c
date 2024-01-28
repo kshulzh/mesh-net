@@ -15,36 +15,10 @@
  */
 #include "io/readers/readers.h"
 
-#define READ_TEMPLATE_IMPL(TYPE) \
-TYPE *read_##TYPE(buffer * buf) { \
-return ( TYPE *) read_from_buffer(buf,sizeof(TYPE)); \
-} \
-
-#define READ_ARRAY_TEMPLATE_IMPL(TYPE) \
-READ_TEMPLATE_IMPL(array_##TYPE)                                       \
-array_##TYPE *read_##TYPE##_array(buffer *buf){\
-array_##TYPE * result = read_array_##TYPE(buf);\
-if(result->elements != 0) {\
-result->elements = read_from_buffer(buf, sizeof(TYPE)*result->size);\
-}\
-return result;\
-}
-#define READ_BOTH_TEMPLATES_IMPL(TYPE) \
-READ_TEMPLATE_IMPL(TYPE)              \
-READ_ARRAY_TEMPLATE_IMPL(TYPE)         \
-
-
-READ_BOTH_TEMPLATES_IMPL(char)
-
-READ_BOTH_TEMPLATES_IMPL(short)
-
-READ_BOTH_TEMPLATES_IMPL(int)
-
-READ_BOTH_TEMPLATES_IMPL(long)
 
 void *decode_char_array(buffer *b) {
     static array_char ac;
-    ac.size = read_int_from_buffer(b);
-    ac.elements = read_from_buffer(b, ac.size);
+    ac.size = *((uint32_t *) read_dump_and_get(b, sizeof(uint32_t)));
+    ac.elements = read_dump_and_get(b, sizeof(ac.size));
     return &ac;
 }

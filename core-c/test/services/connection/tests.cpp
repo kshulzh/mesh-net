@@ -62,7 +62,7 @@ static void handler_property(void *thiz, void *c) {
     connection_get_property(con, PROPERTY_ID);
 }
 
-TEST(connection1, ask) {
+TEST(connection, ask) {
     connection_setup();
 
     instance *inst1 = new_instance(new_device(1, 1));
@@ -110,7 +110,7 @@ TEST(connection1, ask) {
     ASSERT_EQ(2, inst1->g->nodes.size);
 }
 
-TEST(connection,property) {
+TEST(connection, property) {
     connection_setup();
 
     instance *inst1 = new_instance(new_device(1, 1));
@@ -142,6 +142,6 @@ TEST(connection,property) {
         instance_run(inst1);
         instance_run(inst2);
     }
-    ASSERT_EQ(2, mc1->c.d.id);
     ASSERT_EQ(1, mc2->c.d.id);
+    ASSERT_EQ(2, mc1->c.d.id);
 }

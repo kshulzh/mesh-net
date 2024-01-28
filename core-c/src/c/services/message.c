@@ -27,9 +27,9 @@ message *message_of_buffer(buffer *b) {
 }
 
 void encode_basic_message(buffer *b, basic_message *bm) {
-    write_dump(b,bm, sizeof(basic_message));
+    write_dump(b, bm, sizeof(basic_message));
 }
 
-basic_message* decode_basic_message(buffer *b) {
+basic_message *decode_basic_message(buffer *b) {
     return read_dump_and_get(b, sizeof(basic_message));
 }

@@ -16,7 +16,9 @@
 
 #ifndef MESH_NET_ARRAY_H
 #define MESH_NET_ARRAY_H
+
 #include <stdint.h>
+
 #define ARRAY_DECLARATION(TYPE)\
 typedef struct { \
    unsigned int size; \

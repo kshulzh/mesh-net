@@ -22,7 +22,7 @@ message_handler *message_handlers() {
 }
 
 void handle_message(message *m) {
-    m->bm= *((basic_message*) m->bytes);
+    m->bm = *((basic_message *) m->bytes);
     message_handlers()[m->bm.type](m);
 }
 

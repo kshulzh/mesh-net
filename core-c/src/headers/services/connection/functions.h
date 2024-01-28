@@ -26,17 +26,12 @@ void connection_ask(connection *c);
 
 void connection_get_struct(connection *c);
 
-void connection_update_struct(connection *c, graph *g);
-
-
 void connection_ask_res(message *m, codes code);
 
 void connection_get_struct_res(message *m, graph *g, codes code);
 
-void connection_update_struct_res(message *m, codes code);
+void connection_get_property(connection *c, uint8_t property);
 
-void connection_get_property(connection* c, uint8_t property);
-
-void connection_get_property_res(connection* c, uint8_t property, dynamic value, codes code);
+void connection_get_property_res(connection *c, uint8_t property, dynamic value, codes code);
 
 #endif //MESH_NET_CONNECTION_FUNCTIONS_H
