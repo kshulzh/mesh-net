@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,9 @@ typedef struct {
     instance inst;
 } mock_device;
 
-mock_device* new_mock_device(device *d);
-void mock_device_link(mock_device* md1,mock_device* md2);
+mock_device *new_mock_device(device *d);
+
+void mock_device_link(mock_device *md1, mock_device *md2);
 
 void mock_device_find(mock_device *md);
 

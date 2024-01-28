@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-
 #ifndef MESH_NET_BUFFER_UTILS_H
 #define MESH_NET_BUFFER_UTILS_H
 
 
 #include "containers/list.h"
 
-list * create_buffers(int count, int size);
+list *create_buffers(int count, int size);
 
 buffer *create_buffer(int size);
+
 #endif //MESH_NET_BUFFER_UTILS_H

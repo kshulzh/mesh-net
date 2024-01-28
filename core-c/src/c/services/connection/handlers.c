@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include "log/logger.h"
 #include "services/utils.h"
 #include "services/spread/functions.h"
+#include "log/connection_logger.h"
 
 message_handler *connection_message_handlers() {
     static message_handler connection_message_handlers[14];
@@ -27,16 +28,14 @@ message_handler *connection_message_handlers() {
 
 
 void connection_handle_ask_req(message *m) {
-//    buffer b;
-//    buffer_init(&b, m->bm.size, m->bytes);
-    // connection_ask_req_message *c = decode_connection_ask_req_message(&b);
-    LOG_INFO("req")
     connection_ask_res(m, OK);
 }
 
 void connection_handle_ask_res(message *m) {
-    //todo
-    LOG_INFO("res")
+    CONNECTION_LOG_DEBUG(m->c, "Connection are available", 0);
+    if (m->c->d.id == 0) {
+        connection_get_property(m->c, PROPERTY_ID);
+    }
 }
 
 void connection_handle_get_struct_req(message *m) {
@@ -49,6 +48,7 @@ void connection_handle_get_struct_res(message *m) {
     connection_get_struct_res_message *gs = decode_connection_get_struct_res_message(&b);
     m->c->d = *((device *) gs->g->this_node.element);
     instance *inst = ((instance *) m->c->r->inst);
+    CONNECTION_LOG_DEBUG(m->c, "Adding new found devices count:%d", gs->g->nodes.size);
     graph_add_graph(inst->g, 0, gs->g);
     //todo
     gs->g->encode = inst->g->encode;
@@ -67,6 +67,7 @@ void connection_handle_get_property_req(message *m) {
         connection_get_property_res(m->c, cm->property, value, OK);
     } else {
         dynamic value;
+        CONNECTION_LOG_WARN(m->c, "Trying to request property with id:%d", cm->property);
         connection_get_property_res(m->c, cm->property, value, ERROR);
     }
 }
@@ -76,10 +77,10 @@ void connection_handle_get_property_res(message *m) {
     buffer_init(&b, m->bm.size, m->bytes);
     connection_get_property_res_message *cm = decode_connection_get_property_res_message(&b);
     if (cm->property == PROPERTY_ID) {
+        CONNECTION_LOG_DEBUG(m->c, "Setting connection id:%llu", cm->value.value.uint64);
         m->c->d.id = cm->value.value.uint64;
-
+        //todo
     }
-
 }
 
 void connection_handle(message *m) {

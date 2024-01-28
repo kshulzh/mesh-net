@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -140,8 +140,8 @@ graph *decode_graph(buffer *b, void *(*decode)(buffer *b), void *(*clone1)(void 
     for_each((&(g->nodes)), graph_node, {
         list *indexes = decode_list(b, decode_uint32);
         for_each1(indexes, uint32_t, {
-                          list_add(&temp->near, decoded[*((uint32_t *) temp1)]);
-                  })
+                list_add(&temp->near, decoded[*((uint32_t *) temp1)]);
+        })
         //delete_list(indexes, 0, 0);
     })
     mem_free(decoded);

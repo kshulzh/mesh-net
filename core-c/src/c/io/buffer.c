@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 #include "io/buffer.h"
 #include "utils/new.h"
 
-extern
 void buffer_init(buffer *buf, uint32_t size, uint8_t *arr) {
     buf->size = size;
     buf->start = arr;
@@ -25,7 +24,6 @@ void buffer_init(buffer *buf, uint32_t size, uint8_t *arr) {
     buf->is_locked = 0;
 }
 
-extern
 char *mem_copy(uint8_t *dest, const uint8_t *src, uint32_t size) {
     for (int i = 0; i < size; ++i) {
         dest[i] = src[i];
@@ -33,7 +31,6 @@ char *mem_copy(uint8_t *dest, const uint8_t *src, uint32_t size) {
     return dest;
 }
 
-extern
 char *write_to_buffer(buffer *buf, void *data, uint32_t size) {
     if (size == 0) {
         return 0;
@@ -45,7 +42,6 @@ char *write_to_buffer(buffer *buf, void *data, uint32_t size) {
     return result;
 }
 
-extern
 char *read_from_buffer(buffer *buf, uint32_t size) {
     char *result = buf->temp;
     (buf->temp) += size;

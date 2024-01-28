@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,9 +44,10 @@ void mock_radar_set_properties(void *thiz, void *);
 void *mock_radar_get_properties(void *thiz);
 
 
-radar* new_mock_radar();
+radar *new_mock_radar();
 
 void mock_radar_find(void *thiz);
 
-void mock_radar_add_to_queue(void *thiz,void *d);
+void mock_radar_add_to_queue(void *thiz, void *d);
+
 #endif //MESH_NET_MOCK_RADAR_H

@@ -1,5 +1,23 @@
+/*
+ * Copyright (c) 2024. Kirill Shulzhenko
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "services/spread/handlers.h"
 #include "services/spread/functions.h"
+#include "log/connection_logger.h"
+#include "log/instance_logger.h"
 
 /*
  * Copyright (c) 2023. Kirill Shulzhenko
@@ -45,8 +63,10 @@ void spread_handle_link(message *m) {
     d1.id = slm->id1;
     d2.id = slm->id2;
 
+    CONNECTION_LOG_DEBUG(m->c, "Linking nodes id1:%d and id2:%d", d1.id, d2.id);
     graph_link_nodes(inst->g, graph_find_node_by_value(inst->g, &d1), graph_find_node_by_value(inst->g, &d2));
 
+    INSTANCE_LOG_DEBUG(m->c->r->inst, "Spread linking nodes id1:%d and id2:%d", d1.id, d2.id);
     spread_res(m);
 }
 
@@ -63,8 +83,10 @@ void spread_handle_link_graph(message *m) {
     device d1;
     d1.id = slgm->id1;
 
+    CONNECTION_LOG_DEBUG(m->c, "Linking graph to id1:%d with nodes count:%d", d1.id, slgm->g->nodes.size);
     graph_add_graph(inst->g, graph_find_node_by_value(inst->g, &d1), slgm->g);
 
+    CONNECTION_LOG_DEBUG(m->c, "Spread linking graph to id1:%d with nodes count:%d", d1.id, slgm->g->nodes.size);
     spread_res(m);
 }
 
@@ -80,8 +102,13 @@ void spread_handle_udp(message *m) {
 
     if (spread_udp_handler1()) {
         spread_udp_handler1()[0](sum);
+    } else {
+        CONNECTION_LOG_WARN(m->c, "Received spread udp message:\"%.*s\" from id:%d unhandled", sum->msg->size,
+                            sum->msg->elements, sum->src_id);
     }
 
+    INSTANCE_LOG_DEBUG(m->c->r->inst, "Spread udp message:\"%.*s\" from id:%d ", sum->msg->size, sum->msg->elements,
+                       sum->src_id);
     spread_res(m);
 }
 

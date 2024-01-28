@@ -1,7 +1,5 @@
-
-
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +20,7 @@
 #include "services/route/functions.h"
 #include "services/route/handlers.h"
 #include "services/utils.h"
+#include "log/connection_logger.h"
 
 void route_udp(instance *inst, uint64_t id, uint8_t *msg, uint32_t size) {
     //todo optimize this
@@ -60,6 +59,7 @@ void route_udp(instance *inst, uint64_t id, uint8_t *msg, uint32_t size) {
                 *id1));
         buffer_reset(&b1);
         if (c != 0) {
+            CONNECTION_LOG_DEBUG(c, "Sending message:\"%.*s\" to id:%llu", size, msg, id);
             c->write_array(c, b1.start, rum->rm.bm.size);
         }
     }

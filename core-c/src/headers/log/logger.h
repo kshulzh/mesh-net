@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,4 +91,7 @@ printf("\n");
 #define LOG_TRACE(message)
 #endif
 
+#define LOGM_METHOD_NAME(name) name##_print_log
+#define LOGM_METHOD(name, type) void LOGM_METHOD_NAME(name)(type *o, char *level, char *file, int line, char *msg, ...)
+#define LOGM(name, level, meta, msg, args...) LOGM_METHOD_NAME(name)(meta, level, __FILENAME__, __LINE__, msg, args)
 #endif //MESH_NET_LOGGER_H

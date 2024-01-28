@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 
 #include "io/buffer_utils.h"
 
-list * create_buffers(int count, int size) {
-    list * bs = new_list();
+list *create_buffers(int count, int size) {
+    list *bs = new_list();
     for (int i = 0; i < count; ++i) {
-        buffer * b = create_buffer(size);
+        buffer *b = create_buffer(size);
         list_add(bs, b);
     }
 
@@ -28,6 +28,6 @@ list * create_buffers(int count, int size) {
 }
 
 buffer *create_buffer(int size) {
-    char * arr = mem_alloc(size);
+    char *arr = mem_alloc(size);
     return new_buffer(arr, size);
 };

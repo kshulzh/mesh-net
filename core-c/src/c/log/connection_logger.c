@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef MESH_NET_MAP_H
-#define MESH_NET_MAP_H
+#include <stdarg.h>
+#include "log/connection_logger.h"
 
-#include "array.h"
-#include "pair.h"
+LOGM_METHOD(connection, connection) {
+    va_list ap;
+    instance *inst = o->r->inst;
+    time_t rawtime;
+    struct tm *timeinfo;
 
-#define MAP(KEY, VALUE) \
-PAIR(KEY,VALUE)\
-ARRAY_DECLARATION(pair_##KEY##_##VALUE) \
-struct map_##KEY##_##VALUE {\
-    array_pair_##KEY##_##VALUE elements; \
-};\
-typedef struct map_##KEY##_##VALUE map_##KEY##_##VALUE;
-MAP(int, int)
-#endif //MESH_NET_MAP_H
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    char *c = asctime(timeinfo);
+    int i;
+    for (i = 0; c[i] != '\n'; i++);
+    c[i] = '\0';
+
+    printf("[inst:%llu][con:%llu][%s][%s][%s:%d]", inst->this_device.id, o->d.id, c, level, file, line);
+
+
+    va_start(ap, msg);
+    vprintf(msg, ap);
+    printf("\n");
+}

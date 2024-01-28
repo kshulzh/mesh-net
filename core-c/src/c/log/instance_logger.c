@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <stdarg.h>
+#include "log/instance_logger.h"
 
-#ifndef MESH_NET_MAP_H
-#define MESH_NET_MAP_H
+LOGM_METHOD(instance, instance) {
+    va_list ap;
+    time_t rawtime;
+    struct tm *timeinfo;
 
-#include "array.h"
-#include "pair.h"
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    char *c = asctime(timeinfo);
+    int i;
+    for (i = 0; c[i] != '\n'; i++);
+    c[i] = '\0';
+    printf("[inst:%llu][con:null][%s][%s][%s:%d]", o->this_device.id, c, level, file, line);
 
-#define MAP(KEY, VALUE) \
-PAIR(KEY,VALUE)\
-ARRAY_DECLARATION(pair_##KEY##_##VALUE) \
-struct map_##KEY##_##VALUE {\
-    array_pair_##KEY##_##VALUE elements; \
-};\
-typedef struct map_##KEY##_##VALUE map_##KEY##_##VALUE;
-MAP(int, int)
-#endif //MESH_NET_MAP_H
+    va_start(ap, msg);
+    vprintf(msg, ap);
+    printf("\n");
+}

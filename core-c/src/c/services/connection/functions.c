@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Kirill Shulzhenko
+ * Copyright (c) 2023-2024. Kirill Shulzhenko
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@
 #include "services/connection/functions.h"
 #include "services/connection/messages.h"
 #include "services/utils.h"
-
+#include "log/connection_logger.h"
 
 void connection_ask(connection *c) {
     connection_ask_req_message req;
     req.cm.bm.size = sizeof(req);
     req.cm.bm.type = CONNECTION;
     req.cm.type = REQ_ASK;
+    CONNECTION_LOG_DEBUG(c, "Sending ask request", 0);
     c->write_array(c, (uint8_t *) (&req), sizeof(connection_ask_req_message));
 }
 
@@ -32,7 +33,7 @@ void connection_get_struct(connection *c) {
     req.cm.bm.size = sizeof(connection_ask_req_message);
     req.cm.bm.type = CONNECTION;
     req.cm.type = REQ_GET_STRUCT;
-
+    CONNECTION_LOG_DEBUG(c, "Sending get struct request", 0);
     c->write_array(c, (uint8_t *) &req, sizeof(connection_ask_req_message));
 }
 
@@ -43,6 +44,7 @@ void connection_ask_res(message *m, codes code) {
     res.code = code;
     res.cm.bm.size = sizeof(connection_ask_res_message);
 
+    CONNECTION_LOG_DEBUG(m->c, "Sending ask response", 0);
     m->c->write_array(m->c, (uint8_t *) &res, sizeof(connection_ask_res_message));
 }
 
@@ -53,6 +55,7 @@ void connection_get_property(connection *c, uint8_t property) {
     req.cm.type = REQ_GET_PROPERTY;
     req.property = property;
 
+    CONNECTION_LOG_DEBUG(c, "Sending get property request with id:%d", property);
     c->write_array(c, (uint8_t *) &req, sizeof(connection_get_property_req_message));
 }
 
@@ -65,6 +68,7 @@ void connection_get_property_res(connection *c, uint8_t property, dynamic value,
     res.value = value;
     res.code = code;
 
+    CONNECTION_LOG_DEBUG(c, "Sending get property response with id:%d", property);
     c->write_array(c, (uint8_t *) &res, sizeof(connection_get_property_res_message));
 }
 
@@ -82,6 +86,7 @@ void connection_get_struct_res(message *m, graph *g, codes code) {
         *ptr = res;
         encode_connection_get_struct_res_message(b, ptr);
         buffer_message_set_size(b);
+        CONNECTION_LOG_DEBUG(m->c, "Sending get struct response", 0);
         m->c->write_array(m->c, b->start, (b->temp) - (b->start));
         buffer_reset(b);
         b->is_locked = 0;

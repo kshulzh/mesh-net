@@ -23,4 +23,6 @@ target_sources(${TARGET_NAME}
         containers/list.c
         devices/device.c
         log/logger.c
+        log/connection_logger.c
+        log/instance_logger.c
         )
